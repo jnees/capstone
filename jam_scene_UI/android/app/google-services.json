@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "996660872089",
+    "project_id": "jamscene-410d6",
+    "storage_bucket": "jamscene-410d6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:996660872089:android:114c42f5b3132bf2228908",
+        "android_client_info": {
+          "package_name": "com.example.jam_scene"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "996660872089-c0jou5oti6okt8qd5e02fc55b57s2mui.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBogwQmBNpn_YB2hPpMXb-rY564jcJJlL4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "996660872089-c0jou5oti6okt8qd5e02fc55b57s2mui.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "996660872089-iutmileiirbuorno23ehfh99g0h9gevg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.jamScene"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
