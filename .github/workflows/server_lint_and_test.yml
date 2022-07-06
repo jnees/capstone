@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [14.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -29,6 +29,8 @@ jobs:
     - run: npm ci
       working-directory: ./jam_scene_backend
     - run: npm run build --if-present
+      working-directory: ./jam_scene_backend
+    - run: npx eslint server.js
       working-directory: ./jam_scene_backend
     - run: npm test
       working-directory: ./jam_scene_backend
