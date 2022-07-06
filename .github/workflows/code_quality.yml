@@ -5,13 +5,14 @@ on:
       - main
 jobs:
   test:
-    name: Check the source code
+    name: Flutter
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: subosito/flutter-action@v2.4.0
+      - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '2.0.0'
+          flutter-version: '2.8.0'
+          channel: 'stable'
       - name: Install packages
         run: flutter pub get
       - name: Linter
