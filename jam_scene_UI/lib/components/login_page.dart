@@ -129,14 +129,16 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(
-                    height: 75,
+                    height: 120,
                   ),
                   SizedBox(
                     width: 300,
                     height: 60,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          textStyle: const TextStyle(fontSize: 24),
+                          textStyle: const TextStyle(
+                            fontSize: 28,
+                          ),
                           primary: const Color(0xFFF5A986)),
                       onPressed: () async {
                         _isSigningUp
@@ -153,19 +155,22 @@ class _LoginPageState extends State<LoginPage> {
                           : Text(_isSigningUp ? 'Sign Up' : 'Log In'),
                     ),
                   ),
-                  TextButton(
-                      onPressed: () {
-                        setState(() {
-                          _isSigningUp = !_isSigningUp;
-                        });
-                      },
-                      child: _isSigningUp
-                          ? const Text(
-                              "Sign in with an existing account",
-                              style: TextStyle(color: Colors.black),
-                            )
-                          : const Text("Register for an account",
-                              style: TextStyle(color: Colors.black)))
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TextButton(
+                        onPressed: () {
+                          setState(() {
+                            _isSigningUp = !_isSigningUp;
+                          });
+                        },
+                        child: _isSigningUp
+                            ? const Text(
+                                "Sign in with an existing account",
+                                style: TextStyle(color: Colors.black),
+                              )
+                            : const Text("Register for an account",
+                                style: TextStyle(color: Colors.black))),
+                  )
                 ]),
               ),
             )
@@ -207,7 +212,7 @@ InputDecoration _textInputBoxDecoration(label) {
   return InputDecoration(
     label: Text(label),
     border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(30),
+      borderRadius: BorderRadius.circular(14),
     ),
     fillColor: const Color.fromARGB(255, 248, 247, 247),
     filled: true,
