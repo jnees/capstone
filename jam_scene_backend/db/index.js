@@ -6,7 +6,7 @@ Derived from node-postgres package documentation found here
 & on the following Features pages:
 https://node-postgres.com/features/connecting
 */
-const { Pool, Client } = require("pg");
+const { Pool } = require("pg");
 require("dotenv").config();
 
 const pool = new Pool({

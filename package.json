@@ -2,10 +2,10 @@
   "name": "jam_scene_backend",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "jam_scene_backend/server.js",
   "scripts": {
     "test": "npx jest",
-    "start": "node server.js"
+    "start": "node jam_scene_backend/server.js"
   },
   "author": "",
   "license": "ISC",
