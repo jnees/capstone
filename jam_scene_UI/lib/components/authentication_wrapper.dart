@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'profile_page.dart';
-import 'login_page.dart';
+import '../screens/profile_page.dart';
+import '../screens/login_page.dart';
 
 class AuthticationWrapper extends StatefulWidget {
   const AuthticationWrapper({Key? key}) : super(key: key);
