@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "996660872089-g3jb3bgc9npd4fce8ibehh8pth6afe01.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jam_scene",
+            "certificate_hash": "57ea86083db5d1e183479edc09c88d476cd9e5f4"
+          }
+        },
+        {
           "client_id": "996660872089-c0jou5oti6okt8qd5e02fc55b57s2mui.apps.googleusercontent.com",
           "client_type": 3
         }

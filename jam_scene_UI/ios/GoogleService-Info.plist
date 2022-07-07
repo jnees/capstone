@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>996660872089-iutmileiirbuorno23ehfh99g0h9gevg.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.996660872089-iutmileiirbuorno23ehfh99g0h9gevg</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>996660872089-g3jb3bgc9npd4fce8ibehh8pth6afe01.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDc1mU37wFRSU1lO9D31RxwbQ4nl3Em2G4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>996660872089</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.jamScene</string>
+	<key>PROJECT_ID</key>
+	<string>jamscene-410d6</string>
+	<key>STORAGE_BUCKET</key>
+	<string>jamscene-410d6.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:996660872089:ios:c0ee9bd470476ce9228908</string>
+</dict>
+</plist>
