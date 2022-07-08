@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const pool = require("./db/db_pools.js");
+const pool = require("./db/db_pool.js");
 
 // Add req.body to all requests
 app.use(express.json());
