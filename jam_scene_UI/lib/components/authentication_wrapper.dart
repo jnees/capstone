@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import '../screens/profile_page.dart';
 import '../screens/login_page.dart';
 
-class AuthticationWrapper extends StatefulWidget {
-  const AuthticationWrapper({Key? key}) : super(key: key);
+class AuthenticationWrapper extends StatefulWidget {
+  const AuthenticationWrapper({Key? key}) : super(key: key);
+
+  static const routeName = '/';
 
   @override
-  State<AuthticationWrapper> createState() => _AuthticationWrapperState();
+  State<AuthenticationWrapper> createState() => _AuthticationWrapperState();
 }
 
-class _AuthticationWrapperState extends State<AuthticationWrapper> {
+class _AuthticationWrapperState extends State<AuthenticationWrapper> {
   var currentUser = FirebaseAuth.instance.currentUser;
 
   @override

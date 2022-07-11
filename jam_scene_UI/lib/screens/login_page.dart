@@ -7,7 +7,9 @@ import '../components/background_texture.dart';
 import '../models/google_sign_in_functions.dart';
 
 /*
-  Login and registration forms are contained in this widget.
+  Login and registration forms are contained in this widget. Note that this
+  widget does not have its own route. App uses AuthticationWrapper to route to
+  login/registration.
   
   Reference: 
   This widget was derived from the Google Firebase Auth quickstart
