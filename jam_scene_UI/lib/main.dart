@@ -9,19 +9,25 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(const App());
+  runApp(App());
 }
 
 class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+  App({Key? key}) : super(key: key);
+
+  final routes = {
+    AuthenticationWrapper.routeName: (context) => const AuthenticationWrapper(),
+  };
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'JamScene',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: const AuthticationWrapper());
+      initialRoute: AuthenticationWrapper.routeName,
+      title: 'JamScene',
+      routes: routes,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+    );
   }
 }
