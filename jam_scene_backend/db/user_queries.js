@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const pool = require("./db_pool.js");
 
 const searchUsers = (req, res) => {
