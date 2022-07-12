@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../models/test_users.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -15,14 +16,16 @@ class _ProfilePageState extends State<ProfilePage> {
     FirebaseAuth.instance.signOut();
   }
 
+  final profileData = grungeBob;
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         if (constraints.maxWidth > 600) {
-          return const WebProfilePage();
+          return WebProfilePage(profileData: profileData);
         } else {
-          return const MobileProfilePage();
+          return MobileProfilePage(profileData: profileData);
         }
       },
     );
@@ -30,7 +33,9 @@ class _ProfilePageState extends State<ProfilePage> {
 }
 
 class MobileProfilePage extends StatefulWidget {
-  const MobileProfilePage({Key? key}) : super(key: key);
+  final List<Map<String, Object>> profileData;
+  const MobileProfilePage({Key? key, required this.profileData})
+      : super(key: key);
 
   @override
   State<MobileProfilePage> createState() => _MobileProfilePageState();
@@ -43,7 +48,11 @@ class _MobileProfilePageState extends State<MobileProfilePage> {
       appBar: AppBar(
         title: const Text("JamScene"),
       ),
-      body: const Text("Mobile Profile Page"),
+      body: Column(
+        children: const [
+          MainContent(profileData: grungeBob),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           items: const [
@@ -59,7 +68,8 @@ class _MobileProfilePageState extends State<MobileProfilePage> {
 }
 
 class WebProfilePage extends StatefulWidget {
-  const WebProfilePage({Key? key}) : super(key: key);
+  final List<Map<String, Object>> profileData;
+  const WebProfilePage({Key? key, required this.profileData}) : super(key: key);
 
   @override
   State<WebProfilePage> createState() => _WebProfilePageState();
@@ -73,7 +83,7 @@ class _WebProfilePageState extends State<WebProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Row(children: [
+      body: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         NavigationRail(
           selectedIndex: 0,
           onDestinationSelected: (index) {},
@@ -107,25 +117,113 @@ class _WebProfilePageState extends State<WebProfilePage> {
           ],
         ),
         const VerticalDivider(thickness: 1, width: 1),
-        const MainContent()
+        MainContent(
+          profileData: widget.profileData,
+        )
       ]),
     );
   }
 }
 
 class MainContent extends StatelessWidget {
-  const MainContent({Key? key}) : super(key: key);
+  final List<Map<String, Object>> profileData;
+  const MainContent({Key? key, required this.profileData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String username = profileData[0]['username'] as String;
+    String description = profileData[0]['description'] as String;
+    List location = [
+      profileData[0]['city'] as String,
+      profileData[0]['state'] as String
+    ];
+    String influences = profileData[0]['influences'] as String;
+    String recordings = profileData[0]['recordings'] as String;
+
     return Expanded(
-      child: Column(
-        children: [
-          Text("${FirebaseAuth.instance.currentUser}"),
-          ElevatedButton(
-              onPressed: (() => (FirebaseAuth.instance.signOut())),
-              child: const Text("Sign Out"))
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    children: const [
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: CircleAvatar(
+                          radius: 50,
+                          backgroundImage: NetworkImage(
+                              "https://picsum.photos/id/1025/200/200"),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(username),
+                      Text(location.join(", ")),
+                      Row(
+                        children: const [
+                          Text("🎸"),
+                          Text("🥁"),
+                        ],
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(child: Text(description)),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: const Text("Send Message"),
+                  )
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text("Influences"),
+                      Text(influences),
+                    ],
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text("Recordings"),
+                      Text(recordings),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 3000),
+              Text("${FirebaseAuth.instance.currentUser}"),
+              ElevatedButton(
+                  onPressed: (() => (FirebaseAuth.instance.signOut())),
+                  child: const Text("Sign Out"))
+            ],
+          ),
+        ),
       ),
     );
   }

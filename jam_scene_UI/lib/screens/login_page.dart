@@ -54,6 +54,7 @@ class _LoginPageState extends State<LoginPage> {
       await credential.user!.updateDisplayName(_usernameController.text);
 
       return credential;
+      // ignore: unused_catch_clause
     } on FirebaseAuthException catch (e) {
       _setIsLoading();
       return null;
@@ -70,6 +71,7 @@ class _LoginPageState extends State<LoginPage> {
         password: _passwordController.text,
       );
       return credential;
+      // ignore: unused_catch_clause
     } on FirebaseAuthException catch (e) {
       _setIsLoading();
       return null;
