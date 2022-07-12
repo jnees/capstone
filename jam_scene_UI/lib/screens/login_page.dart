@@ -55,8 +55,6 @@ class _LoginPageState extends State<LoginPage> {
 
       return credential;
     } on FirebaseAuthException catch (e) {
-      // ignore: avoid_print
-      print(e);
       _setIsLoading();
       return null;
     }
@@ -73,8 +71,6 @@ class _LoginPageState extends State<LoginPage> {
       );
       return credential;
     } on FirebaseAuthException catch (e) {
-      // ignore: avoid_print
-      print(e);
       _setIsLoading();
       return null;
     }
@@ -197,10 +193,7 @@ class _LoginPageState extends State<LoginPage> {
                               ? await _signUpWithEmailAndPassword()
                               : await _loginWithEmailAndPassword();
 
-                          if (FirebaseAuth.instance.currentUser != null) {
-                            // ignore: avoid_print
-                            print(FirebaseAuth.instance.currentUser);
-                          }
+                          if (FirebaseAuth.instance.currentUser != null) {}
                         },
                         child: _isLoading
                             ? const CircularProgressIndicator()
