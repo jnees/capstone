@@ -139,6 +139,20 @@ class MainContent extends StatelessWidget {
     ];
     String influences = profileData[0]['influences'] as String;
     String recordings = profileData[0]['recordings'] as String;
+    bool availMonAm = profileData[0]['avail_mon_am'] as bool;
+    bool availMonPm = profileData[0]['avail_mon_pm'] as bool;
+    bool availTueAm = profileData[0]['avail_tue_am'] as bool;
+    bool availTuePm = profileData[0]['avail_tue_pm'] as bool;
+    bool availWedAm = profileData[0]['avail_wed_am'] as bool;
+    bool availWedPm = profileData[0]['avail_wed_pm'] as bool;
+    bool availThuAm = profileData[0]['avail_thu_am'] as bool;
+    bool availThuPm = profileData[0]['avail_thu_pm'] as bool;
+    bool availFriAm = profileData[0]['avail_fri_am'] as bool;
+    bool availFriPm = profileData[0]['avail_fri_pm'] as bool;
+    bool availSatAm = profileData[0]['avail_sat_am'] as bool;
+    bool availSatPm = profileData[0]['avail_sat_pm'] as bool;
+    bool availSunAm = profileData[0]['avail_sun_am'] as bool;
+    bool availSunPm = profileData[0]['avail_sun_pm'] as bool;
 
     return Expanded(
       child: Padding(
@@ -165,7 +179,8 @@ class MainContent extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(username),
+                      Text(username,
+                          style: const TextStyle(fontWeight: FontWeight.bold)),
                       Text(location.join(", ")),
                       Row(
                         children: const [
@@ -198,7 +213,8 @@ class MainContent extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text("Influences"),
+                      const Text("Influences",
+                          style: TextStyle(fontWeight: FontWeight.bold)),
                       Text(influences),
                     ],
                   ),
@@ -210,13 +226,96 @@ class MainContent extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text("Recordings"),
+                      const Text("Recordings",
+                          style: TextStyle(fontWeight: FontWeight.bold)),
                       Text(recordings),
                     ],
                   ),
                 ],
               ),
-              const SizedBox(height: 3000),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text("Availability",
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 400,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Table(
+                          children: [
+                            const TableRow(children: [
+                              Text("Day",
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                              Text("AM",
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                              Text("PM",
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                            ]),
+                            TableRow(children: [
+                              const Text("Sunday"),
+                              availSunAm ? const Text("✅") : const Text("-"),
+                              availSunPm ? const Text("✅") : const Text("-"),
+                            ]),
+                            TableRow(children: [
+                              const Text("Monday"),
+                              availMonAm ? const Text("✅") : const Text("-"),
+                              availMonPm ? const Text("✅") : const Text("-"),
+                            ]),
+                            TableRow(children: [
+                              const Text("Tuesday"),
+                              availTueAm ? const Text("✅") : const Text("-"),
+                              availTuePm ? const Text("✅") : const Text("-"),
+                            ]),
+                            TableRow(children: [
+                              const Text("Wednesday"),
+                              availWedAm ? const Text("✅") : const Text("-"),
+                              availWedPm ? const Text("✅") : const Text("-"),
+                            ]),
+                            TableRow(children: [
+                              const Text("Thursday"),
+                              availThuAm ? const Text("✅") : const Text("-"),
+                              availThuPm ? const Text("✅") : const Text("-"),
+                            ]),
+                            TableRow(children: [
+                              const Text("Friday"),
+                              availFriAm ? const Text("✅") : const Text("-"),
+                              availFriPm ? const Text("✅") : const Text("-"),
+                            ]),
+                            TableRow(children: [
+                              const Text("Saturday"),
+                              availSatAm ? const Text("✅") : const Text("-"),
+                              availSatPm ? const Text("✅") : const Text("-"),
+                            ]),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 2000),
               Text("${FirebaseAuth.instance.currentUser}"),
               ElevatedButton(
                   onPressed: (() => (FirebaseAuth.instance.signOut())),
