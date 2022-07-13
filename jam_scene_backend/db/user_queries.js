@@ -6,7 +6,7 @@ const searchUsers = (req, res) => {
 };
 
 const createUser = (req, res) => {
-  // TODO: create user
+  var return_obj = {};
   const body = req.body;
   const query_params = [
     body.id,
@@ -37,7 +37,7 @@ const createUser = (req, res) => {
     body.avail_sun_am,
     body.avail_sun_pm,
   ];
-  const query = `INSERT INTO users(
+  const user_query = `INSERT INTO users(
       id, username, first_name, last_name, email, city, state, zipcode, 
       join_date, description, influences, recordings, profile_photo,
       avail_mon_am, avail_mon_pm, avail_tue_am, avail_tue_pm, 
@@ -45,11 +45,18 @@ const createUser = (req, res) => {
       avail_fri_am, avail_fri_pm, avail_sat_am, avail_sat_pm,
       avail_sun_am, avail_sun_pm) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9,
       $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, 
-      $24, $25, $26, $27);`;
+      $24, $25, $26, $27) RETURNING *;`;
+
+  // TODO: Figure out a way to insert a users instruments
+  // const inst_query_params = [body.id, body.instrumentid];
+  // const inst_query = `INSERT INTO users_instruments(userid, instrumentid)
+  // VALUES($1, $2), (??);`;
+
   return pool
-    .query(query, query_params)
+    .query(user_query, query_params)
     .then((result) => {
-      res.status(200).send("Successfully created user");
+      return_obj["user"] = result.rows;
+      res.json(return_obj);
     })
     .catch((err) => {
       console.log(err);
@@ -97,15 +104,52 @@ const getUserById = (req, res) => {
 };
 
 const updateUser = (req, res) => {
-  // TODO: Update user
+  var return_obj = {};
   const { id } = req.params;
   const body = req.body;
-  const query_params = [id, body.email];
-  const query = "UPDATE users SET email = $1 WHERE id = $2;";
+  const query_params = [
+    id,
+    body.username,
+    body.first_name,
+    body.last_name,
+    body.email,
+    body.city,
+    body.state,
+    body.zipcode,
+    body.join_date,
+    body.description,
+    body.influences,
+    body.recordings,
+    body.profile_photo,
+    body.avail_mon_am,
+    body.avail_mon_pm,
+    body.avail_tue_am,
+    body.avail_tue_pm,
+    body.avail_wed_am,
+    body.avail_wed_pm,
+    body.avail_thu_am,
+    body.avail_thu_pm,
+    body.avail_fri_am,
+    body.avail_fri_pm,
+    body.avail_sat_am,
+    body.avail_sat_pm,
+    body.avail_sun_am,
+    body.avail_sun_pm,
+  ];
+  const user_query = `UPDATE users SET username = $2, first_name = $3,
+    last_name = $4, email = $5, city = $6, state = $7, zipcode = $8,
+    join_date = $9, description = $10, influences = $11, recordings = $12,
+    profile_photo = $13, avail_mon_am = $14, avail_mon_pm = $15,
+    avail_tue_am = $16, avail_tue_pm = $17, avail_wed_am = $18,
+    avail_wed_pm = $19, avail_thu_am = $20, avail_thu_pm = $21,
+    avail_fri_am = $22, avail_fri_pm = $23, avail_sat_am = $24,
+    avail_sat_pm = $25, avail_sun_am = $26, avail_sun_pm = $27
+    WHERE id = $1 RETURNING *;`;
   return pool
-    .query(query, query_params)
+    .query(user_query, query_params)
     .then((result) => {
-      res.status(200).send("Successfully updated user");
+      return_obj["user"] = result.rows;
+      res.json(return_obj);
     })
     .catch((err) => {
       console.log(err);
@@ -114,7 +158,18 @@ const updateUser = (req, res) => {
 };
 
 const deleteUser = (req, res) => {
-  // TODO: Delete user
+  const { id } = req.params;
+  const query_params = [id];
+  const user_query = "DELETE FROM users WHERE id = $1;";
+  return pool
+    .query(user_query, query_params)
+    .then((result) => {
+      res.status(200).send("Successfully deleted user");
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send("An error occurred.");
+    });
 };
 
 module.exports = {

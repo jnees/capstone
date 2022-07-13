@@ -25,7 +25,7 @@ app.get("/test", (req, res) => {
 app.get("/users", db.searchUsers);
 app.post("/users", db.createUser);
 app.get("/user/:id", db.getUserById);
-app.put("/user/:id"), db.updateUser;
+app.put("/user/:id", db.updateUser);
 app.delete("/user/:id", db.deleteUser);
 
 app.get("/", (req, res) => {
