@@ -14,10 +14,11 @@ class AuthenticationWrapper extends StatefulWidget {
 
 class _AuthticationWrapperState extends State<AuthenticationWrapper> {
   var currentUser = FirebaseAuth.instance.currentUser;
+  var token = FirebaseAuth.instance.currentUser?.getIdToken();
 
   @override
   Widget build(BuildContext context) {
-    FirebaseAuth.instance.userChanges().listen((User? user) {
+    FirebaseAuth.instance.idTokenChanges().listen((User? user) {
       if (user == null) {
         setState(() {
           currentUser = null;
@@ -25,9 +26,11 @@ class _AuthticationWrapperState extends State<AuthenticationWrapper> {
       } else {
         setState(() {
           currentUser = user;
+          token = FirebaseAuth.instance.currentUser!.getIdToken();
         });
       }
     });
+
     return FirebaseAuth.instance.currentUser == null
         ? const LoginPage()
         : const ProfilePage();

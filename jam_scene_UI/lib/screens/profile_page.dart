@@ -1,9 +1,81 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../models/test_users.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
+  static const routeName = '/profile';
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  void signOut() {
+    FirebaseAuth.instance.signOut();
+  }
+
+  final profileData = grungeBob;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth > 600) {
+          return WebProfilePage(profileData: profileData);
+        } else {
+          return MobileProfilePage(profileData: profileData);
+        }
+      },
+    );
+  }
+}
+
+class MobileProfilePage extends StatefulWidget {
+  final List<Map<String, Object>> profileData;
+  const MobileProfilePage({Key? key, required this.profileData})
+      : super(key: key);
+
+  @override
+  State<MobileProfilePage> createState() => _MobileProfilePageState();
+}
+
+class _MobileProfilePageState extends State<MobileProfilePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("JamScene"),
+      ),
+      body: Column(
+        children: const [
+          MainContent(profileData: grungeBob),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+            BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
+            BottomNavigationBarItem(icon: Icon(Icons.newspaper), label: "Ads"),
+            BottomNavigationBarItem(icon: Icon(Icons.mail), label: "Messages"),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.settings), label: "Settings"),
+          ]),
+    );
+  }
+}
+
+class WebProfilePage extends StatefulWidget {
+  final List<Map<String, Object>> profileData;
+  const WebProfilePage({Key? key, required this.profileData}) : super(key: key);
+
+  @override
+  State<WebProfilePage> createState() => _WebProfilePageState();
+}
+
+class _WebProfilePageState extends State<WebProfilePage> {
   void signOut() {
     FirebaseAuth.instance.signOut();
   }
@@ -11,14 +83,247 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("JamScene")),
-        body: Center(
-            child: Column(
-          children: [
-            Text("${FirebaseAuth.instance.currentUser}"),
-            ElevatedButton(
-                onPressed: (() => (signOut())), child: const Text("Sign Out"))
+      body: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        NavigationRail(
+          selectedIndex: 0,
+          onDestinationSelected: (index) {},
+          destinations: const [
+            NavigationRailDestination(
+              icon: Tooltip(message: "Profile", child: Icon(Icons.person)),
+              label: Text("Profile"),
+            ),
+            NavigationRailDestination(
+              icon: Tooltip(
+                  message: "Search Profiles", child: Icon(Icons.search)),
+              label: Text("Search"),
+            ),
+            NavigationRailDestination(
+              icon: Tooltip(message: "Ads", child: Icon(Icons.newspaper)),
+              label: Text("Ads"),
+            ),
+            NavigationRailDestination(
+              icon: Tooltip(message: "Messages", child: Icon(Icons.mail)),
+              label: Text("Messages"),
+            ),
+            NavigationRailDestination(
+              icon: Tooltip(message: "Settings", child: Icon(Icons.settings)),
+              label: Text("Settings"),
+            ),
+            NavigationRailDestination(
+              icon:
+                  Tooltip(message: "Sign out", child: Icon(Icons.exit_to_app)),
+              label: Text("Sign Out"),
+            ),
           ],
-        )));
+        ),
+        const VerticalDivider(thickness: 1, width: 1),
+        MainContent(
+          profileData: widget.profileData,
+        )
+      ]),
+    );
+  }
+}
+
+class MainContent extends StatelessWidget {
+  final List<Map<String, Object>> profileData;
+  const MainContent({Key? key, required this.profileData}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    String username = profileData[0]['username'] as String;
+    String description = profileData[0]['description'] as String;
+    List location = [
+      profileData[0]['city'] as String,
+      profileData[0]['state'] as String
+    ];
+    String influences = profileData[0]['influences'] as String;
+    String recordings = profileData[0]['recordings'] as String;
+    bool availMonAm = profileData[0]['avail_mon_am'] as bool;
+    bool availMonPm = profileData[0]['avail_mon_pm'] as bool;
+    bool availTueAm = profileData[0]['avail_tue_am'] as bool;
+    bool availTuePm = profileData[0]['avail_tue_pm'] as bool;
+    bool availWedAm = profileData[0]['avail_wed_am'] as bool;
+    bool availWedPm = profileData[0]['avail_wed_pm'] as bool;
+    bool availThuAm = profileData[0]['avail_thu_am'] as bool;
+    bool availThuPm = profileData[0]['avail_thu_pm'] as bool;
+    bool availFriAm = profileData[0]['avail_fri_am'] as bool;
+    bool availFriPm = profileData[0]['avail_fri_pm'] as bool;
+    bool availSatAm = profileData[0]['avail_sat_am'] as bool;
+    bool availSatPm = profileData[0]['avail_sat_pm'] as bool;
+    bool availSunAm = profileData[0]['avail_sun_am'] as bool;
+    bool availSunPm = profileData[0]['avail_sun_pm'] as bool;
+
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    children: const [
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: CircleAvatar(
+                          radius: 50,
+                          backgroundImage: NetworkImage(
+                              "https://picsum.photos/id/1025/200/200"),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(username,
+                          style: const TextStyle(fontWeight: FontWeight.bold)),
+                      Text(location.join(", ")),
+                      Row(
+                        children: const [
+                          Text("🎸"),
+                          Text("🥁"),
+                        ],
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(child: Text(description)),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: const Text("Send Message"),
+                  )
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text("Influences",
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      Text(influences),
+                    ],
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text("Recordings",
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      Text(recordings),
+                    ],
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text("Availability",
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 400,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Table(
+                          children: [
+                            const TableRow(children: [
+                              Text("Day",
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                              Text("AM",
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                              Text("PM",
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                            ]),
+                            TableRow(children: [
+                              const Text("Sunday"),
+                              availSunAm ? const Text("✅") : const Text("-"),
+                              availSunPm ? const Text("✅") : const Text("-"),
+                            ]),
+                            TableRow(children: [
+                              const Text("Monday"),
+                              availMonAm ? const Text("✅") : const Text("-"),
+                              availMonPm ? const Text("✅") : const Text("-"),
+                            ]),
+                            TableRow(children: [
+                              const Text("Tuesday"),
+                              availTueAm ? const Text("✅") : const Text("-"),
+                              availTuePm ? const Text("✅") : const Text("-"),
+                            ]),
+                            TableRow(children: [
+                              const Text("Wednesday"),
+                              availWedAm ? const Text("✅") : const Text("-"),
+                              availWedPm ? const Text("✅") : const Text("-"),
+                            ]),
+                            TableRow(children: [
+                              const Text("Thursday"),
+                              availThuAm ? const Text("✅") : const Text("-"),
+                              availThuPm ? const Text("✅") : const Text("-"),
+                            ]),
+                            TableRow(children: [
+                              const Text("Friday"),
+                              availFriAm ? const Text("✅") : const Text("-"),
+                              availFriPm ? const Text("✅") : const Text("-"),
+                            ]),
+                            TableRow(children: [
+                              const Text("Saturday"),
+                              availSatAm ? const Text("✅") : const Text("-"),
+                              availSatPm ? const Text("✅") : const Text("-"),
+                            ]),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 2000),
+              Text("${FirebaseAuth.instance.currentUser}"),
+              ElevatedButton(
+                  onPressed: (() => (FirebaseAuth.instance.signOut())),
+                  child: const Text("Sign Out"))
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
