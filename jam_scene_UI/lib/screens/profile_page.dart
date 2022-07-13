@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../models/test_users.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import '../models/profile_data.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  final String? id;
+  const ProfilePage({Key? key, this.id}) : super(key: key);
 
   static const routeName = '/profile';
 
@@ -12,28 +15,47 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  late ProfileData profileData;
+  String uid = 'r4nD0mSt1ng2';
+  bool loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchProfileData();
+  }
+
+  void _fetchProfileData() async {
+    var url = Uri.parse('https://jam-scene-app.herokuapp.com/user/$uid');
+    var response = await http.get(url);
+    setState(() {
+      profileData = ProfileData.fromJson(jsonDecode(response.body)['user'][0]);
+      loading = false;
+    });
+  }
+
   void signOut() {
     FirebaseAuth.instance.signOut();
   }
 
-  final profileData = grungeBob;
-
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        if (constraints.maxWidth > 600) {
-          return WebProfilePage(profileData: profileData);
-        } else {
-          return MobileProfilePage(profileData: profileData);
-        }
-      },
-    );
+    return loading
+        ? const CircularProgressIndicator()
+        : LayoutBuilder(
+            builder: (context, constraints) {
+              if (constraints.maxWidth > 600) {
+                return WebProfilePage(profileData: profileData);
+              } else {
+                return MobileProfilePage(profileData: profileData);
+              }
+            },
+          );
   }
 }
 
 class MobileProfilePage extends StatefulWidget {
-  final List<Map<String, Object>> profileData;
+  final ProfileData profileData;
   const MobileProfilePage({Key? key, required this.profileData})
       : super(key: key);
 
@@ -49,8 +71,8 @@ class _MobileProfilePageState extends State<MobileProfilePage> {
         title: const Text("JamScene"),
       ),
       body: Column(
-        children: const [
-          MainContent(profileData: grungeBob),
+        children: [
+          MainContent(profileData: widget.profileData),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -68,7 +90,7 @@ class _MobileProfilePageState extends State<MobileProfilePage> {
 }
 
 class WebProfilePage extends StatefulWidget {
-  final List<Map<String, Object>> profileData;
+  final ProfileData profileData;
   const WebProfilePage({Key? key, required this.profileData}) : super(key: key);
 
   @override
@@ -126,33 +148,12 @@ class _WebProfilePageState extends State<WebProfilePage> {
 }
 
 class MainContent extends StatelessWidget {
-  final List<Map<String, Object>> profileData;
+  final ProfileData profileData;
   const MainContent({Key? key, required this.profileData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String username = profileData[0]['username'] as String;
-    String description = profileData[0]['description'] as String;
-    List location = [
-      profileData[0]['city'] as String,
-      profileData[0]['state'] as String
-    ];
-    String influences = profileData[0]['influences'] as String;
-    String recordings = profileData[0]['recordings'] as String;
-    bool availMonAm = profileData[0]['avail_mon_am'] as bool;
-    bool availMonPm = profileData[0]['avail_mon_pm'] as bool;
-    bool availTueAm = profileData[0]['avail_tue_am'] as bool;
-    bool availTuePm = profileData[0]['avail_tue_pm'] as bool;
-    bool availWedAm = profileData[0]['avail_wed_am'] as bool;
-    bool availWedPm = profileData[0]['avail_wed_pm'] as bool;
-    bool availThuAm = profileData[0]['avail_thu_am'] as bool;
-    bool availThuPm = profileData[0]['avail_thu_pm'] as bool;
-    bool availFriAm = profileData[0]['avail_fri_am'] as bool;
-    bool availFriPm = profileData[0]['avail_fri_pm'] as bool;
-    bool availSatAm = profileData[0]['avail_sat_am'] as bool;
-    bool availSatPm = profileData[0]['avail_sat_pm'] as bool;
-    bool availSunAm = profileData[0]['avail_sun_am'] as bool;
-    bool availSunPm = profileData[0]['avail_sun_pm'] as bool;
+    List location = [profileData.city, profileData.state];
 
     return Expanded(
       child: Padding(
@@ -179,7 +180,7 @@ class MainContent extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(username,
+                      Text(profileData.username,
                           style: const TextStyle(fontWeight: FontWeight.bold)),
                       Text(location.join(", ")),
                       Row(
@@ -195,7 +196,7 @@ class MainContent extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Flexible(child: Text(description)),
+                  Flexible(child: Text(profileData.description)),
                 ],
               ),
               Row(
@@ -215,7 +216,7 @@ class MainContent extends StatelessWidget {
                     children: [
                       const Text("Influences",
                           style: TextStyle(fontWeight: FontWeight.bold)),
-                      Text(influences),
+                      Text(profileData.influences),
                     ],
                   ),
                 ],
@@ -228,7 +229,7 @@ class MainContent extends StatelessWidget {
                     children: [
                       const Text("Recordings",
                           style: TextStyle(fontWeight: FontWeight.bold)),
-                      Text(recordings),
+                      Text(profileData.recordings),
                     ],
                   ),
                 ],
@@ -249,7 +250,7 @@ class MainContent extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: 400,
+                    width: 350,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
                         border: Border.all(
@@ -275,38 +276,66 @@ class MainContent extends StatelessWidget {
                             ]),
                             TableRow(children: [
                               const Text("Sunday"),
-                              availSunAm ? const Text("✅") : const Text("-"),
-                              availSunPm ? const Text("✅") : const Text("-"),
+                              profileData.availSunAm
+                                  ? const Text("✅")
+                                  : const Text("-"),
+                              profileData.availSunPm
+                                  ? const Text("✅")
+                                  : const Text("-"),
                             ]),
                             TableRow(children: [
                               const Text("Monday"),
-                              availMonAm ? const Text("✅") : const Text("-"),
-                              availMonPm ? const Text("✅") : const Text("-"),
+                              profileData.availMonAm
+                                  ? const Text("✅")
+                                  : const Text("-"),
+                              profileData.availMonPm
+                                  ? const Text("✅")
+                                  : const Text("-"),
                             ]),
                             TableRow(children: [
                               const Text("Tuesday"),
-                              availTueAm ? const Text("✅") : const Text("-"),
-                              availTuePm ? const Text("✅") : const Text("-"),
+                              profileData.availTueAm
+                                  ? const Text("✅")
+                                  : const Text("-"),
+                              profileData.availTuePm
+                                  ? const Text("✅")
+                                  : const Text("-"),
                             ]),
                             TableRow(children: [
                               const Text("Wednesday"),
-                              availWedAm ? const Text("✅") : const Text("-"),
-                              availWedPm ? const Text("✅") : const Text("-"),
+                              profileData.availWedAm
+                                  ? const Text("✅")
+                                  : const Text("-"),
+                              profileData.availWedPm
+                                  ? const Text("✅")
+                                  : const Text("-"),
                             ]),
                             TableRow(children: [
                               const Text("Thursday"),
-                              availThuAm ? const Text("✅") : const Text("-"),
-                              availThuPm ? const Text("✅") : const Text("-"),
+                              profileData.availThuAm
+                                  ? const Text("✅")
+                                  : const Text("-"),
+                              profileData.availThuPm
+                                  ? const Text("✅")
+                                  : const Text("-"),
                             ]),
                             TableRow(children: [
                               const Text("Friday"),
-                              availFriAm ? const Text("✅") : const Text("-"),
-                              availFriPm ? const Text("✅") : const Text("-"),
+                              profileData.availFriAm
+                                  ? const Text("✅")
+                                  : const Text("-"),
+                              profileData.availFriPm
+                                  ? const Text("✅")
+                                  : const Text("-"),
                             ]),
                             TableRow(children: [
                               const Text("Saturday"),
-                              availSatAm ? const Text("✅") : const Text("-"),
-                              availSatPm ? const Text("✅") : const Text("-"),
+                              profileData.availSatAm
+                                  ? const Text("✅")
+                                  : const Text("-"),
+                              profileData.availSatPm
+                                  ? const Text("✅")
+                                  : const Text("-"),
                             ]),
                           ],
                         ),
