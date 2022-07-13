@@ -2,10 +2,11 @@
 const pool = require("./db_pool.js");
 
 const searchUsers = (req, res) => {
-  // TODO: Search by location & instrument
+  // TODO: Search by location & instrument & more?
 };
 
 const createUser = (req, res) => {
+  // TODO: create user
   const body = req.body;
   const query_params = [
     body.id,
@@ -23,12 +24,12 @@ const createUser = (req, res) => {
     body.profile_photo,
     body.avail_mon_am,
     body.avail_mon_pm,
-    body.avail_tues_am,
-    body.avail_tues_pm,
+    body.avail_tue_am,
+    body.avail_tue_pm,
     body.avail_wed_am,
     body.avail_wed_pm,
-    body.avail_thurs_am,
-    body.avail_thurs_pm,
+    body.avail_thu_am,
+    body.avail_thu_pm,
     body.avail_fri_am,
     body.avail_fri_pm,
     body.avail_sat_am,
@@ -39,8 +40,8 @@ const createUser = (req, res) => {
   const query = `INSERT INTO users(
       id, username, first_name, last_name, email, city, state, zipcode, 
       join_date, description, influences, recordings, profile_photo,
-      avail_mon_am, avail_mon_pm, avail_tues_am, avail_tues_pm, 
-      avail_wed_am, avail_wed_pm, avail_thurs_am, avail_thurs_pm,
+      avail_mon_am, avail_mon_pm, avail_tue_am, avail_tue_pm, 
+      avail_wed_am, avail_wed_pm, avail_thu_am, avail_thu_pm,
       avail_fri_am, avail_fri_pm, avail_sat_am, avail_sat_pm,
       avail_sun_am, avail_sun_pm) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9,
       $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, 
@@ -86,14 +87,6 @@ const getUserById = (req, res) => {
           return_obj["user"][0]["instruments"] = result.rows;
         }
 
-        // extract instr name
-        // for (row in result.rows) {
-        //   console.log(result.rows[row].name);
-        // }
-
-        // console.log(return_obj); // test
-
-        // console.log(JSON.stringify(return_obj)); // test
         res.json(return_obj);
       })
       .catch((err) => {
@@ -104,6 +97,7 @@ const getUserById = (req, res) => {
 };
 
 const updateUser = (req, res) => {
+  // TODO: Update user
   const { id } = req.params;
   const body = req.body;
   const query_params = [id, body.email];
@@ -120,7 +114,7 @@ const updateUser = (req, res) => {
 };
 
 const deleteUser = (req, res) => {
-  // TODO:
+  // TODO: Delete user
 };
 
 module.exports = {
