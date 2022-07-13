@@ -158,7 +158,18 @@ const updateUser = (req, res) => {
 };
 
 const deleteUser = (req, res) => {
-  // TODO: Delete user
+  const { id } = req.params;
+  const query_params = [id];
+  const user_query = "DELETE FROM users WHERE id = $1;";
+  return pool
+    .query(user_query, query_params)
+    .then((result) => {
+      res.status(200).send("Successfully deleted user");
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send("An error occurred.");
+    });
 };
 
 module.exports = {
