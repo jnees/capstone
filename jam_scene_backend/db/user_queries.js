@@ -61,9 +61,10 @@ const getUserById = (req, res) => {
 
   const { id } = req.params;
   const query_params = [id];
+
   const user_query = "SELECT * FROM users WHERE id = $1;";
 
-  const inst_query = `SELECT UI.userID, I.name FROM 
+  const inst_query = `SELECT I.id, I.name FROM 
   users_instruments UI INNER JOIN instruments I ON UI.instrumentID = I.id 
   WHERE UI.userID = $1`;
 
@@ -71,7 +72,6 @@ const getUserById = (req, res) => {
     const select_users = await pool
       .query(user_query, query_params)
       .then((result) => {
-        // res.json(result.rows);   // old
         return_obj["user"] = result.rows;
       })
       .catch((err) => {
@@ -82,8 +82,9 @@ const getUserById = (req, res) => {
     const select_inst = await pool
       .query(inst_query, query_params)
       .then((result) => {
-        // res.json(result.rows);
-        return_obj["instruments"] = result.rows;
+        if (return_obj["user"][0]) {
+          return_obj["user"][0]["instruments"] = result.rows;
+        }
 
         // extract instr name
         // for (row in result.rows) {
@@ -100,27 +101,6 @@ const getUserById = (req, res) => {
         res.status(500).send("An error occurred.");
       });
   })();
-
-  // select_users = pool
-  //   .query(query, query_params)
-  //   .then((result) => {
-  //     // res.json(result.rows);
-  //     return_obj["user"] = result.rows;
-  //     // console.log(JSON.stringify(return_obj)); // test
-  //     res.json(return_obj);
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //     res.status(500).send("An error occurred.");
-  //   });
-
-  // const inst_query = `SELECT UI.userID, I.name FROM
-  //   users_instruments UI INNER JOIN instruments I ON UI.instrumentID = I.id
-  //   WHERE UI.userID = $1`;
-
-  // console.log(return_obj);
-
-  // res.json_return;
 };
 
 const updateUser = (req, res) => {
