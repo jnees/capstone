@@ -6,7 +6,7 @@ const searchUsers = (req, res) => {
 };
 
 const createUser = (req, res) => {
-  // TODO: create user
+  var return_obj = {};
   const body = req.body;
   const query_params = [
     body.id,
@@ -37,7 +37,7 @@ const createUser = (req, res) => {
     body.avail_sun_am,
     body.avail_sun_pm,
   ];
-  const query = `INSERT INTO users(
+  const user_query = `INSERT INTO users(
       id, username, first_name, last_name, email, city, state, zipcode, 
       join_date, description, influences, recordings, profile_photo,
       avail_mon_am, avail_mon_pm, avail_tue_am, avail_tue_pm, 
@@ -45,11 +45,18 @@ const createUser = (req, res) => {
       avail_fri_am, avail_fri_pm, avail_sat_am, avail_sat_pm,
       avail_sun_am, avail_sun_pm) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9,
       $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, 
-      $24, $25, $26, $27);`;
+      $24, $25, $26, $27) RETURNING *;`;
+
+  // TODO: Figure out a way to insert a users instruments
+  // const inst_query_params = [body.id, body.instrumentid];
+  // const inst_query = `INSERT INTO users_instruments(userid, instrumentid)
+  // VALUES($1, $2), (??);`;
+
   return pool
-    .query(query, query_params)
+    .query(user_query, query_params)
     .then((result) => {
-      res.status(200).send("Successfully created user");
+      return_obj["user"] = result.rows;
+      res.json(return_obj);
     })
     .catch((err) => {
       console.log(err);
