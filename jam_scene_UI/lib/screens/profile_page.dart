@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../models/profile_data.dart';
 import '../components/side_navigation.dart';
+import '../components/bottom_navigation.dart';
 
 class ProfilePage extends StatefulWidget {
   final String? id;
@@ -77,16 +78,7 @@ class _MobileProfilePageState extends State<MobileProfilePage> {
           MainContent(profileData: widget.profileData),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
-            BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
-            BottomNavigationBarItem(icon: Icon(Icons.newspaper), label: "Ads"),
-            BottomNavigationBarItem(icon: Icon(Icons.mail), label: "Messages"),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.settings), label: "Settings"),
-          ]),
+      bottomNavigationBar: BottomNavigation(context: context),
     );
   }
 }
