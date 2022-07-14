@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../screens/profile_page.dart';
+import '../screens/main_layout.dart';
 import '../screens/login_page.dart';
 
 class AuthenticationWrapper extends StatefulWidget {
@@ -33,6 +33,6 @@ class _AuthticationWrapperState extends State<AuthenticationWrapper> {
 
     return FirebaseAuth.instance.currentUser == null
         ? const LoginPage()
-        : const ProfilePage();
+        : const MainLayout();
   }
 }
