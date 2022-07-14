@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../models/profile_data.dart';
+import '../components/side_navigation.dart';
 
 class ProfilePage extends StatefulWidget {
   final String? id;
@@ -107,38 +108,7 @@ class _WebProfilePageState extends State<WebProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        NavigationRail(
-          selectedIndex: 0,
-          onDestinationSelected: (index) {},
-          destinations: const [
-            NavigationRailDestination(
-              icon: Tooltip(message: "Profile", child: Icon(Icons.person)),
-              label: Text("Profile"),
-            ),
-            NavigationRailDestination(
-              icon: Tooltip(
-                  message: "Search Profiles", child: Icon(Icons.search)),
-              label: Text("Search"),
-            ),
-            NavigationRailDestination(
-              icon: Tooltip(message: "Ads", child: Icon(Icons.newspaper)),
-              label: Text("Ads"),
-            ),
-            NavigationRailDestination(
-              icon: Tooltip(message: "Messages", child: Icon(Icons.mail)),
-              label: Text("Messages"),
-            ),
-            NavigationRailDestination(
-              icon: Tooltip(message: "Settings", child: Icon(Icons.settings)),
-              label: Text("Settings"),
-            ),
-            NavigationRailDestination(
-              icon:
-                  Tooltip(message: "Sign out", child: Icon(Icons.exit_to_app)),
-              label: Text("Sign Out"),
-            ),
-          ],
-        ),
+        const SideNavigation(),
         const VerticalDivider(thickness: 1, width: 1),
         MainContent(
           profileData: widget.profileData,
