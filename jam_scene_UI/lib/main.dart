@@ -20,7 +20,7 @@ class App extends StatelessWidget {
   final routes = {
     AuthenticationWrapper.routeName: (context) => const AuthenticationWrapper(),
     ProfileBuilder.routeName: (context) => const ProfileBuilder(),
-    ProfilePage.routeName: (context) => const ProfilePage(),
+    ProfilePage.routeName: (context) => const ProfilePage()
   };
 
   @override
