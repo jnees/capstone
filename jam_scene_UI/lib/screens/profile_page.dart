@@ -34,8 +34,9 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
-  void signOut() {
+  void signOut(context) {
     FirebaseAuth.instance.signOut();
+    Navigator.of(context).pushNamed("/");
   }
 
   @override
