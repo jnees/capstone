@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:jam_scene/screens/profile_builder.dart';
 import 'firebase_options.dart';
 import 'components/authentication_wrapper.dart';
 
@@ -17,6 +18,7 @@ class App extends StatelessWidget {
 
   final routes = {
     AuthenticationWrapper.routeName: (context) => const AuthenticationWrapper(),
+    ProfileBuilder.routeName: (context) => const ProfileBuilder()
   };
 
   @override

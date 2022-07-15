@@ -1,0 +1,32 @@
+const grungeBob = [
+  {
+    "id": "r4nD0mSt1ng1",
+    "email": "grungebob@signofhorns.com",
+    "username": "GrungeBob",
+    "first_name": "Robert",
+    "last_name": "Smith",
+    "city": "Seattle",
+    "state": "WA",
+    "zipcode": "98101",
+    "influences": "Nirvana, Pearl Jam",
+    "recordings": "www.spotify.com/grungebob",
+    "description":
+        "This is Bob (aka GrungeBob aka Bobby Beats). I'm looking to make some noyyyyeeeez. Hit me up if you need a guitarist or drummer. I might need to borrow your amp.",
+    "join_date": "2021-12-10T08:00:00.000Z",
+    "avail_mon_am": false,
+    "avail_mon_pm": false,
+    "avail_tue_am": false,
+    "avail_tue_pm": true,
+    "avail_wed_am": false,
+    "avail_wed_pm": false,
+    "avail_thu_am": false,
+    "avail_thu_pm": false,
+    "avail_fri_am": false,
+    "avail_fri_pm": false,
+    "avail_sat_am": true,
+    "avail_sat_pm": true,
+    "avail_sun_am": true,
+    "avail_sun_pm": true,
+    "profile_photo": "link/to/prof/pic",
+  }
+];

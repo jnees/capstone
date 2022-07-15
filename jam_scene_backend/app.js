@@ -4,6 +4,7 @@ const cors = require("cors");
 require("dotenv").config();
 /* eslint-disable no-unused-vars */
 const pool = require("./db/db_pool.js");
+const db = require("./db/user_queries");
 
 // Initialize Firebase Admin for server-side auth
 const admin = require("firebase-admin");
@@ -35,6 +36,13 @@ app.get("/test-server-auth", (req, res) => {
       res.send(error);
     });
 });
+
+// User Routes:
+app.get("/users", db.searchUsers);
+app.post("/users", db.createUser);
+app.get("/user/:id", db.getUserById);
+app.put("/user/:id", db.updateUser);
+app.delete("/user/:id", db.deleteUser);
 
 app.get("/", (req, res) => {
   res.send("Hello World!!!");
