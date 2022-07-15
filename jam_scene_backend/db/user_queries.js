@@ -8,7 +8,7 @@ const searchUsers = (req, res) => {
 const createUser = (req, res) => {
   var return_obj = {};
   const body = req.body;
-  const query_params = [
+  const user_query_params = [
     body.id,
     body.username,
     body.first_name,
@@ -48,20 +48,30 @@ const createUser = (req, res) => {
       $24, $25, $26, $27) RETURNING *;`;
 
   // TODO: Figure out a way to insert a users instruments
+  const instruments = body.user[0].instruments;
+  console.log(instruments);
+  for (let instr of instruments) {
+    console.log(instr);
+    console.log(instr.id);
+  }
+
+  res.status(200).send("...");
+
+  // test: inserting v
   // const inst_query_params = [body.id, body.instrumentid];
   // const inst_query = `INSERT INTO users_instruments(userid, instrumentid)
-  // VALUES($1, $2), (??);`;
+  // VALUES($1, $2);`;
 
-  return pool
-    .query(user_query, query_params)
-    .then((result) => {
-      return_obj["user"] = result.rows;
-      res.json(return_obj);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send("An error occurred.");
-    });
+  // return pool
+  //   .query(user_query, user_query_params)
+  //   .then((result) => {
+  //     return_obj["user"] = result.rows;
+  //     res.json(return_obj);
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //     res.status(500).send("An error occurred.");
+  //   });
 };
 
 const getUserById = (req, res) => {
