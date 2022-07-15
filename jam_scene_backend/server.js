@@ -13,5 +13,5 @@ if (port == null || port == "") {
 }
 
 app.listen(port, () => {
-	console.log(`Listening on post: ${port}`);
+	console.log(`Listening on port: ${port}`);
 });
