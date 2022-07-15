@@ -8,10 +8,14 @@ const db = require("./db/user_queries");
 
 // Initialize Firebase Admin for server-side auth
 const admin = require("firebase-admin");
+
+const private_key = process.env.FIREBASE_PRIVATE_KEY;
+const clean_private_key = private_key.replace(/\\n/g, "\n");
+
 admin.initializeApp({
   credential: admin.credential.cert({
     "project_id": process.env.FIREBASE_PROJECT_ID,
-    "private_key": process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+    "private_key": clean_private_key,
     "client_email": process.env.FIREBASE_CLIENT_EMAIL
   })
 });
