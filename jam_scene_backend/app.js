@@ -8,7 +8,6 @@ const db = require("./db/user_queries");
 
 // Initialize Firebase Admin for server-side auth
 const admin = require("firebase-admin");
-const serviceAccount = require("./firebase-key.json");
 admin.initializeApp({
   credential: admin.credential.cert({
     "project_id": process.env.FIREBASE_PROJECT_ID,
