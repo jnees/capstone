@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../components/side_navigation.dart';
 import '../screens/temp_new_profile_page.dart';
 import '../screens/search_page.dart';
 import '../screens/ads_page.dart';
@@ -49,13 +48,40 @@ class _MainLayoutState extends State<MainLayout> {
       builder: (context, constraints) {
         if (constraints.maxWidth > 600) {
           return Scaffold(
-            body: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  SideNavigation(),
-                  VerticalDivider(thickness: 1, width: 1),
-                  Text("Web Layout"),
-                ]),
+            body: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              NavigationRail(
+                onDestinationSelected: (index) =>
+                    setState(() => currentIndex = index),
+                selectedIndex: currentIndex,
+                destinations: const [
+                  NavigationRailDestination(
+                    icon:
+                        Tooltip(message: "Profile", child: Icon(Icons.person)),
+                    label: Text("Profile"),
+                  ),
+                  NavigationRailDestination(
+                    icon: Tooltip(
+                        message: "Search Profiles", child: Icon(Icons.search)),
+                    label: Text("Search"),
+                  ),
+                  NavigationRailDestination(
+                    icon: Tooltip(message: "Ads", child: Icon(Icons.newspaper)),
+                    label: Text("Ads"),
+                  ),
+                  NavigationRailDestination(
+                    icon: Tooltip(message: "Messages", child: Icon(Icons.mail)),
+                    label: Text("Messages"),
+                  ),
+                  NavigationRailDestination(
+                    icon: Tooltip(
+                        message: "Settings", child: Icon(Icons.settings)),
+                    label: Text("Settings"),
+                  ),
+                ],
+              ),
+              const VerticalDivider(thickness: 1, width: 1),
+              screens[currentIndex]
+            ]),
           );
         } else {
           return Scaffold(

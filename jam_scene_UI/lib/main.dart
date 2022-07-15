@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:jam_scene/screens/profile_builder.dart';
-import 'package:jam_scene/screens/profile_page.dart';
-import 'package:jam_scene/screens/search_page.dart';
-import 'package:jam_scene/screens/ads_page.dart';
 import 'firebase_options.dart';
 import 'components/authentication_wrapper.dart';
 
@@ -21,10 +18,7 @@ class App extends StatelessWidget {
 
   final routes = {
     AuthenticationWrapper.routeName: (context) => const AuthenticationWrapper(),
-    ProfileBuilder.routeName: (context) => const ProfileBuilder(),
-    ProfilePage.routeName: (context) => const ProfilePage(),
-    SearchPage.routeName: (context) => const SearchPage(),
-    AdsPage.routeName: (context) => const AdsPage(),
+    ProfileBuilder.routeName: (context) => const ProfileBuilder()
   };
 
   @override
