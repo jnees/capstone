@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/test-server-auth", (req, res) => {
   const token = req.headers.authorization;
   const new_token = token.split(" ");
-  admin.auth().verifyIdToken(new_token[1])
+  admin.auth().verifyIdToken(new_token[1], true)
     .then((decodedToken) => {
       const uid = decodedToken.uid;
       console.log(uid);
