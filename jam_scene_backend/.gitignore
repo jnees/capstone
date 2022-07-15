@@ -5,3 +5,4 @@ npm-debug.log
 .DS_Store
 /*.env
 firebase-key.json
+firebase-key-copy.json
