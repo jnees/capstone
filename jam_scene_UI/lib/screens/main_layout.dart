@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../screens/temp_new_profile_page.dart';
+import '../screens/profile_page.dart';
 import '../screens/search_page.dart';
 import '../screens/ads_page.dart';
 import '../screens/messages_page.dart';
@@ -16,7 +16,7 @@ class MainLayout extends StatefulWidget {
 class _MainLayoutState extends State<MainLayout> {
   int currentIndex = 0;
   final screens = [
-    const TempNewProfilePage(),
+    const ProfilePage(),
     const SearchPage(),
     const AdsPage(),
     const MessagesPage(),
@@ -80,7 +80,7 @@ class _MainLayoutState extends State<MainLayout> {
                 ],
               ),
               const VerticalDivider(thickness: 1, width: 1),
-              screens[currentIndex]
+              Expanded(child: screens[currentIndex]),
             ]),
           );
         } else {
