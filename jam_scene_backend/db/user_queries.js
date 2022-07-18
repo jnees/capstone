@@ -54,11 +54,16 @@ const createUser = (req, res) => {
       VALUES($1, $2);`;
 
   (async () => {
+    // TODO: check username or id does not exist already
+    // if username exists already: return error code
+    // else: insert user
+
     // Insert a user
     const insert_users = await pool
       .query(user_query, user_query_params)
       .then((result) => {
-        return_obj["user"] = result.rows;
+        // for testing & returning user object:
+        // return_obj["user"] = result.rows;
       })
       .catch((err) => {
         console.log(err);
@@ -72,10 +77,10 @@ const createUser = (req, res) => {
       const insert_users_instruments = await pool
         .query(inst_query, inst_query_params)
         .then((result) => {
-          if (return_obj["user"][0]) {
-            return_obj["user"][0]["instruments"] = result.rows;
-          }
-
+          // for testing & returning user object:
+          // if (return_obj["user"][0]) {
+          //   return_obj["user"][0]["instruments"] = result.rows;
+          // }
           // res.json(return_obj);
         })
         .catch((err) => {
