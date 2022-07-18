@@ -6,8 +6,7 @@ DROP TABLE IF EXISTS ads CASCADE;
 
 CREATE TABLE IF NOT EXISTS instruments (
     id SERIAL PRIMARY KEY,
-    name text UNIQUE NOT NULL,
-    icon text
+    name text UNIQUE NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS users (
@@ -204,20 +203,46 @@ INSERT INTO users(
 );
 
 INSERT INTO instruments (
-    name,
-    icon
+    name
 ) VALUES
 (
-    'Bass',
-    'bass_icon.svg'
+    'Lead Singer'
 ),
 (
-    'Lead Singer',
-    'lead_singer_icon.svg'
+    'Background Singer'
 ),
 (
-    'Cowbell',
-    'cowbell_icon.svg'
+    'Drums'
+),
+(
+    'Guitar'
+),
+(
+    'Bass'
+),
+(
+    'Cowbell'
+),
+(
+    'Piano'
+),
+(
+    'Synthesizer'
+),
+(
+    'Violin'
+),
+(
+    'Saxophone'
+),
+(
+    'Bassoon'
+),
+(
+    'Flute'
+),
+(
+    'Other'
 );
 
 INSERT INTO users_instruments (
