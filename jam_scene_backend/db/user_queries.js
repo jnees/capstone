@@ -54,7 +54,7 @@ const createUser = (req, res) => {
       VALUES($1, $2);`;
 
   (async () => {
-    // TODO: check username or id does not exist already
+    // TODO: check id (later username as well?) does not exist already
     // if username exists already: return error code
     // else: insert user
 
@@ -71,8 +71,8 @@ const createUser = (req, res) => {
       });
 
     // Insert a user's instruments
-    for (let instr of instruments) {
-      const inst_query_params = [body.user[0].id, instr.id];
+    for (let instr_id of instruments) {
+      const inst_query_params = [body.user[0].id, instr_id];
 
       const insert_users_instruments = await pool
         .query(inst_query, inst_query_params)
