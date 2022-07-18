@@ -71,8 +71,9 @@ const createUser = (req, res) => {
       });
 
     // Insert a user's instruments
-    for (let instr of instruments) {
-      const inst_query_params = [body.user[0].id, instr.id];
+    for (let instr_id of instruments) {
+      console.log(instr_id);
+      const inst_query_params = [body.user[0].id, instr_id];
 
       const insert_users_instruments = await pool
         .query(inst_query, inst_query_params)
