@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const pool = require("./db/db_pool.js");
-const db = require("./db/user_queries");
+const users = require("./routes/user.js");
 
 // Add req.body to all requests
 app.use(express.json());
@@ -22,11 +22,11 @@ app.get("/test", (req, res) => {
 });
 
 // User Routes:
-app.get("/users", db.searchUsers);
-app.post("/users", db.createUser);
-app.get("/user/:id", db.getUserById);
-app.put("/user/:id", db.updateUser);
-app.delete("/user/:id", db.deleteUser);
+app.get("/users", users.searchUsers);
+app.post("/users", users.createUser);
+app.get("/user/:id", users.getUserById);
+app.put("/user/:id", users.updateUser);
+app.delete("/user/:id", users.deleteUser);
 
 app.get("/", (req, res) => {
   res.send("Hello World!!!");
