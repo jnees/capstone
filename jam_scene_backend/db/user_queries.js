@@ -8,34 +8,35 @@ const searchUsers = (req, res) => {
 const createUser = (req, res) => {
   var return_obj = {};
   const body = req.body;
-  const query_params = [
-    body.id,
-    body.username,
-    body.first_name,
-    body.last_name,
-    body.email,
-    body.city,
-    body.state,
-    body.zipcode,
-    body.join_date,
-    body.description,
-    body.influences,
-    body.recordings,
-    body.profile_photo,
-    body.avail_mon_am,
-    body.avail_mon_pm,
-    body.avail_tue_am,
-    body.avail_tue_pm,
-    body.avail_wed_am,
-    body.avail_wed_pm,
-    body.avail_thu_am,
-    body.avail_thu_pm,
-    body.avail_fri_am,
-    body.avail_fri_pm,
-    body.avail_sat_am,
-    body.avail_sat_pm,
-    body.avail_sun_am,
-    body.avail_sun_pm,
+  // Insert a user query
+  const user_query_params = [
+    body.user[0].id,
+    body.user[0].username,
+    body.user[0].first_name,
+    body.user[0].last_name,
+    body.user[0].email,
+    body.user[0].city,
+    body.user[0].state,
+    body.user[0].zipcode,
+    body.user[0].join_date,
+    body.user[0].description,
+    body.user[0].influences,
+    body.user[0].recordings,
+    body.user[0].profile_photo,
+    body.user[0].avail_mon_am,
+    body.user[0].avail_mon_pm,
+    body.user[0].avail_tue_am,
+    body.user[0].avail_tue_pm,
+    body.user[0].avail_wed_am,
+    body.user[0].avail_wed_pm,
+    body.user[0].avail_thu_am,
+    body.user[0].avail_thu_pm,
+    body.user[0].avail_fri_am,
+    body.user[0].avail_fri_pm,
+    body.user[0].avail_sat_am,
+    body.user[0].avail_sat_pm,
+    body.user[0].avail_sun_am,
+    body.user[0].avail_sun_pm,
   ];
   const user_query = `INSERT INTO users(
       id, username, first_name, last_name, email, city, state, zipcode, 
@@ -47,21 +48,50 @@ const createUser = (req, res) => {
       $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, 
       $24, $25, $26, $27) RETURNING *;`;
 
-  // TODO: Figure out a way to insert a users instruments
-  // const inst_query_params = [body.id, body.instrumentid];
-  // const inst_query = `INSERT INTO users_instruments(userid, instrumentid)
-  // VALUES($1, $2), (??);`;
+  // Insert a user's instruments query
+  const instruments = body.user[0].instruments;
+  const inst_query = `INSERT INTO users_instruments(userid, instrumentid)
+      VALUES($1, $2);`;
 
-  return pool
-    .query(user_query, query_params)
-    .then((result) => {
-      return_obj["user"] = result.rows;
-      res.json(return_obj);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send("An error occurred.");
-    });
+  (async () => {
+    // TODO: check username or id does not exist already
+    // if username exists already: return error code
+    // else: insert user
+
+    // Insert a user
+    const insert_users = await pool
+      .query(user_query, user_query_params)
+      .then((result) => {
+        // for testing & returning user object:
+        // return_obj["user"] = result.rows;
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).send("An error occurred.");
+      });
+
+    // Insert a user's instruments
+    for (let instr of instruments) {
+      const inst_query_params = [body.user[0].id, instr.id];
+
+      const insert_users_instruments = await pool
+        .query(inst_query, inst_query_params)
+        .then((result) => {
+          // for testing & returning user object:
+          // if (return_obj["user"][0]) {
+          //   return_obj["user"][0]["instruments"] = result.rows;
+          // }
+          // res.json(return_obj);
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).send("An error occurred.");
+        });
+    }
+
+    // Return a success code
+    res.status(200).send("...");
+  })();
 };
 
 const getUserById = (req, res) => {
