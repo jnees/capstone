@@ -8,36 +8,35 @@ const searchUsers = (req, res) => {
 const createUser = (req, res) => {
   var return_obj = {};
   const body = req.body;
-  console.log(body);
   // Insert a user query
   const user_query_params = [
-    body.user[0].id,
-    body.user[0].username,
-    body.user[0].first_name,
-    body.user[0].last_name,
-    body.user[0].email,
-    body.user[0].city,
-    body.user[0].state,
-    body.user[0].zipcode,
-    body.user[0].join_date,
-    body.user[0].description,
-    body.user[0].influences,
-    body.user[0].recordings,
-    body.user[0].profile_photo,
-    body.user[0].avail_mon_am,
-    body.user[0].avail_mon_pm,
-    body.user[0].avail_tue_am,
-    body.user[0].avail_tue_pm,
-    body.user[0].avail_wed_am,
-    body.user[0].avail_wed_pm,
-    body.user[0].avail_thu_am,
-    body.user[0].avail_thu_pm,
-    body.user[0].avail_fri_am,
-    body.user[0].avail_fri_pm,
-    body.user[0].avail_sat_am,
-    body.user[0].avail_sat_pm,
-    body.user[0].avail_sun_am,
-    body.user[0].avail_sun_pm,
+    body.uid,
+    body.username,
+    body.first_name,
+    body.last_name,
+    body.email,
+    body.city,
+    body.state,
+    body.zipcode,
+    body.join_date,
+    body.description,
+    body.influences,
+    body.recordings,
+    body.profile_photo,
+    body.avail_mon_am,
+    body.avail_mon_pm,
+    body.avail_tue_am,
+    body.avail_tue_pm,
+    body.avail_wed_am,
+    body.avail_wed_pm,
+    body.avail_thu_am,
+    body.avail_thu_pm,
+    body.avail_fri_am,
+    body.avail_fri_pm,
+    body.avail_sat_am,
+    body.avail_sat_pm,
+    body.avail_sun_am,
+    body.avail_sun_pm,
   ];
   const user_query = `INSERT INTO users(
       id, username, first_name, last_name, email, city, state, zipcode, 
@@ -45,12 +44,12 @@ const createUser = (req, res) => {
       avail_mon_am, avail_mon_pm, avail_tue_am, avail_tue_pm, 
       avail_wed_am, avail_wed_pm, avail_thu_am, avail_thu_pm,
       avail_fri_am, avail_fri_pm, avail_sat_am, avail_sat_pm,
-      avail_sun_am, avail_sun_pm) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9,
+      avail_sun_am, avail_sun_pm) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, to_timestamp($9, 'YYYY-MM-DD HH24: MI: SS'),
       $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, 
       $24, $25, $26, $27) RETURNING *;`;
 
   // Insert a user's instruments query
-  const instruments = body.user[0].instruments;
+  const instruments = body.instruments;
   const inst_query = `INSERT INTO users_instruments(userid, instrumentid)
       VALUES($1, $2);`;
 
@@ -73,7 +72,7 @@ const createUser = (req, res) => {
 
     // Insert a user's instruments
     for (let instr_id of instruments) {
-      const inst_query_params = [body.user[0].id, instr_id];
+      const inst_query_params = [body.uid, instr_id];
 
       const insert_users_instruments = await pool
         .query(inst_query, inst_query_params)
