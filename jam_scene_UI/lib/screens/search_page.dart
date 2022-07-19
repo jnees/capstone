@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:jam_scene/components/instrument_tags.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -220,6 +221,15 @@ class _SearchPageState extends State<SearchPage> {
                                       ]),
                                 ],
                               ),
+                            ),
+                            Expanded(
+                              child: Row(
+                                children: const [
+                                  InstrumentTag(iid: 1),
+                                  InstrumentTag(iid: 2),
+                                  InstrumentTag(iid: 3),
+                                ],
+                              )
                             ),
                             TextFormField(
                               decoration: const InputDecoration(
