@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-const pool = require("./db_pool.js");
+const pool = require("../db/db_pool.js");
 
 const searchUsers = (req, res) => {
   // TODO: Search by location & instrument & more?
