@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../screens/profile_page.dart';
 import '../screens/search_page.dart';
@@ -14,7 +13,7 @@ class MainLayout extends StatefulWidget {
 }
 
 class _MainLayoutState extends State<MainLayout> {
-  int currentIndex = 0;
+  int currentIndex = 1;
   final screens = [
     const ProfilePage(),
     const SearchPage(),
@@ -23,23 +22,9 @@ class _MainLayoutState extends State<MainLayout> {
     const SettingsPage()
   ];
 
-  // Token for solange
-  String token = "loading";
-
-  void getToken() async {
-    // print('getting token');
-    FirebaseAuth.instance.currentUser?.getIdToken().then((token) {
-      // print(token);
-      setState(() {
-        token = token;
-      });
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    getToken();
   }
 
   @override

@@ -6,8 +6,7 @@ DROP TABLE IF EXISTS ads CASCADE;
 
 CREATE TABLE IF NOT EXISTS instruments (
     id SERIAL PRIMARY KEY,
-    name text UNIQUE NOT NULL,
-    icon text
+    name text UNIQUE NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS users (
