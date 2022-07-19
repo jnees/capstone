@@ -8,6 +8,7 @@ const searchUsers = (req, res) => {
 const createUser = (req, res) => {
   var return_obj = {};
   const body = req.body;
+  console.log(body);
   // Insert a user query
   const user_query_params = [
     body.user[0].id,
