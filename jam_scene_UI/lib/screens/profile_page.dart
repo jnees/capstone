@@ -15,7 +15,6 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   late ProfileData profileData;
   List location = [];
-  // String uid = 'r4nD0mSt1ng2';
   String uid = FirebaseAuth.instance.currentUser!.uid;
   bool loading = true;
   bool newUser = false;

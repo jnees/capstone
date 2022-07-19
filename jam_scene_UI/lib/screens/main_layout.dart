@@ -13,7 +13,7 @@ class MainLayout extends StatefulWidget {
 }
 
 class _MainLayoutState extends State<MainLayout> {
-  int currentIndex = 1;
+  int currentIndex = 0;
   final screens = [
     const ProfilePage(),
     const SearchPage(),
