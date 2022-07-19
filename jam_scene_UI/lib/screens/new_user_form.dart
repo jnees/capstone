@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
+import '../models/instrument_lookup.dart';
 import 'dart:convert';
 
 class NewUserForm extends StatefulWidget {
@@ -40,16 +41,27 @@ class _NewUserFormState extends State<NewUserForm> {
   bool sunAmAvail = false;
   bool sunPmAvail = false;
 
-  Map<String, bool> instruments = {
-    'singer': false,
-    'piano': false,
-    'guitar': false,
-    'bass': false,
-    'drums': false,
-    'other': false,
+  Map<int, bool> instruments = {
+    1: false, // lead singer
+    2: false, // background singer
+    3: false, // drums
+    4: false, // Guitar
+    5: false, // Bass
+    6: false, // Cowbell
+    7: false, // Piano
+    8: true, // Synthesizer
+    9: false, // Violin
+    10: false, // Saxophone
+    11: false, // Bassoon
+    12: false, // Flute
+    13: false, // Other
   };
 
+  bool loading = false;
+
   void _sendToDatabase() async {
+    loading = true;
+
     Map formData = {};
     formData['uid'] = FirebaseAuth.instance.currentUser!.uid;
     formData['username'] = _usernameController.text;
@@ -88,17 +100,21 @@ class _NewUserFormState extends State<NewUserForm> {
 
     final token = await FirebaseAuth.instance.currentUser!.getIdToken();
 
+    formData.forEach((key, value) {
+      print('Key = $key : Value = $value');
+    });
+
     var response = await http.post(
-      Uri.parse('https://jam-scene-api.herokuapp.com/api/v1/users'),
+      Uri.parse('https://jam-scene-app.herokuapp.com/users'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': token
+        // 'Authorization': token
       },
       body: json.encode(formData),
     );
-
-    print(response.statusCode);
+    loading = false;
+    debugPrint(response.statusCode.toString());
   }
 
   @override
@@ -261,63 +277,17 @@ class _NewUserFormState extends State<NewUserForm> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: ListView(
-                        children: [
-                          CheckboxListTile(
-                            title: const Text("Singer"),
-                            value: instruments['singer'],
-                            onChanged: (bool? value) {
-                              setState(() {
-                                instruments['singer'] = !instruments['singer']!;
-                              });
-                            },
-                          ),
-                          CheckboxListTile(
-                            title: const Text("Piano"),
-                            value: instruments['piano'],
-                            onChanged: (bool? value) {
-                              setState(() {
-                                instruments['piano'] = !instruments['piano']!;
-                              });
-                            },
-                          ),
-                          CheckboxListTile(
-                            title: const Text("Guitar"),
-                            value: instruments['guitar'],
-                            onChanged: (bool? value) {
-                              setState(() {
-                                instruments['guitar'] = !instruments['guitar']!;
-                              });
-                            },
-                          ),
-                          CheckboxListTile(
-                            title: const Text("Bass"),
-                            value: instruments['bass'],
-                            onChanged: (bool? value) {
-                              setState(() {
-                                instruments['bass'] = !instruments['bass']!;
-                              });
-                            },
-                          ),
-                          CheckboxListTile(
-                            title: const Text("Drums"),
-                            value: instruments['drums'],
-                            onChanged: (bool? value) {
-                              setState(() {
-                                instruments['drums'] = !instruments['drums']!;
-                              });
-                            },
-                          ),
-                          CheckboxListTile(
-                            title: const Text("Other"),
-                            value: instruments['other'],
-                            onChanged: (bool? value) {
-                              setState(() {
-                                instruments['other'] = !instruments['other']!;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
+                          children: List.generate(instruments.length, (index) {
+                        return CheckboxListTile(
+                          title: Text(instrumentLookup[index + 1]!),
+                          value: instruments[index + 1],
+                          onChanged: (bool? value) {
+                            setState(() {
+                              instruments[index + 1] = !instruments[index + 1]!;
+                            });
+                          },
+                        );
+                      })),
                     ),
                   )),
               const Text("When can you jam?"),
@@ -467,16 +437,18 @@ class _NewUserFormState extends State<NewUserForm> {
                   )),
               Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Validate will return true if the form is valid, or false if
-                      // the form is invalid.
-                      if (_formKey.currentState!.validate()) {
-                        _sendToDatabase();
-                      }
-                    },
-                    child: const Text('Submit'),
-                  )),
+                  child: loading
+                      ? CircularProgressIndicator()
+                      : ElevatedButton(
+                          onPressed: () {
+                            // Validate will return true if the form is valid, or false if
+                            // the form is invalid.
+                            if (_formKey.currentState!.validate()) {
+                              _sendToDatabase();
+                            }
+                          },
+                          child: const Text('Submit'),
+                        )),
             ],
           ),
         ));
