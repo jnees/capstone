@@ -44,7 +44,8 @@ const createUser = (req, res) => {
       avail_mon_am, avail_mon_pm, avail_tue_am, avail_tue_pm, 
       avail_wed_am, avail_wed_pm, avail_thu_am, avail_thu_pm,
       avail_fri_am, avail_fri_pm, avail_sat_am, avail_sat_pm,
-      avail_sun_am, avail_sun_pm) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, to_timestamp($9, 'YYYY-MM-DD HH24: MI: SS'),
+      avail_sun_am, avail_sun_pm) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 
+      to_timestamp($9, 'YYYY-MM-DD HH24: MI: SS'),
       $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, 
       $24, $25, $26, $27) RETURNING *;`;
 
@@ -90,7 +91,7 @@ const createUser = (req, res) => {
     }
 
     // Return a success code
-    res.status(200).send("...");
+    res.status(200).send("Successfully Added User");
   })();
 };
 
@@ -168,7 +169,8 @@ const updateUser = (req, res) => {
   ];
   const user_query = `UPDATE users SET username = $2, first_name = $3,
     last_name = $4, email = $5, city = $6, state = $7, zipcode = $8,
-    join_date = $9, description = $10, influences = $11, recordings = $12,
+    join_date = to_timestamp($9, 'YYYY-MM-DD HH24: MI: SS'), 
+    description = $10, influences = $11, recordings = $12,
     profile_photo = $13, avail_mon_am = $14, avail_mon_pm = $15,
     avail_tue_am = $16, avail_tue_pm = $17, avail_wed_am = $18,
     avail_wed_pm = $19, avail_thu_am = $20, avail_thu_pm = $21,
@@ -185,6 +187,7 @@ const updateUser = (req, res) => {
       console.log(err);
       res.status(500).send("An error occurred.");
     });
+  // TODO: need to make this also update users_instruments on an update
 };
 
 const deleteUser = (req, res) => {
