@@ -15,7 +15,6 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   late ProfileData profileData;
   List location = [];
-  // String uid = 'r4nD0mSt1ng2';
   String uid = FirebaseAuth.instance.currentUser!.uid;
   bool loading = true;
   bool newUser = false;
@@ -62,13 +61,13 @@ class _ProfilePageState extends State<ProfilePage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Column(
-                            children: const [
+                            children: [
                               Padding(
-                                padding: EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(8.0),
                                 child: CircleAvatar(
                                   radius: 50,
-                                  backgroundImage: NetworkImage(
-                                      "https://picsum.photos/id/1025/200/200"),
+                                  backgroundImage:
+                                      NetworkImage(profileData.profilePhoto),
                                 ),
                               ),
                             ],
