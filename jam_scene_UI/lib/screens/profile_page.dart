@@ -92,7 +92,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Flexible(child: Text(profileData.description)),
+                          Flexible(
+                              child: Text(profileData.description,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 4)),
                         ],
                       ),
                       Row(
@@ -107,28 +110,37 @@ class _ProfilePageState extends State<ProfilePage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text("Influences",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              Text(profileData.influences),
-                            ],
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Influences",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  profileData.influences,
+                                  maxLines: 4,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text("Recordings",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              Text(profileData.recordings),
-                            ],
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text("Recordings",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                Text(profileData.recordings),
+                              ],
+                            ),
                           ),
                         ],
                       ),
