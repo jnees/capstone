@@ -10,7 +10,9 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   void _logOut() {
-    FirebaseAuth.instance.signOut();
+    if (FirebaseAuth.instance.currentUser != null) {
+      FirebaseAuth.instance.signOut();
+    }
   }
 
   @override
