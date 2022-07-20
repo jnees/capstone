@@ -224,9 +224,8 @@ class _SearchPageState extends State<SearchPage> {
                             ),
                             Expanded(
                               child: Row(
-                                children: const [
+                                children: [
                                   InstrumentTag(iid: 1),
-                                  InstrumentTag(iid: 2),
                                   InstrumentTag(iid: 3),
                                 ],
                               )
