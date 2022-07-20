@@ -26,54 +26,34 @@ class InstrumentTag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String fileName = 'instruments/$iid.svg';
-    final String photoName = 'instruments/$iid.png';
+    // Check that iid is a valid instrument
+    if (iid >= 1 && iid <= 13) {
+      final String fileName = 'instruments/$iid.svg';
 
-    // new idea: use chips
-    return Chip(
+      return Chip(
         avatar: Container(
           padding: const EdgeInsets.all(3.0),
           child: SvgPicture.asset(
             fileName,
-            semanticsLabel: '${instrumentNames[iid]}',
             color: Colors.black,
           ),
         ),
-        label: Text("${instrumentNames[iid]}")
-    );
+        label: Text("${instrumentNames[iid]}"));
+    } else {
+      // if iid is not a valid instrument, 
+      // use the "Other" instrument (iid = 13)
+      const num otherIid = 13;
+      const String fileName = 'instruments/$otherIid.svg';
 
-    // idea: Decorated Box > Row > (Icon & Text of iid)
-
-    // return ConstrainedBox(
-    //   constraints: const BoxConstraints(
-    //     maxHeight: 40,
-    //     minHeight: 40,
-    //     maxWidth: 140,
-    //     minWidth: 100,
-    //   ),
-    //   child: DecoratedBox(
-    //     decoration: BoxDecoration(
-    //       border: Border.all(
-    //         color: Colors.blue,
-    //         width: 1,
-    //       ),
-    //       color: Colors.blue,
-    //       borderRadius: BorderRadius.circular(25),
-    //     ),
-    //     child: Row(
-    //       children: [
-    //         Padding(
-    //           padding: const EdgeInsets.symmetric(vertical: 8.0),
-    //           child: SvgPicture.asset(
-    //             fileName,
-    //             semanticsLabel: '${instrumentNames[iid]}',
-    //             color: Colors.black,
-    //           ),
-    //         ),
-    //         Text('${instrumentNames[iid]}')
-    //       ],
-    //     ),
-    //   ),
-    // );
+      return Chip(
+        avatar: Container(
+          padding: const EdgeInsets.all(3.0),
+          child: SvgPicture.asset(
+            fileName,
+            color: Colors.black,
+          ),
+        ),
+        label: const Text("Other"));
+    }
   }
 }

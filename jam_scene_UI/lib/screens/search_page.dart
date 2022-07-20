@@ -222,19 +222,6 @@ class _SearchPageState extends State<SearchPage> {
                                 ],
                               ),
                             ),
-                            Expanded(
-                              child: Wrap(
-                                spacing: 8.0,
-                                runSpacing: 4.0,
-                                children: [
-                                  InstrumentTag(iid: 1),
-                                  InstrumentTag(iid: 2),
-                                  InstrumentTag(iid: 3),
-                                  InstrumentTag(iid: 4),
-                                  InstrumentTag(iid: 5),
-                                ],
-                              )
-                            ),
                             TextFormField(
                               decoration: const InputDecoration(
                                 labelText: "Near zipcode",
