@@ -442,7 +442,8 @@ class _NewUserFormState extends State<NewUserForm> {
                               _sendToDatabase().then(
                                 (status) {
                                   if (status == 200) {
-                                    Navigator.of(context).pushNamed("/");
+                                    Navigator.of(context)
+                                        .pushReplacementNamed("/");
                                   }
                                 },
                               );
