@@ -31,11 +31,16 @@ class InstrumentTag extends StatelessWidget {
 
     // new idea: use chips
     return Chip(
-        avatar: CircleAvatar(
-            backgroundColor: Colors.white,
-            // ignore: unnecessary_cast
-            foregroundImage: AssetImage(photoName) as ImageProvider),
-        label: Text("${instrumentNames[iid]}"));
+        avatar: Container(
+          padding: const EdgeInsets.all(3.0),
+          child: SvgPicture.asset(
+            fileName,
+            semanticsLabel: '${instrumentNames[iid]}',
+            color: Colors.black,
+          ),
+        ),
+        label: Text("${instrumentNames[iid]}")
+    );
 
     // idea: Decorated Box > Row > (Icon & Text of iid)
 
