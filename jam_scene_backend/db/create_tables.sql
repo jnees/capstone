@@ -41,20 +41,20 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS users_instruments (
     id SERIAL PRIMARY KEY,
-    userID text REFERENCES users(id),
-    instrumentID integer REFERENCES instruments(id)
+    userID text REFERENCES users(id) ON DELETE CASCADE,
+    instrumentID integer REFERENCES instruments(id) ON DELETE CASCADE
 );
 
 CREATE TABLE reviews (
     id SERIAL PRIMARY KEY,
-    for_user text REFERENCES users(id),
-    by_user text REFERENCES users(id),
+    for_user text REFERENCES users(id) ON DELETE CASCADE,
+    by_user text REFERENCES users(id) ON DELETE CASCADE,
     description text
 );
 
 CREATE TABLE IF NOT EXISTS ads (
     id SERIAL PRIMARY KEY,
-    posted_by text REFERENCES users(id),
+    posted_by text REFERENCES users(id) ON DELETE CASCADE,
     title text,
     post_date timestamp,
     description text,
@@ -80,6 +80,6 @@ CREATE TABLE IF NOT EXISTS ads (
 
 CREATE TABLE IF NOT EXISTS ads_instruments (
     id SERIAL PRIMARY KEY,
-    adID integer REFERENCES ads(id),
-    instrumentID integer REFERENCES instruments(id)
+    adID integer REFERENCES ads(id) ON DELETE CASCADE,
+    instrumentID integer REFERENCES instruments(id) ON DELETE CASCADE
 );

@@ -1,35 +1,67 @@
-const express = require("express");
-const app = express();
-const pool = require("./db/db_pool.js");
-const users = require("./routes/user.js");
+/* eslint-disable no-unused-vars */
+function app(database) {
+  const express = require("express");
+  const exp_app = express();
+  const cors = require("cors");
+  const users = require("./routes/user.js");
 
-// Add req.body to all requests
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+  // Add req.body to all requests
+  exp_app.use(express.json());
+  exp_app.use(express.urlencoded({ extended: true }));
+  exp_app.use(cors({ origin: "*" }));
 
-/*eslint-disable no-unused-vars*/
-app.get("/test", (req, res) => {
-  const getTest = "SELECT * FROM testTable;";
-  return pool
-    .query(getTest)
-    .then((result) => {
-      res.json(result.rows);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send("An error occurred trying to query testTable");
-    });
-});
+  // User Routes:
+  exp_app.get("/users", users.searchUsers);
+  exp_app.post("/users", async (req, res) => {
+    users.createUser(database, req)
+      .then((result) => {
+        res.send(result);
+      })
+      .catch((error) => {
+        res.send(error);
+      });
+  });
+  exp_app.get("/user/:id", async (req, res) => {
+    await users.getUserById(database, req)
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((error) => {
+        res.send(error);
+      });
+  });
+  exp_app.put("/user/:id", async (req, res) => {
+    await users.updateUser(database, req)
+      .then((result) => {
+        res.send(result);
+      })
+      .catch((error) => {
+        res.send(error);
+      });
+  });
+  exp_app.delete("/user/:id", async (req, res) => {
+    await users.deleteUser(database, req)
+      .then((result) => {
+        res.send(result);
+      })
+      .catch((error) => {
+        res.send(error);
+      });
+  });
+  exp_app.get("/all_users", async (req, res) => {
+    await users.getAllUsers(database)
+      .then((result) => {
+        res.send(result);
+      })
+      .catch((error) => {
+        res.send(error);
+      });
+  });
 
-// User Routes:
-app.get("/users", users.searchUsers);
-app.post("/users", users.createUser);
-app.get("/user/:id", users.getUserById);
-app.put("/user/:id", users.updateUser);
-app.delete("/user/:id", users.deleteUser);
-
-app.get("/", (req, res) => {
-  res.send("Hello World!!!");
-});
+  exp_app.get("/", (req, res) => {
+    res.send("Hello World!!!");
+  });
+  return exp_app;
+}
 
 module.exports = app;
