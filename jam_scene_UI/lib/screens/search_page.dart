@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import 'package:jam_scene/components/instrument_tags.dart';
+import "dart:convert";
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -115,6 +115,21 @@ class _SearchPageState extends State<SearchPage> {
     setState(() {
       showSearchForm = false;
     });
+
+    Map<String, dynamic> formData = {};
+    formData["zip"] = _zipController.text;
+    formData["instrument"] = instrument;
+    formData["days"] = {
+      "sun": sun,
+      "mon": mon,
+      "tue": tue,
+      "wed": wed,
+      "thu": thu,
+      "fri": fri,
+      "sat": sat
+    };
+
+    debugPrint(json.encoder.convert(formData));
   }
 
   Widget _buildSearchResults() {

@@ -23,7 +23,7 @@ class _NewUserFormState extends State<NewUserForm> {
   final TextEditingController _stateController = TextEditingController();
   final TextEditingController _zipController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _recodingsController = TextEditingController();
+  final TextEditingController _recordingsController = TextEditingController();
   final TextEditingController _influencesController = TextEditingController();
 
   bool monAmAvail = false;
@@ -49,7 +49,7 @@ class _NewUserFormState extends State<NewUserForm> {
     5: false, // Bass
     6: false, // Cowbell
     7: false, // Piano
-    8: true, // Synthesizer
+    8: false, // Synthesizer
     9: false, // Violin
     10: false, // Saxophone
     11: false, // Bassoon
@@ -59,7 +59,7 @@ class _NewUserFormState extends State<NewUserForm> {
 
   bool loading = false;
 
-  void _sendToDatabase() async {
+  Future<int> _sendToDatabase() async {
     loading = true;
 
     Map formData = {};
@@ -73,7 +73,7 @@ class _NewUserFormState extends State<NewUserForm> {
     formData['zip_code'] = _zipController.text;
     formData['join_date'] = DateTime.now().toString();
     formData['description'] = _descriptionController.text;
-    formData['recodings'] = _recodingsController.text;
+    formData['recordings'] = _recordingsController.text;
     formData['influences'] = _influencesController.text;
     formData['avail_mon_am'] = monAmAvail;
     formData['avail_mon_pm'] = monPmAvail;
@@ -98,12 +98,6 @@ class _NewUserFormState extends State<NewUserForm> {
       }
     }
 
-    final token = await FirebaseAuth.instance.currentUser!.getIdToken();
-
-    formData.forEach((key, value) {
-      print('Key = $key : Value = $value');
-    });
-
     var response = await http.post(
       Uri.parse('https://jam-scene-app.herokuapp.com/users'),
       headers: {
@@ -114,7 +108,8 @@ class _NewUserFormState extends State<NewUserForm> {
       body: json.encode(formData),
     );
     loading = false;
-    debugPrint(response.statusCode.toString());
+
+    return response.statusCode;
   }
 
   @override
@@ -260,7 +255,7 @@ class _NewUserFormState extends State<NewUserForm> {
                     }
                     return null;
                   },
-                  controller: _recodingsController,
+                  controller: _recordingsController,
                 ),
               ),
               const Text("What instruments do you play?"),
@@ -444,7 +439,14 @@ class _NewUserFormState extends State<NewUserForm> {
                             // Validate will return true if the form is valid, or false if
                             // the form is invalid.
                             if (_formKey.currentState!.validate()) {
-                              _sendToDatabase();
+                              _sendToDatabase().then(
+                                (status) {
+                                  if (status == 200) {
+                                    Navigator.of(context)
+                                        .pushReplacementNamed("/");
+                                  }
+                                },
+                              );
                             }
                           },
                           child: const Text('Submit'),

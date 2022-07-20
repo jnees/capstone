@@ -1,14 +1,10 @@
 /* eslint-disable no-unused-vars */
-const pool = require("../db/db_pool.js");
-
 const searchUsers = (req, res) => {
   // TODO: Search by location & instrument & more?
 };
 
-const createUser = (req, res) => {
-  var return_obj = {};
+const createUser = async (database, req) => {
   const body = req.body;
-  // Insert a user query
   const user_query_params = [
     body.uid,
     body.username,
@@ -38,104 +34,42 @@ const createUser = (req, res) => {
     body.avail_sun_am,
     body.avail_sun_pm,
   ];
-  const user_query = `INSERT INTO users(
-      id, username, first_name, last_name, email, city, state, zipcode, 
-      join_date, description, influences, recordings, profile_photo,
-      avail_mon_am, avail_mon_pm, avail_tue_am, avail_tue_pm, 
-      avail_wed_am, avail_wed_pm, avail_thu_am, avail_thu_pm,
-      avail_fri_am, avail_fri_pm, avail_sat_am, avail_sat_pm,
-      avail_sun_am, avail_sun_pm) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 
-      to_timestamp($9, 'YYYY-MM-DD HH24: MI: SS'),
-      $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, 
-      $24, $25, $26, $27) RETURNING *;`;
 
-  // Insert a user's instruments query
-  const instruments = body.instruments;
-  const inst_query = `INSERT INTO users_instruments(userid, instrumentid)
-      VALUES($1, $2);`;
+  try {
+    const user_result = await database.addNewUserObj(user_query_params);
+    await database.addNewUserInstRelation(body.uid, body.instruments);
+    return user_result;
+  } catch (error) {
+    return error;
+  }
+};
 
-  (async () => {
-    // TODO: check id (later username as well?) does not exist already
-    // if username exists already: return error code
-    // else: insert user
+const getUserById = async (database, req) => {
+  var return_obj = {};
+  try {
+    const user_obj = await database.getUserObjById(req.params.id);
+    return_obj["user"] = user_obj;
 
-    // Insert a user
-    const insert_users = await pool
-      .query(user_query, user_query_params)
-      .then((result) => {
-        // for testing & returning user object:
-        // return_obj["user"] = result.rows;
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).send("An error occurred.");
-      });
-
-    // Insert a user's instruments
-    for (let instr_id of instruments) {
-      const inst_query_params = [body.uid, instr_id];
-
-      const insert_users_instruments = await pool
-        .query(inst_query, inst_query_params)
-        .then((result) => {
-          // for testing & returning user object:
-          // if (return_obj["user"][0]) {
-          //   return_obj["user"][0]["instruments"] = result.rows;
-          // }
-          // res.json(return_obj);
-        })
-        .catch((err) => {
-          console.log(err);
-          res.status(500).send("An error occurred.");
-        });
+    const inst_array = await database.getInstByUserId(req.params.id);
+    if (return_obj["user"][0]) {
+      return_obj["user"][0]["instruments"] = inst_array;
     }
-
-    // Return a success code
-    res.status(200).send("Successfully Added User");
-  })();
+    return return_obj;
+  } catch (error) {
+    return error;
+  };
 };
 
-const getUserById = (req, res) => {
-  var return_obj = {};
-
-  const { id } = req.params;
-  const query_params = [id];
-
-  const user_query = "SELECT * FROM users WHERE id = $1;";
-
-  const inst_query = `SELECT I.id, I.name FROM 
-  users_instruments UI INNER JOIN instruments I ON UI.instrumentID = I.id 
-  WHERE UI.userID = $1`;
-
-  (async () => {
-    const select_users = await pool
-      .query(user_query, query_params)
-      .then((result) => {
-        return_obj["user"] = result.rows;
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).send("An error occurred.");
-      });
-
-    const select_inst = await pool
-      .query(inst_query, query_params)
-      .then((result) => {
-        if (return_obj["user"][0]) {
-          return_obj["user"][0]["instruments"] = result.rows;
-        }
-
-        res.json(return_obj);
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).send("An error occurred.");
-      });
-  })();
+const getAllUsers = async (database) => {
+  try {
+    const users = await database.getAllUsers();
+    return users;
+  } catch (error) {
+    return error;
+  }
 };
 
-const updateUser = (req, res) => {
-  var return_obj = {};
+const updateUser = async (database, req) => {
   const { id } = req.params;
   const body = req.body;
   const query_params = [
@@ -167,42 +101,34 @@ const updateUser = (req, res) => {
     body.avail_sun_am,
     body.avail_sun_pm,
   ];
-  const user_query = `UPDATE users SET username = $2, first_name = $3,
-    last_name = $4, email = $5, city = $6, state = $7, zipcode = $8,
-    join_date = to_timestamp($9, 'YYYY-MM-DD HH24: MI: SS'), 
-    description = $10, influences = $11, recordings = $12,
-    profile_photo = $13, avail_mon_am = $14, avail_mon_pm = $15,
-    avail_tue_am = $16, avail_tue_pm = $17, avail_wed_am = $18,
-    avail_wed_pm = $19, avail_thu_am = $20, avail_thu_pm = $21,
-    avail_fri_am = $22, avail_fri_pm = $23, avail_sat_am = $24,
-    avail_sat_pm = $25, avail_sun_am = $26, avail_sun_pm = $27
-    WHERE id = $1 RETURNING *;`;
-  return pool
-    .query(user_query, query_params)
-    .then((result) => {
-      return_obj["user"] = result.rows;
-      res.json(return_obj);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send("An error occurred.");
-    });
-  // TODO: need to make this also update users_instruments on an update
+
+  try {
+    const updated_id = await database.updateUserObj(query_params);
+
+    // Get instruments currently recorded for this user and delete them
+    const old_instrument_objs = await database.getInstByUserId(id);
+    const old_instruments = [];
+    for (let inst_obj in old_instrument_objs) {
+      old_instruments.push(old_instrument_objs[inst_obj]["id"]);
+    }
+    await database.deleteUserInstRelation(id, old_instruments);
+
+    // Then add the new instruments for this user
+    await database.addNewUserInstRelation(id, body.instruments);
+    return updated_id;
+  } catch (error) {
+    return error;
+  }
 };
 
-const deleteUser = (req, res) => {
-  const { id } = req.params;
-  const query_params = [id];
-  const user_query = "DELETE FROM users WHERE id = $1;";
-  return pool
-    .query(user_query, query_params)
-    .then((result) => {
-      res.status(200).send("Successfully deleted user");
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send("An error occurred.");
-    });
+const deleteUser = async (database, req) => {
+
+  try {
+    const deleted_id = await database.deleteUserObj(req.params);
+    return deleted_id;
+  } catch (error) {
+    return error;
+  }
 };
 
 module.exports = {
@@ -211,4 +137,5 @@ module.exports = {
   getUserById,
   updateUser,
   deleteUser,
+  getAllUsers
 };

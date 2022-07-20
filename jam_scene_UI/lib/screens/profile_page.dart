@@ -15,7 +15,6 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   late ProfileData profileData;
   List location = [];
-  // String uid = 'r4nD0mSt1ng2';
   String uid = FirebaseAuth.instance.currentUser!.uid;
   bool loading = true;
   bool newUser = false;
@@ -62,13 +61,13 @@ class _ProfilePageState extends State<ProfilePage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Column(
-                            children: const [
+                            children: [
                               Padding(
-                                padding: EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(8.0),
                                 child: CircleAvatar(
                                   radius: 50,
-                                  backgroundImage: NetworkImage(
-                                      "https://picsum.photos/id/1025/200/200"),
+                                  backgroundImage:
+                                      NetworkImage(profileData.profilePhoto),
                                 ),
                               ),
                             ],
@@ -93,7 +92,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Flexible(child: Text(profileData.description)),
+                          Flexible(
+                              child: Text(profileData.description,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 4)),
                         ],
                       ),
                       Row(
@@ -108,28 +110,37 @@ class _ProfilePageState extends State<ProfilePage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text("Influences",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              Text(profileData.influences),
-                            ],
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Influences",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  profileData.influences,
+                                  maxLines: 4,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text("Recordings",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              Text(profileData.recordings),
-                            ],
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text("Recordings",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                Text(profileData.recordings),
+                              ],
+                            ),
                           ),
                         ],
                       ),
