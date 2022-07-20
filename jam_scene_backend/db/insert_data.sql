@@ -117,29 +117,23 @@ INSERT INTO users(
 );
 
 INSERT INTO instruments (
-    name,
-    icon
+    name
 ) VALUES
 (
-    'Bass',
-    'bass_icon.svg'
+    'Bass'
 ),
 (
-    'Lead Singer',
-    'lead_singer_icon.svg'
+    'Lead Singer'
 ),
 (
-    'Cowbell',
-    'cowbell_icon.svg'
+    'Cowbell'
 );
 
 INSERT INTO instruments (
-    name,
-    icon
+    name
 ) VALUES
 (
-    'Drums',
-    'drums_icon.svg'
+    'Drums'
 );
 
 INSERT INTO users_instruments (
@@ -153,10 +147,6 @@ INSERT INTO users_instruments (
 (
     'r4nD0mSt1ng1',
     (SELECT id FROM instruments WHERE name = 'Cowbell')
-),
-(
-    'r4nD0mSt1ng2',
-    (SELECT id FROM instruments WHERE name = 'Lead Singer')
 )
 ;
 
