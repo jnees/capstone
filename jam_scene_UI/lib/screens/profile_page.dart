@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:jam_scene/screens/new_user_form.dart';
 import '../models/profile_data.dart';
+import '../components/instrument_tags.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -79,12 +80,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold)),
                               Text(location.join(", ")),
-                              Row(
-                                children: const [
-                                  Text("🎸"),
-                                  Text("🥁"),
-                                ],
-                              )
                             ],
                           ),
                         ],
