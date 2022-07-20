@@ -26,39 +26,49 @@ class InstrumentTag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // idea: Decorated Box > Row > (Icon & Text of iid)
     final String fileName = 'instruments/$iid.svg';
+    final String photoName = 'instruments/$iid.png';
 
-    return ConstrainedBox(
-      constraints: const BoxConstraints(
-        maxHeight: 40, 
-        minHeight: 40, 
-        maxWidth: 150,
-        minWidth: 100,
-      ),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.blue,
-            width: 1,
-          ),
-          color: Colors.blue,
-          borderRadius: BorderRadius.circular(25),
-        ),
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: SvgPicture.asset(
-                fileName,
-                semanticsLabel: '${instrumentNames[iid]}',
-                color: Colors.black,
-              ),
-            ),
-            Text('${instrumentNames[iid]}')
-          ],
-        ),
-      ),
-    );
+    // new idea: use chips
+    return Chip(
+        avatar: CircleAvatar(
+            backgroundColor: Colors.white,
+            // ignore: unnecessary_cast
+            foregroundImage: AssetImage(photoName) as ImageProvider),
+        label: Text("${instrumentNames[iid]}"));
+
+    // idea: Decorated Box > Row > (Icon & Text of iid)
+
+    // return ConstrainedBox(
+    //   constraints: const BoxConstraints(
+    //     maxHeight: 40,
+    //     minHeight: 40,
+    //     maxWidth: 140,
+    //     minWidth: 100,
+    //   ),
+    //   child: DecoratedBox(
+    //     decoration: BoxDecoration(
+    //       border: Border.all(
+    //         color: Colors.blue,
+    //         width: 1,
+    //       ),
+    //       color: Colors.blue,
+    //       borderRadius: BorderRadius.circular(25),
+    //     ),
+    //     child: Row(
+    //       children: [
+    //         Padding(
+    //           padding: const EdgeInsets.symmetric(vertical: 8.0),
+    //           child: SvgPicture.asset(
+    //             fileName,
+    //             semanticsLabel: '${instrumentNames[iid]}',
+    //             color: Colors.black,
+    //           ),
+    //         ),
+    //         Text('${instrumentNames[iid]}')
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 }
