@@ -1,5 +1,4 @@
 require("dotenv").config();
-// const { query } = require("express");
 const { Pool } = require("pg");
 
 const pool = new Pool({
@@ -178,7 +177,6 @@ const getInstByUserId = async function (userId) {
 };
 
 module.exports = {
-  pool,
   getAllUsers,
   getUserObjById,
   getInstByUserId,

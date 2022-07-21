@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 function app(database) {
   const express = require("express");
   const exp_app = express();
