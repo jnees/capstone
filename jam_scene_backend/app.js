@@ -10,7 +10,7 @@ function app(database) {
   exp_app.use(cors({ origin: "*" }));
 
   // User Routes:
-  exp_app.get("/users", async (req, res) => {
+  exp_app.post("/users/search", async (req, res) => {
     await users.userSearch(database, req)
       .then((result) => {
         res.json(result);
