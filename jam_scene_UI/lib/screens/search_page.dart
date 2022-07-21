@@ -1,5 +1,8 @@
-import "package:flutter/material.dart";
 import "dart:convert";
+import 'package:firebase_auth/firebase_auth.dart';
+import "package:flutter/material.dart";
+import 'package:http/http.dart' as http;
+import '../models/profile_data.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -111,11 +114,8 @@ class _SearchPageState extends State<SearchPage> {
     }
   ];
 
-  void _loadSearchResults() {
-    setState(() {
-      showSearchForm = false;
-    });
-
+  void _loadSearchResults() async {
+    // Get form information for request body
     Map<String, dynamic> formData = {};
     formData["zip"] = _zipController.text;
     formData["instrument"] = instrument;
@@ -130,6 +130,22 @@ class _SearchPageState extends State<SearchPage> {
     };
 
     debugPrint(json.encoder.convert(formData));
+
+    // Send request to server
+    var token = await FirebaseAuth.instance.currentUser?.getIdToken();
+    if (token == null) return;
+    var url = Uri.parse('https://jam-scene-app.herokuapp.com/users');
+    var response = await http.post(url,
+        headers: {'Authorization': token},
+        body: json.encoder.convert(formData));
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      setState(() {
+        results = data["users"];
+      });
+    } else {
+      debugPrint(response.body);
+    }
   }
 
   Widget _buildSearchResults() {
