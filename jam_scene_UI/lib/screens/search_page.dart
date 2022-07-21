@@ -2,7 +2,8 @@ import "dart:convert";
 import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/material.dart";
 import 'package:http/http.dart' as http;
-import '../models/profile_data.dart';
+import 'package:jam_scene/models/instrument_lookup.dart';
+import '../components/instrument_tags.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -24,95 +25,10 @@ class _SearchPageState extends State<SearchPage> {
   bool fri = false;
   bool sat = false;
 
-  String instrument = "Bass";
+  String instrument = "Lead Singer";
   final TextEditingController _zipController = TextEditingController();
 
-  List results = [
-    {
-      "name": "Johnny Jams",
-      "instruments": ["Drums", "Guitar", "Bass"],
-      "location": "New York, NY",
-      "image": "http://placebeard.it/780"
-    },
-    {
-      "name": "Sally Strings",
-      "instruments": ["Drums", "Guitar", "Bass"],
-      "location": "New York, NY",
-      "image": "http://placebeard.it/600"
-    },
-    {
-      "name": "Dave Doodles",
-      "instruments": ["Drums", "Guitar", "Bass"],
-      "location": "New York, NY",
-      "image": "http://placebeard.it/660"
-    },
-    {
-      "name": "Bobby Bongs",
-      "instruments": ["Drums", "Guitar", "Bass"],
-      "location": "New York, NY",
-      "image": "http://placebeard.it/640"
-    },
-    {
-      "name": "Cindy Crayons",
-      "instruments": ["Drums", "Guitar", "Bass"],
-      "location": "New York, NY",
-      "image": "http://placebeard.it/690"
-    },
-    {
-      "name": "Yasmin Yarns",
-      "instruments": ["Drums", "Guitar", "Bass"],
-      "location": "New York, NY",
-      "image": "http://placebeard.it/540"
-    },
-    {
-      "name": "Chud Chords",
-      "instruments": ["Drums", "Guitar", "Bass"],
-      "location": "New York, NY",
-      "image": "http://placebeard.it/680"
-    },
-    {
-      "name": "Fanny Flicks",
-      "instruments": ["Drums", "Guitar", "Bass"],
-      "location": "New York, NY",
-      "image": "http://placebeard.it/620"
-    },
-    {
-      "name": "Nancy Nails",
-      "instruments": ["Drums", "Guitar", "Bass"],
-      "location": "New York, NY",
-      "image": "https://www.placecage.com/200/200"
-    },
-    {
-      "name": "Uriah Cheapens",
-      "instruments": ["Drums", "Guitar", "Bass"],
-      "location": "New York, NY",
-      "image": "http://placebeard.it/720"
-    },
-    {
-      "name": "Annie Oranges",
-      "instruments": ["Drums", "Guitar", "Bass"],
-      "location": "New York, NY",
-      "image": "https://www.placecage.com/200/200"
-    },
-    {
-      "name": "Ella Eggs",
-      "instruments": ["Drums", "Guitar", "Piano"],
-      "location": "New York, NY",
-      "image": "http://placebeard.it/780"
-    },
-    {
-      "name": "Brad Bagels",
-      "instruments": ["Drums", "Guitar"],
-      "location": "New York, NY",
-      "image": "http://placebeard.it/790"
-    },
-    {
-      "name": "Kylie Kickdrum",
-      "instruments": ["Flute"],
-      "location": "New York, NY",
-      "image": "http://placebeard.it/800"
-    }
-  ];
+  List<dynamic> results = [];
 
   void _loadSearchResults() async {
     // Get form information for request body
@@ -129,22 +45,23 @@ class _SearchPageState extends State<SearchPage> {
       "sat": sat
     };
 
-    debugPrint(json.encoder.convert(formData));
+    debugPrint("Sending req with body: ${json.encoder.convert(formData)}");
 
     // Send request to server
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     if (token == null) return;
-    var url = Uri.parse('https://jam-scene-app.herokuapp.com/users');
+    var url = Uri.parse('https://jam-scene-app.herokuapp.com/users/search');
     var response = await http.post(url,
-        headers: {'Authorization': token},
-        body: json.encoder.convert(formData));
+        body: json.encoder.convert(formData),
+        headers: {'content-type': 'application/json'});
     if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
+      var data = response.body;
       setState(() {
-        results = data["users"];
+        results = json.decode(data);
+        showSearchForm = false;
       });
     } else {
-      debugPrint(response.body);
+      debugPrint("Error: ${response.body}");
     }
   }
 
@@ -166,16 +83,25 @@ class _SearchPageState extends State<SearchPage> {
           ],
         ),
         Expanded(
-          child: ListView.builder(
+          child: ListView.separated(
+            separatorBuilder: (context, index) => const Divider(
+              color: Colors.black45,
+              thickness: 2,
+            ),
             itemCount: results.length,
             itemBuilder: (context, index) {
               return ListTile(
                 leading: CircleAvatar(
-                  backgroundImage: NetworkImage(results[index]["image"]),
+                  backgroundImage:
+                      NetworkImage(results[index]["profile_photo"]),
                 ),
-                title: Text(results[index]["name"]),
-                subtitle: Text(results[index]["instruments"].join(", ")),
-                trailing: Text(results[index]["location"]),
+                title: Text(results[index]["username"]),
+                subtitle: Wrap(spacing: 3, runSpacing: -10, children: [
+                  for (var instrument in results[index]["instruments"])
+                    InstrumentTag(iid: instrument['id']),
+                ]),
+                trailing: Text(
+                    results[index]["city"] + ", " + results[index]["state"]),
               );
             },
           ),
@@ -228,27 +154,12 @@ class _SearchPageState extends State<SearchPage> {
                                           });
                                         }
                                       },
-                                      items: const [
-                                        DropdownMenuItem(
-                                          value: "Drums",
-                                          child: Text("Drums"),
-                                        ),
-                                        DropdownMenuItem(
-                                          value: "Guitar",
-                                          child: Text("Guitar"),
-                                        ),
-                                        DropdownMenuItem(
-                                          value: "Bass",
-                                          child: Text("Bass"),
-                                        ),
-                                        DropdownMenuItem(
-                                          value: "Piano",
-                                          child: Text("Piano"),
-                                        ),
-                                        DropdownMenuItem(
-                                          value: "Flute",
-                                          child: Text("Flute"),
-                                        ),
+                                      items: [
+                                        for (var i in instrumentLookup.values)
+                                          DropdownMenuItem(
+                                            value: i,
+                                            child: Text(i),
+                                          ),
                                       ]),
                                 ],
                               ),
