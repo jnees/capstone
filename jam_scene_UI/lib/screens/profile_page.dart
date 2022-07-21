@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:jam_scene/components/instrument_tags.dart';
 import 'package:jam_scene/screens/new_user_form.dart';
 import '../models/profile_data.dart';
-import '../components/instrument_tags.dart';
+// import '../components/instrument_tags.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -82,6 +83,15 @@ class _ProfilePageState extends State<ProfilePage> {
                               Text(location.join(", ")),
                             ],
                           ),
+                        ],
+                      ),
+                      Wrap(
+                        alignment: WrapAlignment.center,
+                        runSpacing: -10,
+                        spacing: 5,
+                        children: [
+                          for (var instrument in profileData.instruments)
+                            InstrumentTag(iid: instrument['id']),
                         ],
                       ),
                       Row(
