@@ -11,6 +11,7 @@ function app(database) {
 
   // User Routes:
   exp_app.post("/users/search", async (req, res) => {
+    console.log(req.body);
     await users.userSearch(database, req)
       .then((result) => {
         res.json(result);
