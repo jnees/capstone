@@ -98,7 +98,9 @@ class _SearchPageState extends State<SearchPage> {
                 title: Text(results[index]["username"]),
                 subtitle: Wrap(spacing: 3, runSpacing: -10, children: [
                   for (var instrument in results[index]["instruments"])
-                    InstrumentTag(iid: instrument['id']),
+                    Chip(
+                        label: Text(instrument['name']),
+                        backgroundColor: Colors.grey[300]),
                 ]),
                 trailing: Text(
                     results[index]["city"] + ", " + results[index]["state"]),
