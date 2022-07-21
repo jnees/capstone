@@ -1,5 +1,4 @@
 require("dotenv").config();
-// const { query } = require("express");
 const { Pool } = require("pg");
 
 const pool = new Pool({
@@ -126,6 +125,43 @@ const getUserObjById = async function (userId) {
   }
 };
 
+const getSearchInfo = async function (query_params1, query_params2, query_params3) {
+  const search_query = `SELECT id, username, city, state, profile_photo FROM users WHERE id IN 
+  (SELECT id FROM users WHERE ((avail_mon_am = $2 AND avail_mon_am = TRUE) OR (avail_mon_pm = $2 AND avail_mon_pm = TRUE) OR
+    (avail_tue_am = $3 AND avail_tue_am = TRUE) OR (avail_tue_pm = $3 AND avail_tue_pm = TRUE) OR (avail_wed_am = $4 AND avail_wed_am = TRUE) OR
+    (avail_wed_pm = $4 AND avail_wed_pm = TRUE) OR (avail_thu_am = $5 AND avail_thu_am = TRUE) OR (avail_thu_pm = $5 AND avail_thu_pm = TRUE) OR
+    (avail_fri_am = $6 AND avail_fri_am = TRUE) OR (avail_fri_pm = $6 AND avail_fri_pm = TRUE) OR (avail_sat_am = $7 AND avail_sat_am = TRUE) OR
+    (avail_sat_pm = $7 AND avail_sat_pm = TRUE) OR (avail_sun_am = $1 AND avail_sun_am = TRUE) OR (avail_sun_pm = $1 AND avail_sun_pm = TRUE)) 
+  AND zipcode = $8) AND id IN (SELECT UI.userID FROM users_instruments UI INNER JOIN instruments I 
+  ON UI.instrumentid = I.id AND I.id = (SELECT id FROM instruments WHERE name = $9));`;
+
+  const search_query_no_avail = `SELECT id, username, city, state, profile_photo FROM users WHERE id IN 
+  (SELECT id FROM users WHERE zipcode = $1) AND id IN (SELECT UI.userID FROM users_instruments UI INNER JOIN instruments I 
+  ON UI.instrumentid = I.id AND I.id = (SELECT id FROM instruments WHERE name = $2));`;
+
+  const search_query_only_inst = `SELECT id, username, city, state, profile_photo FROM users WHERE id IN (SELECT UI.userID FROM users_instruments UI INNER JOIN instruments I 
+  ON UI.instrumentid = I.id AND I.id = (SELECT id FROM instruments WHERE name = $1));`;
+
+  try {
+    let user_results = await pool.query(search_query, query_params1);
+    console.log(user_results.rows);
+    if (user_results.rows.length === 0) {
+      user_results = await pool.query(search_query_no_avail, query_params2);
+      console.log("second");
+      console.log(user_results.rows);
+      if (user_results.rows.length === 0) {
+        user_results = await pool.query(search_query_only_inst, query_params3);
+        console.log("third");
+        console.log(user_results.rows);
+      }
+    }
+    return user_results.rows;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
 const getInstByUserId = async function (userId) {
 
   const inst_query = `SELECT I.id, I.name FROM 
@@ -141,7 +177,6 @@ const getInstByUserId = async function (userId) {
 };
 
 module.exports = {
-  pool,
   getAllUsers,
   getUserObjById,
   getInstByUserId,
@@ -149,5 +184,6 @@ module.exports = {
   deleteUserObj,
   addNewUserInstRelation,
   updateUserObj,
-  deleteUserInstRelation
+  deleteUserInstRelation,
+  getSearchInfo
 };
