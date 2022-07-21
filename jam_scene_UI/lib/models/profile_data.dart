@@ -26,6 +26,7 @@ class ProfileData {
   final bool availSunAm;
   final bool availSunPm;
   final String profilePhoto;
+  final List instruments;
 
   const ProfileData(
       {required this.id,
@@ -54,7 +55,8 @@ class ProfileData {
       required this.availSatPm,
       required this.availSunAm,
       required this.availSunPm,
-      required this.profilePhoto});
+      required this.profilePhoto,
+      required this.instruments});
 
   factory ProfileData.fromJson(Map<String, dynamic> json) {
     return ProfileData(
@@ -85,6 +87,7 @@ class ProfileData {
       availSunAm: json['avail_sun_am'],
       availSunPm: json['avail_sun_pm'],
       profilePhoto: json['profile_photo'],
+      instruments: json['instruments'],
     );
   }
 }
