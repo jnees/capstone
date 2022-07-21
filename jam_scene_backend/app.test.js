@@ -38,7 +38,7 @@ describe("POST /users/search", () => {
   });
 
   test("should respond with 200", async () => {
-    const result = await request(app).get("/users/search");
+    const result = await request(app).post("/users/search");
     expect(result.statusCode).toBe(200);
   });
   test("should call getSearchInfo once", async () => {
