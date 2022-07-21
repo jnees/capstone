@@ -11,9 +11,17 @@ function app(database) {
   exp_app.use(cors({ origin: "*" }));
 
   // User Routes:
-  exp_app.get("/users", users.searchUsers);
+  exp_app.get("/users", async (req, res) => {
+    await users.userSearch(database, req)
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((error) => {
+        res.send(error);
+      });
+  });
   exp_app.post("/users", async (req, res) => {
-    users.createUser(database, req)
+    await users.createUser(database, req)
       .then((result) => {
         res.send(result);
       })

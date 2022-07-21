@@ -1,8 +1,3 @@
-/* eslint-disable no-unused-vars */
-const searchUsers = (req, res) => {
-  // TODO: Search by location & instrument & more?
-};
-
 const createUser = async (database, req) => {
   const body = req.body;
   const user_query_params = [
@@ -131,11 +126,42 @@ const deleteUser = async (database, req) => {
   }
 };
 
+const userSearch = async (database, req) => {
+
+  const body = req.body;
+  const query_params1 = [
+    body.days.sun,
+    body.days.mon,
+    body.days.tue,
+    body.days.wed,
+    body.days.thu,
+    body.days.fri,
+    body.days.sat,
+    body.zip,
+    body.instrument
+  ];
+  const query_params2 = [
+    body.zip,
+    body.instrument
+  ];
+
+  const query_params3 = [
+    body.instrument
+  ];
+  try {
+    const users = await database.getSearchInfo(query_params1, query_params2, query_params3);
+    return users;
+  } catch (error) {
+    return error;
+  }
+
+};
+
 module.exports = {
-  searchUsers,
   createUser,
   getUserById,
   updateUser,
   deleteUser,
-  getAllUsers
+  getAllUsers,
+  userSearch
 };

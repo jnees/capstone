@@ -18,6 +18,7 @@ const addNewUserObj = jest.fn();
 const addNewUserInstRelation = jest.fn();
 const updateUserObj = jest.fn();
 const deleteUserInstRelation = jest.fn();
+const getSearchInfo = jest.fn();
 
 const app = make_app({
   getAllUsers,
@@ -27,7 +28,27 @@ const app = make_app({
   addNewUserObj,
   addNewUserInstRelation,
   updateUserObj,
-  deleteUserInstRelation
+  deleteUserInstRelation,
+  getSearchInfo
+});
+
+describe("GET /users", () => {
+  beforeEach(() => {
+    getSearchInfo.mockReset();
+  });
+
+  test("should respond with 200", async () => {
+    const result = await request(app).get("/users");
+    expect(result.statusCode).toBe(200);
+  });
+  test("should call getSearchInfo once", async () => {
+    await request(app).get("/users").send({
+      "zip": "98101",
+      "instrument": "Bass",
+      "days": { "sun": false, "mon": true, "tue": false, "wed": false, "thu": false, "fri": false, "sat": true }
+    });
+    expect(getSearchInfo.mock.calls.length).toBe(1);
+  });
 });
 
 describe("PUT /user/:id", () => {
