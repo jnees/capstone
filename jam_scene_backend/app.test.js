@@ -32,17 +32,17 @@ const app = make_app({
   getSearchInfo
 });
 
-describe("GET /users", () => {
+describe("POST /users/search", () => {
   beforeEach(() => {
     getSearchInfo.mockReset();
   });
 
   test("should respond with 200", async () => {
-    const result = await request(app).get("/users");
+    const result = await request(app).post("/users/search");
     expect(result.statusCode).toBe(200);
   });
   test("should call getSearchInfo once", async () => {
-    await request(app).get("/users").send({
+    await request(app).post("/users/search").send({
       "zip": "98101",
       "instrument": "Bass",
       "days": { "sun": false, "mon": true, "tue": false, "wed": false, "thu": false, "fri": false, "sat": true }
