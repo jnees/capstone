@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:jam_scene/screens/profile_builder.dart';
+import 'package:jam_scene/styles.dart';
 import 'firebase_options.dart';
 import 'components/authentication_wrapper.dart';
 
@@ -28,7 +29,10 @@ class App extends StatelessWidget {
       title: 'JamScene',
       routes: routes,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          primary: Styles.berryJam,
+          secondary: Styles.salmonJam,
+        )
       ),
     );
   }
