@@ -8,7 +8,8 @@ import '../models/profile_data.dart';
 // import '../components/instrument_tags.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  final String? otherUserId;
+  const ProfilePage({Key? key, this.otherUserId}) : super(key: key);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -30,8 +31,15 @@ class _ProfilePageState extends State<ProfilePage> {
   void _fetchProfileData() async {
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     if (token == null) return;
-    var url = Uri.parse('https://jam-scene-app.herokuapp.com/user/$uid');
-    var response = await http.get(url, headers: {'Authorization': token});
+    var url = 'https://jam-scene-app.herokuapp.com/user/$uid';
+
+    // If we're looking at our own profile, use the user's id, else use the other user's id.
+    if (widget.otherUserId != null && widget.otherUserId != "") {
+      url = 'https://jam-scene-app.herokuapp.com/user/${widget.otherUserId}';
+    }
+
+    var uri = Uri.parse(url);
+    var response = await http.get(uri, headers: {'Authorization': token});
     if (jsonDecode(response.body)['user'].isEmpty) {
       return setState(() {
         loading = false;
@@ -260,6 +268,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ],
                       ),
+                      const SizedBox(height: 1000),
                     ],
                   ),
                 ),

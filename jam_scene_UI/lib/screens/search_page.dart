@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/material.dart";
 import 'package:http/http.dart' as http;
 import 'package:jam_scene/models/instrument_lookup.dart';
-import '../components/instrument_tags.dart';
+import '../screens/profile_page.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -15,8 +15,8 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  // State variables
   final _formkey = GlobalKey<FormState>();
-  bool showSearchForm = true;
   bool sun = false;
   bool mon = false;
   bool tue = false;
@@ -24,12 +24,14 @@ class _SearchPageState extends State<SearchPage> {
   bool thu = false;
   bool fri = false;
   bool sat = false;
-
   String instrument = "Lead Singer";
   final TextEditingController _zipController = TextEditingController();
-
   List<dynamic> results = [];
+  bool showSearchForm = true;
+  String? currUserSelection;
+  bool showingProfile = false;
 
+  // Helper functions
   void _loadSearchResults() async {
     // Get form information for request body
     Map<String, dynamic> formData = {};
@@ -44,8 +46,6 @@ class _SearchPageState extends State<SearchPage> {
       "fri": fri,
       "sat": sat
     };
-
-    debugPrint("Sending req with body: ${json.encoder.convert(formData)}");
 
     // Send request to server
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
@@ -65,49 +65,82 @@ class _SearchPageState extends State<SearchPage> {
     }
   }
 
-  Widget _buildSearchResults() {
+  void _showSelectedProfile(otherUserUid) {
+    // Takes the user to the profile page of the selected user
+    setState(() {
+      showingProfile = true;
+      currUserSelection = otherUserUid;
+    });
+  }
+
+  Widget _buildSearchResults(context) {
+    // Generates list of users to display in search results
     return Column(
       children: [
         Row(
           children: [
+            // Back button functionality changes based on page state.
             IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
-                setState(() {
-                  showSearchForm = true;
-                });
+                // if on profile page, go back to results
+                if (showingProfile) {
+                  setState(() {
+                    showingProfile = false;
+                  });
+                  // if on results page, go back to search form
+                } else {
+                  setState(() {
+                    showSearchForm = true;
+                  });
+                }
               },
             ),
+            showingProfile ? const Text("Search Results") : const Spacer(),
             const Spacer(),
-            Text("${results.length} Search Results..."),
+            !showingProfile
+                ? Text("${results.length} Search Results...")
+                : const Spacer(),
           ],
         ),
-        Expanded(
-          child: ListView.separated(
-            separatorBuilder: (context, index) => const Divider(
-              color: Colors.black45,
-              thickness: 2,
-            ),
-            itemCount: results.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                leading: CircleAvatar(
-                  backgroundImage:
-                      NetworkImage(results[index]["profile_photo"]),
+        showingProfile
+            ? Expanded(
+                child: Row(
+                  children: [
+                    Expanded(child: selectedProfile(currUserSelection)),
+                  ],
                 ),
-                title: Text(results[index]["username"]),
-                subtitle: Wrap(spacing: 3, runSpacing: -10, children: [
-                  for (var instrument in results[index]["instruments"])
-                    Chip(
-                        label: Text(instrument['name']),
-                        backgroundColor: Colors.grey[300]),
-                ]),
-                trailing: Text(
-                    results[index]["city"] + ", " + results[index]["state"]),
-              );
-            },
-          ),
-        ),
+              )
+            : Expanded(
+                child: ListView.separated(
+                  separatorBuilder: (context, index) => const Divider(
+                    color: Colors.black45,
+                    thickness: 2,
+                  ),
+                  itemCount: results.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      onTap: () {
+                        _showSelectedProfile(results[index]['id']);
+                      },
+                      leading: CircleAvatar(
+                        backgroundImage:
+                            NetworkImage(results[index]["profile_photo"]),
+                      ),
+                      title: Text(results[index]["username"]),
+                      subtitle: Wrap(spacing: 3, runSpacing: -10, children: [
+                        for (var instrument in results[index]["instruments"])
+                          Chip(
+                              label: Text(instrument['name']),
+                              backgroundColor: Colors.grey[300]),
+                      ]),
+                      trailing: Text(results[index]["city"] +
+                          ", " +
+                          results[index]["state"]),
+                    );
+                  },
+                ),
+              ),
       ],
     );
   }
@@ -116,7 +149,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Center(
       child: !showSearchForm
-          ? _buildSearchResults()
+          ? _buildSearchResults(context)
           : Form(
               key: _formkey,
               child: Column(
@@ -286,4 +319,12 @@ class _SearchPageState extends State<SearchPage> {
             ),
     );
   }
+}
+
+Widget selectedProfile(selectedUid) {
+  return SingleChildScrollView(
+    child: ProfilePage(
+      otherUserId: selectedUid,
+    ),
+  );
 }
