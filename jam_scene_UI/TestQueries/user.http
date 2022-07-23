@@ -1,19 +1,36 @@
 
-# DELETE https://jam-scene-app.herokuapp.com/user/
+DELETE https://jam-scene-app.herokuapp.com/user/TestUser1
 
 
-POST https://jam-scene-app.herokuapp.com/users/search HTTP/1.1
-content-type: application/json
+# POST https://jam-scene-app.herokuapp.com/users/search HTTP/1.1
+# content-type: application/json
 
-{
-    "zip": "98116",
-    "instrument": "Bass",
-    "days": {"sun": false, 
-            "mon": false, 
-            "tue": false,
-            "wed": false,
-            "thu": false,
-            "fri": false,
-            "sat": false
-            }
-}
+# {
+#     "zip": "98116",
+#     "instrument": "Bass",
+#     "days": {"sun": false, 
+#             "mon": false, 
+#             "tue": false,
+#             "wed": false,
+#             "thu": false,
+#             "fri": false,
+#             "sat": false
+#             }
+# }
+
+
+# POST https://jam-scene-app.herokuapp.com/users/search HTTP/1.1
+# content-type: application/json
+
+# {
+#     "zip": "98116",
+#     "instrument": "Bass",
+#     "days": {"sun": false, 
+#             "mon": false, 
+#             "tue": false,
+#             "wed": false,
+#             "thu": false,
+#             "fri": false,
+#             "sat": false
+#             }
+# }
