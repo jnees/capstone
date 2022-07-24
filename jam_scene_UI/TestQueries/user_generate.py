@@ -1,6 +1,6 @@
+# flake8: noqa
 import datetime
 import time
-from numpy import datetime_as_string
 import requests
 import json
 import random as random
