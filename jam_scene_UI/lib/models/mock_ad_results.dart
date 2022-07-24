@@ -1,7 +1,8 @@
 final mockAds = [
   {
     "id": "1",
-    "description": "Local metal legends, Bro Magnon, are back with a new album and need touring bassist. If you can shred and own a bass that is black and at least a little bit pointier than most basses, then pack your bags cause we're shows up and down the coast (of Lake Sammamish) all summer.",
+    "description":
+        "Local metal legends, Bro Magnon, are back with a new album and need touring bassist. If you can shred and own a bass that is black and at least a little bit pointier than most basses, then pack your bags cause we're shows up and down the coast (of Lake Sammamish) all summer.",
     "city": "Seattle",
     "state": "WA",
     'zipcode': "98116",
@@ -24,7 +25,8 @@ final mockAds = [
   },
   {
     "id": "2",
-    "description": "Is this on... What? Alexa! Stop! I said... My band... Dinosaur Sr. is looking for a geriatric drummer!",
+    "description":
+        "Is this on... What? Alexa! Stop! I said... My band... Dinosaur Sr. is looking for a geriatric drummer!",
     "city": "Seattle",
     "state": "WA",
     'zipcode': "98102",
@@ -45,5 +47,4 @@ final mockAds = [
     'avail_sat_am': true,
     'avail_sat_pm': true,
   },
-
-]
+];
