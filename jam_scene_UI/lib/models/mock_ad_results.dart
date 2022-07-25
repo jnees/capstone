@@ -8,7 +8,7 @@ final mockAds = [
     'zipcode': "98116",
     "post_date": '7/22/22 16:36',
     "user_id": 'MqEuBlsfIug8Ozfjl2o8IkIyPr43',
-    "username": "SteelyDan",
+    "username": "SteelyDad",
     'avail_sun_am': true,
     'avail_sun_pm': true,
     'avail_mon_am': true,

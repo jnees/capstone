@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/mock_ad_results.dart';
 import '../screens/ad_details_page.dart';
 import '../screens/ad_results_page.dart';
+import '../screens/ad_search_page.dart';
 
 class AdsPage extends StatefulWidget {
   const AdsPage({Key? key}) : super(key: key);
@@ -83,41 +84,5 @@ class _AdsPageState extends State<AdsPage> {
           );
       }
     });
-  }
-}
-
-class AdSearch extends StatefulWidget {
-  const AdSearch({Key? key, required this.adsPageStateUpdater})
-      : super(key: key);
-
-  final Function adsPageStateUpdater;
-
-  @override
-  State<AdSearch> createState() => _AdSearchState();
-}
-
-class _AdSearchState extends State<AdSearch> {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () {
-                widget.adsPageStateUpdater({
-                  '_currView': 'Results',
-                  '_selectedAdId': '',
-                });
-              },
-            ),
-            const Text('Back to all ads'),
-          ],
-        ),
-        const Text("Ad Search form goes here"),
-      ],
-    );
   }
 }

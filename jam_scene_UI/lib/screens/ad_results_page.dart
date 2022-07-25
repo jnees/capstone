@@ -18,11 +18,10 @@ class AdResults extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              const Text("Showing x results..."),
+              const Text("Showing most recent ads..."),
               const Spacer(),
-              const Text("Filter Ads"),
               IconButton(
-                icon: const Icon(Icons.filter_list),
+                icon: const Icon(Icons.search),
                 onPressed: () {
                   adsPageStateUpdater({'_currView': "AdSearch"});
                 },
@@ -68,6 +67,22 @@ class AdResults extends StatelessWidget {
                   ],
                 ),
               );
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: ElevatedButton(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text("Create Your Own Ad"),
+              ],
+            ),
+            onPressed: () {
+              adsPageStateUpdater({
+                '_currView': 'AdCreate',
+              });
             },
           ),
         ),
