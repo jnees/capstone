@@ -7,7 +7,8 @@ final mockAds = [
     "state": "WA",
     'zipcode': "98116",
     "post_date": '7/22/22 16:36',
-    "posted_by": 'MqEuBlsfIug8Ozfjl2o8IkIyPr43',
+    "user_id": 'MqEuBlsfIug8Ozfjl2o8IkIyPr43',
+    "username": "SteelyDan",
     'avail_sun_am': true,
     'avail_sun_pm': true,
     'avail_mon_am': true,
@@ -22,6 +23,9 @@ final mockAds = [
     'avail_fri_pm': true,
     'avail_sat_am': true,
     'avail_sat_pm': true,
+    'instrument': 5,
+    'title': "Legendary Metal Bassist Needed",
+    'profile_photo': 'https://xsgames.co/randomusers/avatar.php?g=pixel'
   },
   {
     "id": "2",
@@ -31,7 +35,8 @@ final mockAds = [
     "state": "WA",
     'zipcode': "98102",
     "post_date": '7/21/22 16:36',
-    "posted_by": '51f4696d-e342-4a2d-8bf6-dcbfe687b322',
+    "user_id": '51f4696d-e342-4a2d-8bf6-dcbfe687b322',
+    "username": "GrungeBob",
     'avail_sun_am': true,
     'avail_sun_pm': true,
     'avail_mon_am': true,
@@ -46,5 +51,8 @@ final mockAds = [
     'avail_fri_pm': true,
     'avail_sat_am': true,
     'avail_sat_pm': true,
+    'instrument': 3,
+    'title': "Looking for a Geriatric Drummer",
+    'profile_photo': 'https://xsgames.co/randomusers/avatar.php?g=pixel'
   },
 ];
