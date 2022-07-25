@@ -128,7 +128,7 @@ class _NewUserFormState extends State<NewUserForm> {
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: SizedBox(
-                  height: 20,
+                  height: 10,
                   width: MediaQuery.of(context).size.width * 0.98,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
@@ -142,13 +142,6 @@ class _NewUserFormState extends State<NewUserForm> {
                   )
                 )
               ),
-              // const SizedBox(
-              //   height: 100, 
-              //   width: 200,
-              //   child: DecoratedBox(
-              //     decoration: BoxDecoration(
-              //       color: Colors.black)),),
-              const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
