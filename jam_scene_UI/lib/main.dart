@@ -30,8 +30,8 @@ class App extends StatelessWidget {
       routes: routes,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch().copyWith(
-          primary: Styles.berryJam,
-          secondary: Styles.salmonJam,
+          primary: Styles.charcoal,
+          secondary: Styles.salmonJam
         )
       ),
     );

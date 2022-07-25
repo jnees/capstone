@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
+import 'package:jam_scene/styles.dart';
 import '../models/instrument_lookup.dart';
 import 'dart:convert';
 
@@ -266,7 +267,7 @@ class _NewUserFormState extends State<NewUserForm> {
                     child: DecoratedBox(
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: Colors.black,
+                          color: Styles.salmonJam,
                           width: 2,
                         ),
                         borderRadius: BorderRadius.circular(10),
@@ -293,7 +294,7 @@ class _NewUserFormState extends State<NewUserForm> {
                     child: DecoratedBox(
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: Colors.black,
+                          color: Styles.salmonJam,
                           width: 2,
                         ),
                         borderRadius: BorderRadius.circular(10),
