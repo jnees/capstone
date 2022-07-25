@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart';
 import '../models/mock_ad_results.dart';
-import '../models/instrument_lookup.dart';
+import '../screens/ad_details_page.dart';
+import '../screens/ad_results_page.dart';
 
 class AdsPage extends StatefulWidget {
   const AdsPage({Key? key}) : super(key: key);
@@ -14,7 +15,7 @@ class AdsPage extends StatefulWidget {
 class _AdsPageState extends State<AdsPage> {
   // Using mock data for layout building.
   late List<Map<String, dynamic>> results;
-  String currView = 'Results';
+  late String currView = 'Results';
   String selectedAdId = '';
   bool _isLoading = true;
 
@@ -51,141 +52,34 @@ class _AdsPageState extends State<AdsPage> {
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
-      if (currView == 'Results') {
-        if (_isLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
+      switch (currView) {
+        case 'Results':
+          if (_isLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return AdResults(
+              adsPageStateUpdater: adsPageStateUpdater,
+              results: results,
+            );
+          }
+        case 'AdDetails':
+          if (_isLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return AdDetails(
+              adsPageStateUpdater: adsPageStateUpdater,
+              id: selectedAdId,
+            );
+          }
+        default:
+          return Center(
+            child: Text('Error: Unknown view: $currView'),
           );
-        } else {
-          return AdResults(
-            results: results,
-            adsPageStateUpdater: adsPageStateUpdater,
-          );
-        }
-      } else if (currView == 'AdDetails') {
-        return AdDetails(
-          id: selectedAdId,
-          adsPageStateUpdater: adsPageStateUpdater,
-        );
-      } else {
-        return const Text("Error try again");
       }
     });
-  }
-}
-
-class AdResults extends StatelessWidget {
-  const AdResults(
-      {Key? key, required this.results, required this.adsPageStateUpdater})
-      : super(key: key);
-
-  final List<Map<String, dynamic>> results;
-  final Function adsPageStateUpdater;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const Text("Showing x results..."),
-              const Spacer(),
-              const Text("Filter Ads"),
-              IconButton(
-                icon: const Icon(Icons.filter_list),
-                onPressed: () {
-                  adsPageStateUpdater({'_showSearch': true});
-                },
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          child: ListView.separated(
-            separatorBuilder: (context, index) => const Divider(
-              color: Colors.black45,
-              thickness: 2,
-            ),
-            itemCount: results.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                onTap: () {
-                  adsPageStateUpdater({
-                    '_currView': 'AdDetails',
-                    '_selectedAdId': results[index]['id'],
-                  });
-                },
-                leading: CircleAvatar(
-                  backgroundImage:
-                      NetworkImage(results[index]['profile_photo']),
-                ),
-                title: Text(results[index]['title']),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(results[index]['username']),
-                    Text(instrumentLookup[results[index]['instrument']]!),
-                  ],
-                ),
-
-                /// instruments
-                trailing: Column(
-                  children: [
-                    Text(results[index]["city"] +
-                        ", " +
-                        results[index]["state"]),
-                    Text(results[index]["post_date"]),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class AdDetails extends StatefulWidget {
-  const AdDetails(
-      {Key? key, required this.adsPageStateUpdater, required this.id})
-      : super(key: key);
-
-  final Function adsPageStateUpdater;
-  final String id;
-
-  @override
-  State<AdDetails> createState() => _AdDetailsState();
-}
-
-class _AdDetailsState extends State<AdDetails> {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        //row with back button and title
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  widget.adsPageStateUpdater({
-                    '_currView': 'Results',
-                    '_selectedAdId': '',
-                  });
-                },
-              ),
-            ],
-          ),
-        ),
-        Text("Ad Details page for ${widget.id}"),
-      ],
-    );
   }
 }
