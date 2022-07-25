@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class AdDetails extends StatefulWidget {
   const AdDetails(
-      {Key? key, required this.adsPageStateUpdater, required this.id})
+      {Key? key, required this.adsPageStateUpdater, required this.adDetails})
       : super(key: key);
 
   final Function adsPageStateUpdater;
-  final String id;
+  final Map<String, dynamic> adDetails;
 
   @override
   State<AdDetails> createState() => _AdDetailsState();
@@ -35,7 +35,12 @@ class _AdDetailsState extends State<AdDetails> {
             ],
           ),
         ),
-        Text("Ad Details page for ${widget.id}"),
+        const Text("Ad Details page"),
+        Text(widget.adDetails['title']),
+        ElevatedButton.icon(
+            onPressed: () {},
+            icon: const Icon(Icons.mail),
+            label: const Text("Respond"))
       ],
     );
   }

@@ -4,6 +4,7 @@ import '../models/mock_ad_results.dart';
 import '../screens/ad_details_page.dart';
 import '../screens/ad_results_page.dart';
 import '../screens/ad_search_page.dart';
+import '../screens/ad_create_page.dart';
 
 class AdsPage extends StatefulWidget {
   const AdsPage({Key? key}) : super(key: key);
@@ -73,11 +74,13 @@ class _AdsPageState extends State<AdsPage> {
           } else {
             return AdDetails(
               adsPageStateUpdater: adsPageStateUpdater,
-              id: selectedAdId,
+              adDetails: results.firstWhere((ad) => ad['id'] == selectedAdId),
             );
           }
         case 'AdSearch':
           return AdSearch(adsPageStateUpdater: adsPageStateUpdater);
+        case 'AdCreate':
+          return AdCreate(adsPageStateUpdater: adsPageStateUpdater);
         default:
           return Center(
             child: Text('Error: Unknown view: $currView'),
