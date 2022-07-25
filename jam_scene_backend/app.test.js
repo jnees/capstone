@@ -19,6 +19,8 @@ const addNewUserInstRelation = jest.fn();
 const updateUserObj = jest.fn();
 const deleteUserInstRelation = jest.fn();
 const getSearchInfo = jest.fn();
+const addNewReviewObj = jest.fn();
+const getReviewsByUserId = jest.fn();
 
 const app = make_app({
   getAllUsers,
@@ -29,9 +31,12 @@ const app = make_app({
   addNewUserInstRelation,
   updateUserObj,
   deleteUserInstRelation,
-  getSearchInfo
+  getSearchInfo,
+  addNewReviewObj,
+  getReviewsByUserId
 });
 
+/* ~~~~~~~~~~ User Route Tests ~~~~~~~~~~ */
 describe("POST /users/search", () => {
   beforeEach(() => {
     getSearchInfo.mockReset();
@@ -149,3 +154,34 @@ describe("GET /", () => {
   });
 });
 
+/* ~~~~~~~~~~ Review Route Tests ~~~~~~~~~~ */
+
+describe("POST /reviews", () => {
+  beforeEach(() => {
+    addNewReviewObj.mockReset();
+  });
+
+  test("should respond with 200", async () => {
+    const result = await request(app).post("/reviews");
+    expect(result.statusCode).toBe(200);
+  });
+  test("should call addNewReviewObj once", async () => {
+    await request(app).post("/reviews");
+    expect(addNewReviewObj.mock.calls.length).toBe(1);
+  });
+});
+
+describe("GET /reviews/:id", () => {
+  beforeEach(() => {
+    getReviewsByUserId.mockReset();
+  });
+
+  test("should respond with 200", async () => {
+    const result = await request(app).get("/reviews/1");
+    expect(result.statusCode).toBe(200);
+  });
+  test("should call getReviewsByUserId once", async () => {
+    await request(app).get("/reviews/1");
+    expect(getReviewsByUserId.mock.calls.length).toBe(1);
+  });
+});

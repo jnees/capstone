@@ -9,6 +9,7 @@ const pool = new Pool({
   }
 });
 
+/* ~~~~~~~~~~~ User Queries ~~~~~~~~~~~ */
 const deleteUserObj = async function (req_params) {
   const { id } = req_params;
   const delete_query = "DELETE FROM users WHERE id = $1;";
@@ -176,6 +177,33 @@ const getInstByUserId = async function (userId) {
   }
 };
 
+/* ~~~~~~~~~~~ Review Queries ~~~~~~~~~~~ */
+
+const addNewReviewObj = async function (create_review_params) {
+  const review_query = `INSERT INTO reviews(
+    for_user, by_user, time_posted, description) VALUES ($1, $2, to_timestamp($3, 'YYYY-MM-DD HH24: MI: SS'), $4) RETURNING id;`;
+
+  try {
+    const review_id = await pool.query(review_query, create_review_params);
+    return review_id.rows[0];
+  } catch (error) {
+    return error;
+  }
+};
+
+const getReviewsByUserId = async function (user_id) {
+  const get_reviews_query = `SELECT * FROM 
+  (SELECT reviews.by_user, reviews.for_user, users.username, users.profile_photo, reviews.description, reviews.time_posted 
+    FROM users INNER JOIN reviews ON users.id = reviews.by_user) AS S WHERE S.for_user = $1 ORDER BY time_posted DESC;`;
+
+  try {
+    const review_array = await pool.query(get_reviews_query, user_id);
+    return review_array.rows;
+  } catch (error) {
+    return error;
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUserObjById,
@@ -185,5 +213,7 @@ module.exports = {
   addNewUserInstRelation,
   updateUserObj,
   deleteUserInstRelation,
-  getSearchInfo
+  getSearchInfo,
+  addNewReviewObj,
+  getReviewsByUserId
 };

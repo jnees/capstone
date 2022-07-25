@@ -3,6 +3,7 @@ function app(database) {
   const exp_app = express();
   const cors = require("cors");
   const users = require("./routes/user.js");
+  const reviews = require("./routes/reviews.js");
 
   // Add req.body to all requests
   exp_app.use(express.json());
@@ -11,7 +12,6 @@ function app(database) {
 
   // User Routes:
   exp_app.post("/users/search", async (req, res) => {
-    console.log(req.body);
     await users.userSearch(database, req)
       .then((result) => {
         res.json(result);
@@ -66,9 +66,32 @@ function app(database) {
       });
   });
 
+  // Review Routes:
+  exp_app.post("/reviews", async (req, res) => {
+    await reviews.createReview(database, req)
+      .then((result) => {
+        res.send(result);
+      })
+      .catch((error) => {
+        res.send(error);
+      });
+  });
+
+  exp_app.get("/reviews/:id", async (req, res) => {
+    await reviews.getReviewsForUser(database, req)
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((error) => {
+        res.send(error);
+      });
+  });
+
+  // Generic Home route
   exp_app.get("/", (req, res) => {
     res.send("Hello World!!!");
   });
+
   return exp_app;
 }
 
