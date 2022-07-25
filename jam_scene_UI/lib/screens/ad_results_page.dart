@@ -24,7 +24,7 @@ class AdResults extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.filter_list),
                 onPressed: () {
-                  adsPageStateUpdater({'_showSearch': true});
+                  adsPageStateUpdater({'_currView': "AdSearch"});
                 },
               ),
             ],
