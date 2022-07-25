@@ -29,9 +29,14 @@ class App extends StatelessWidget {
       title: 'JamScene',
       routes: routes,
       theme: ThemeData(
+        fontFamily: 'Josefin_Sans',
+        textTheme: const TextTheme(
+          headline1: Styles.headline1,
+          headline6: Styles.headline6,
+        ),
         colorScheme: ColorScheme.fromSwatch().copyWith(
           primary: Styles.charcoal,
-          secondary: Styles.salmonJam
+          secondary: Styles.salmonJam,
         )
       ),
     );

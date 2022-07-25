@@ -120,7 +120,34 @@ class _NewUserFormState extends State<NewUserForm> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const Text("Get ready to rock! Tell us about yourself."),
+              const SizedBox(height: 20),
+              const Text(
+                "Get ready to rock! Tell us about yourself.",
+                style: Styles.titleMedium,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: SizedBox(
+                  height: 20,
+                  width: MediaQuery.of(context).size.width * 0.98,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Styles.salmonJam,
+                      // border: Border.all(
+                      //   color: Styles.salmonJam,
+                      //   width: 2,
+                      //   ),
+                      // borderRadius: BorderRadius.circular(10),
+                    ),
+                  )
+                )
+              ),
+              // const SizedBox(
+              //   height: 100, 
+              //   width: 200,
+              //   child: DecoratedBox(
+              //     decoration: BoxDecoration(
+              //       color: Colors.black)),),
               const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.all(8.0),
