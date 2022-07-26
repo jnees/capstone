@@ -27,6 +27,9 @@ const addNewAdObj = jest.fn();
 const addNewAdInstRelation = jest.fn();
 const getAllAdObjs = jest.fn();
 const deleteAdObj = jest.fn();
+const updateAdObj = jest.fn();
+const deleteAdInstRelations = jest.fn();
+const getAdSearchInfo = jest.fn();
 
 const app = make_app({
   getAllUsers,
@@ -45,7 +48,10 @@ const app = make_app({
   addNewAdObj,
   addNewAdInstRelation,
   getAllAdObjs,
-  deleteAdObj
+  deleteAdObj,
+  updateAdObj,
+  deleteAdInstRelations,
+  getAdSearchInfo
 });
 
 /* ~~~~~~~~~~ User Route Tests ~~~~~~~~~~ */
@@ -264,6 +270,26 @@ describe("GET /ads", () => {
   });
 });
 
+describe("PUT /ad/:id", () => {
+  beforeEach(() => {
+    updateAdObj.mockReset();
+    deleteAdInstRelations.mockReset();
+  });
+
+  test("should respond with 200", async () => {
+    const result = await request(app).put("/ad/1");
+    expect(result.statusCode).toBe(200);
+  });
+  test("should call updateAdObj once", async () => {
+    await request(app).put("/ad/1");
+    expect(updateAdObj.mock.calls.length).toBe(1);
+  });
+  test("should call deleteAdInstRelations once", async () => {
+    await request(app).put("/ad/1");
+    expect(deleteAdInstRelations.mock.calls.length).toBe(1);
+  });
+});
+
 describe("DELETE /ad/:id", () => {
   beforeEach(() => {
     deleteAdObj.mockReset();
@@ -278,3 +304,24 @@ describe("DELETE /ad/:id", () => {
     expect(deleteAdObj.mock.calls.length).toBe(1);
   });
 });
+
+describe("POST /ads/search", () => {
+  beforeEach(() => {
+    getAdSearchInfo.mockReset();
+  });
+
+  test("should respond with 200", async () => {
+    const result = await request(app).post("/ads/search");
+    expect(result.statusCode).toBe(200);
+  });
+  test("should call getAdSearchInfo once", async () => {
+    await request(app).post("/ads/search").send({
+      "city": "Corvallis",
+      "state": "OR",
+      "instrument": "Bass",
+      "days": { "sun": false, "mon": true, "tue": false, "wed": false, "thu": false, "fri": false, "sat": true }
+    });
+    expect(getAdSearchInfo.mock.calls.length).toBe(1);
+  });
+});
+

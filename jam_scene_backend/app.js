@@ -130,8 +130,28 @@ function app(database) {
       });
   });
 
+  exp_app.put("/ad/:id", async (req, res) => {
+    await ads.updateAd(database, req)
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((error) => {
+        res.send(error);
+      });
+  });
+
   exp_app.delete("/ad/:id", async (req, res) => {
     await ads.deleteAd(database, req)
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((error) => {
+        res.send(error);
+      });
+  });
+
+  exp_app.post("/ads/search", async (req, res) => {
+    await ads.searchAds(database, req)
       .then((result) => {
         res.json(result);
       })

@@ -71,7 +71,6 @@ const deleteUserInstRelation = async function (userId, instruments) {
   const delete_inst_query = `DELETE FROM users_instruments
       WHERE userid = $1 AND instrumentid = $2;`;
 
-  // const deleted_ids = [];
   for (let instr_id of instruments) {
     const inst_query_params = [userId, instr_id];
 
@@ -272,6 +271,18 @@ const addNewAdInstRelation = async function (adId, instruments) {
   return added_ids;
 };
 
+const deleteAdInstRelations = async function (adId) {
+  const adId_param = [adId];
+  const inst_delete = "DELETE FROM ads_instruments WHERE adId = $1";
+
+  try {
+    await pool.query(inst_delete, adId_param);
+    return adId;
+  } catch (error) {
+    return error;
+  }
+};
+
 const getAllAdObjs = async function () {
   const get_all_query = "SELECT * FROM ads ORDER BY post_date DESC;";
 
@@ -296,12 +307,77 @@ const getInstByAdId = async function (adId_param) {
   }
 };
 
+const updateAdObj = async function (update_param) {
+  const update_query = `UPDATE ads SET
+    city = $2, state = $3, zipcode = $4, title = $5, description = $6,
+    avail_mon_am = $7, avail_mon_pm = $8, avail_tue_am = $9, avail_tue_pm = $10, 
+    avail_wed_am = $11, avail_wed_pm = $12, avail_thu_am = $13, avail_thu_pm = $14,
+    avail_fri_am = $15, avail_fri_pm = $16, avail_sat_am = $17, avail_sat_pm = $18,
+    avail_sun_am = $19, avail_sun_pm = $20 WHERE id = $1 RETURNING id;`;
+
+  try {
+    const updated_id = await pool.query(update_query, update_param);
+    return updated_id;
+  } catch (error) {
+    return error;
+  }
+};
+
 const deleteAdObj = async function (adId) {
   const delete_query = "DELETE FROM ads WHERE id = $1;";
   try {
     await pool.query(delete_query, [adId]);
     return adId;
   } catch (error) {
+    return error;
+  }
+};
+
+const getAdSearchInfo = async function (query_params1, query_params2, query_params3, query_params4) {
+
+  const search_query = `SELECT profile_photo, username, A.city, A.state, post_date FROM users U INNER JOIN ads A 
+    ON U.id = A.posted_by WHERE A.city = $8 AND A.state = $9 AND (
+    (A.avail_mon_am = $2 AND A.avail_mon_am = TRUE) OR (A.avail_mon_pm = $2 AND A.avail_mon_pm = TRUE) OR
+    (A.avail_tue_am = $3 AND A.avail_tue_am = TRUE) OR (A.avail_tue_pm = $3 AND A.avail_tue_pm = TRUE) OR (A.avail_wed_am = $4 AND A.avail_wed_am = TRUE) OR
+    (A.avail_wed_pm = $4 AND A.avail_wed_pm = TRUE) OR (A.avail_thu_am = $5 AND A.avail_thu_am = TRUE) OR (A.avail_thu_pm = $5 AND A.avail_thu_pm = TRUE) OR
+    (A.avail_fri_am = $6 AND A.avail_fri_am = TRUE) OR (A.avail_fri_pm = $6 AND A.avail_fri_pm = TRUE) OR (A.avail_sat_am = $7 AND A.avail_sat_am = TRUE) OR
+    (A.avail_sat_pm = $7 AND A.avail_sat_pm = TRUE) OR (A.avail_sun_am = $1 AND A.avail_sun_am = TRUE) OR (A.avail_sun_pm = $1 AND A.avail_sun_pm = TRUE)
+  ) AND A.id IN (SELECT AI.adID FROM ads_instruments AI INNER JOIN instruments I 
+    ON AI.instrumentid = I.id AND I.id = (SELECT id FROM instruments WHERE name = $10))`;
+
+  const search_query_no_avail = `SELECT profile_photo, username, A.city, A.state, post_date FROM users U INNER JOIN ads A 
+  ON U.id = A.posted_by WHERE A.city = $1 AND A.state = $2 AND A.id IN (SELECT AI.adID FROM ads_instruments AI INNER JOIN instruments I 
+  ON AI.instrumentid = I.id AND I.id = (SELECT id FROM instruments WHERE name = $3))`;
+
+  const search_query_no_city = `SELECT profile_photo, username, A.city, A.state, post_date FROM users U INNER JOIN ads A 
+  ON U.id = A.posted_by WHERE A.state = $1 AND A.id IN (SELECT AI.adID FROM ads_instruments AI INNER JOIN instruments I 
+  ON AI.instrumentid = I.id AND I.id = (SELECT id FROM instruments WHERE name = $2))`;
+
+  const search_query_only_inst = `SELECT profile_photo, username, A.city, A.state, post_date FROM users U INNER JOIN ads A 
+  ON U.id = A.posted_by WHERE A.id IN (SELECT AI.adID FROM ads_instruments AI INNER JOIN instruments I 
+  ON AI.instrumentid = I.id AND I.id = (SELECT id FROM instruments WHERE name = $1))`;
+
+  try {
+    let user_results = await pool.query(search_query, query_params1);
+    console.log(user_results.rows);
+    if (user_results.rows.length === 0) {
+      user_results = await pool.query(search_query_no_avail, query_params2);
+      console.log("second");
+      console.log(user_results.rows);
+      if (user_results.rows.length === 0) {
+        user_results = await pool.query(search_query_no_city, query_params3);
+        console.log("third");
+        console.log(user_results.rows);
+        if (user_results.rows.length === 0) {
+          user_results = await pool.query(search_query_only_inst, query_params4);
+          console.log("fourth");
+          console.log(user_results.rows);
+        }
+      }
+    }
+    return user_results.rows;
+  } catch (error) {
+    console.log(error);
     return error;
   }
 };
@@ -324,5 +400,8 @@ module.exports = {
   addNewAdInstRelation,
   getAllAdObjs,
   getInstByAdId,
-  deleteAdObj
+  deleteAdObj,
+  deleteAdInstRelations,
+  updateAdObj,
+  getAdSearchInfo
 };
