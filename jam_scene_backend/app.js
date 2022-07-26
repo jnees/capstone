@@ -4,6 +4,7 @@ function app(database) {
   const cors = require("cors");
   const users = require("./routes/user.js");
   const reviews = require("./routes/reviews.js");
+  const ads = require("./routes/ads.js");
 
   // Add req.body to all requests
   exp_app.use(express.json());
@@ -79,6 +80,58 @@ function app(database) {
 
   exp_app.get("/reviews/:id", async (req, res) => {
     await reviews.getReviewsForUser(database, req)
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((error) => {
+        res.send(error);
+      });
+  });
+
+  exp_app.put("/review/:id", async (req, res) => {
+    await reviews.updateReview(database, req)
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((error) => {
+        res.send(error);
+      });
+  });
+
+  exp_app.delete("/review/:id", async (req, res) => {
+    await reviews.deleteReview(database, req)
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((error) => {
+        res.send(error);
+      });
+  });
+
+  // Ads Routes: 
+
+  exp_app.post("/ads", async (req, res) => {
+    await ads.createAd(database, req)
+      .then((result) => {
+        res.send(result);
+      })
+      .catch((error) => {
+        res.send(error);
+      });
+  });
+
+  exp_app.get("/ads", async (req, res) => {
+    await ads.getAds(database)
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((error) => {
+        res.send(error);
+      });
+  });
+
+  exp_app.delete("/ad/:id", async (req, res) => {
+    await ads.deleteAd(database, req)
       .then((result) => {
         res.json(result);
       })

@@ -21,6 +21,12 @@ const deleteUserInstRelation = jest.fn();
 const getSearchInfo = jest.fn();
 const addNewReviewObj = jest.fn();
 const getReviewsByUserId = jest.fn();
+const updateReviewObj = jest.fn();
+const deleteReviewObj = jest.fn();
+const addNewAdObj = jest.fn();
+const addNewAdInstRelation = jest.fn();
+const getAllAdObjs = jest.fn();
+const deleteAdObj = jest.fn();
 
 const app = make_app({
   getAllUsers,
@@ -33,7 +39,13 @@ const app = make_app({
   deleteUserInstRelation,
   getSearchInfo,
   addNewReviewObj,
-  getReviewsByUserId
+  getReviewsByUserId,
+  updateReviewObj,
+  deleteReviewObj,
+  addNewAdObj,
+  addNewAdInstRelation,
+  getAllAdObjs,
+  deleteAdObj
 });
 
 /* ~~~~~~~~~~ User Route Tests ~~~~~~~~~~ */
@@ -183,5 +195,86 @@ describe("GET /reviews/:id", () => {
   test("should call getReviewsByUserId once", async () => {
     await request(app).get("/reviews/1");
     expect(getReviewsByUserId.mock.calls.length).toBe(1);
+  });
+});
+
+describe("PUT /review/:id", () => {
+  beforeEach(() => {
+    updateReviewObj.mockReset();
+  });
+
+  test("should respond with 200", async () => {
+    const result = await request(app).put("/review/1");
+    expect(result.statusCode).toBe(200);
+  });
+  test("should call updateReviewObj once", async () => {
+    await request(app).put("/review/1");
+    expect(updateReviewObj.mock.calls.length).toBe(1);
+  });
+});
+
+describe("DELETE /review/:id", () => {
+  beforeEach(() => {
+    deleteReviewObj.mockReset();
+  });
+
+  test("should respond with 200", async () => {
+    const result = await request(app).delete("/review/1");
+    expect(result.statusCode).toBe(200);
+  });
+  test("should call deleteReviewObj once", async () => {
+    await request(app).delete("/review/1");
+    expect(deleteReviewObj.mock.calls.length).toBe(1);
+  });
+});
+
+/* ~~~~~~~~~~ Ad Route Tests ~~~~~~~~~~ */
+
+describe("POST /ads", () => {
+  beforeEach(() => {
+    addNewAdObj.mockReset();
+    addNewAdInstRelation.mockReset();
+  });
+
+  test("should respond with 200", async () => {
+    const result = await request(app).post("/ads");
+    expect(result.statusCode).toBe(200);
+  });
+  test("should call addNewAdObj once", async () => {
+    await request(app).post("/ads");
+    expect(addNewAdObj.mock.calls.length).toBe(1);
+  });
+  // Not testing a call to addNewAdInstRelation because this function requires a return
+  // value from addNewAdObj to work effectively. This functionality has been checked with
+  // manual testing, and should be checked when major changes are made that might affect Ad-Instrument relationships
+});
+
+describe("GET /ads", () => {
+  beforeEach(() => {
+    getAllAdObjs.mockReset();
+  });
+
+  test("should respond with 200", async () => {
+    const result = await request(app).get("/ads");
+    expect(result.statusCode).toBe(200);
+  });
+  test("should call getAllAdObjs once", async () => {
+    await request(app).get("/ads");
+    expect(getAllAdObjs.mock.calls.length).toBe(1);
+  });
+});
+
+describe("DELETE /ad/:id", () => {
+  beforeEach(() => {
+    deleteAdObj.mockReset();
+  });
+
+  test("should respond with 200", async () => {
+    const result = await request(app).delete("/ad/1");
+    expect(result.statusCode).toBe(200);
+  });
+  test("should call deleteAdObj once", async () => {
+    await request(app).delete("/ad/1");
+    expect(deleteAdObj.mock.calls.length).toBe(1);
   });
 });

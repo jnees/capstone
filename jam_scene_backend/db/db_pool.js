@@ -62,7 +62,7 @@ const addNewUserInstRelation = async function (userId, instruments) {
   }
   // Check length of added_ids against original instruments list to see if any were missed
   if (added_ids.length !== instruments.length) {
-    console.log("not all ids added");
+    console.log("Not all ids added");
   }
   return 1;
 };
@@ -185,7 +185,7 @@ const addNewReviewObj = async function (create_review_params) {
 
   try {
     const review_id = await pool.query(review_query, create_review_params);
-    return review_id.rows[0];
+    return review_id.rows;
   } catch (error) {
     return error;
   }
@@ -204,6 +204,108 @@ const getReviewsByUserId = async function (user_id) {
   }
 };
 
+const updateReviewObj = async function (query_params) {
+  const update_review_query = `UPDATE reviews SET description = $2
+  WHERE id = $1 RETURNING id;`;
+
+  try {
+    const update_review_id = await pool.query(update_review_query, query_params);
+    return update_review_id.rows;
+  } catch (error) {
+    return error;
+  }
+};
+
+const deleteReviewObj = async function (review_id) {
+  const delete_review_query = "DELETE FROM reviews WHERE id = $1;";
+
+  try {
+    await pool.query(delete_review_query, [review_id]);
+    return review_id;
+  } catch (error) {
+    return error;
+  }
+};
+
+/* ~~~~~~~~~~~ Ad Queries ~~~~~~~~~~~ */
+
+const addNewAdObj = async function (create_ad_params) {
+  const ad_query = `INSERT INTO ads(
+    posted_by, city, state, zipcode, post_date, title, description,
+    avail_mon_am, avail_mon_pm, avail_tue_am, avail_tue_pm, 
+    avail_wed_am, avail_wed_pm, avail_thu_am, avail_thu_pm,
+    avail_fri_am, avail_fri_pm, avail_sat_am, avail_sat_pm,
+    avail_sun_am, avail_sun_pm) VALUES ($1, $2, $3, $4, to_timestamp($5, 'YYYY-MM-DD HH24: MI: SS'), $6, $7, $8, 
+    $9,
+    $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21) RETURNING id;`;
+
+  try {
+    const ad_id = await pool.query(ad_query, create_ad_params);
+    return ad_id.rows[0];
+  } catch (error) {
+    return error;
+  }
+};
+
+const addNewAdInstRelation = async function (adId, instruments) {
+  const inst_query = `INSERT INTO ads_instruments(adid, instrumentid)
+      VALUES($1, $2) RETURNING instrumentid;`;
+
+  const added_ids = [];
+  for (let instr_id of instruments) {
+    const inst_query_params = [adId, instr_id];
+
+    await pool
+      .query(inst_query, inst_query_params)
+      .then((result) => {
+        added_ids.push(result);
+      })
+      .catch((err) => {
+        console.log(err);
+        return err;
+      });
+  }
+  // Check length of added_ids against original instruments list to see if any were missed
+  if (added_ids.length !== instruments.length) {
+    console.log("Not all ids added");
+  }
+  return added_ids;
+};
+
+const getAllAdObjs = async function () {
+  const get_all_query = "SELECT * FROM ads ORDER BY post_date DESC;";
+
+  try {
+    const all_ads = await pool.query(get_all_query);
+    return all_ads.rows;
+  } catch (error) {
+    return error;
+  }
+};
+
+const getInstByAdId = async function (adId_param) {
+
+  const inst_query = `SELECT I.id, I.name FROM ads_instruments AI INNER JOIN instruments I 
+  ON AI.instrumentID = I.id WHERE AI.adID = $1;`;
+
+  try {
+    const inst_array = await pool.query(inst_query, adId_param);
+    return inst_array.rows;
+  } catch (error) {
+    return error;
+  }
+};
+
+const deleteAdObj = async function (adId) {
+  const delete_query = "DELETE FROM ads WHERE id = $1;";
+  try {
+    await pool.query(delete_query, [adId]);
+    return adId;
+  } catch (error) {
+    return error;
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUserObjById,
@@ -215,5 +317,12 @@ module.exports = {
   deleteUserInstRelation,
   getSearchInfo,
   addNewReviewObj,
-  getReviewsByUserId
+  getReviewsByUserId,
+  updateReviewObj,
+  deleteReviewObj,
+  addNewAdObj,
+  addNewAdInstRelation,
+  getAllAdObjs,
+  getInstByAdId,
+  deleteAdObj
 };

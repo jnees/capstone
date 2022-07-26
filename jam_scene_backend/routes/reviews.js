@@ -26,7 +26,34 @@ const getReviewsForUser = async (database, req) => {
   }
 };
 
+const updateReview = async (database, req) => {
+  const body = req.body;
+  const query_params = [
+    req.params.id,
+    body.description
+  ];
+
+  try {
+    const updated_review_id = await database.updateReviewObj(query_params);
+    return updated_review_id;
+  } catch (error) {
+    return error;
+  }
+};
+
+const deleteReview = async (database, req) => {
+  const review_id = req.params.id;
+  try {
+    const deleted_id = await database.deleteReviewObj(review_id);
+    return deleted_id;
+  } catch (error) {
+    return error;
+  }
+};
+
 module.exports = {
   createReview,
-  getReviewsForUser
+  getReviewsForUser,
+  updateReview,
+  deleteReview
 };

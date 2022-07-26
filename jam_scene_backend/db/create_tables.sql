@@ -62,7 +62,6 @@ CREATE TABLE IF NOT EXISTS ads (
     city text,
     state text,
     zipcode text,
-    radius integer,
     avail_mon_am boolean, 
     avail_mon_pm boolean, 
     avail_tue_am boolean, 
