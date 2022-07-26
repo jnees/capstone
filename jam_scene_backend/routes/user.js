@@ -42,12 +42,15 @@ const createUser = async (database, req) => {
 const getUserById = async (database, req) => {
   var return_obj = {};
   try {
-    const user_obj = await database.getUserObjById(req.params.id);
+    const user_obj = await database.getUserObjById([req.params.id]);
     return_obj["user"] = user_obj;
 
-    const inst_array = await database.getInstByUserId(req.params.id);
+    const inst_array = await database.getInstByUserId([req.params.id]);
+    const review_array = await database.getReviewsByUserId([req.params.id]);
+
     if (return_obj["user"][0]) {
       return_obj["user"][0]["instruments"] = inst_array;
+      return_obj["user"][0]["reviews"] = review_array;
     }
     return return_obj;
   } catch (error) {

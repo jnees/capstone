@@ -49,6 +49,7 @@ CREATE TABLE reviews (
     id SERIAL PRIMARY KEY,
     for_user text REFERENCES users(id) ON DELETE CASCADE,
     by_user text REFERENCES users(id) ON DELETE CASCADE,
+    time_posted timestamp,
     description text
 );
 
@@ -61,7 +62,6 @@ CREATE TABLE IF NOT EXISTS ads (
     city text,
     state text,
     zipcode text,
-    radius integer,
     avail_mon_am boolean, 
     avail_mon_pm boolean, 
     avail_tue_am boolean, 
