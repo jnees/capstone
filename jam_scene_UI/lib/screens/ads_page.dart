@@ -5,6 +5,7 @@ import '../screens/ad_details_page.dart';
 import '../screens/ad_results_page.dart';
 import '../screens/ad_search_page.dart';
 import '../screens/ad_create_page.dart';
+import '../screens/ad_profile_wrapper.dart';
 
 class AdsPage extends StatefulWidget {
   const AdsPage({Key? key}) : super(key: key);
@@ -19,6 +20,7 @@ class _AdsPageState extends State<AdsPage> {
   late List<Map<String, dynamic>> results;
   late String currView = 'Results';
   String selectedAdId = '';
+  String _selectedUserId = '';
   bool _isLoading = true;
 
   @override
@@ -46,6 +48,9 @@ class _AdsPageState extends State<AdsPage> {
       }
       if (stateChanges.containsKey('_selectedAdId')) {
         selectedAdId = stateChanges['_selectedAdId'];
+      }
+      if (stateChanges.containsKey('_selectedUserId')) {
+        _selectedUserId = stateChanges['_selectedUserId'];
       }
     });
   }
@@ -81,6 +86,10 @@ class _AdsPageState extends State<AdsPage> {
           return AdSearch(adsPageStateUpdater: adsPageStateUpdater);
         case 'AdCreate':
           return AdCreate(adsPageStateUpdater: adsPageStateUpdater);
+        case 'Profile':
+          return AdProfileWrapper(
+              adsPageStateUpdater: adsPageStateUpdater,
+              selectedUserId: _selectedUserId);
         default:
           return Center(
             child: Text('Error: Unknown view: $currView'),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../models/instrument_lookup.dart';
 
 class AdDetails extends StatefulWidget {
   const AdDetails(
@@ -15,33 +16,60 @@ class AdDetails extends StatefulWidget {
 class _AdDetailsState extends State<AdDetails> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        //row with back button and title
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  widget.adsPageStateUpdater({
-                    '_currView': 'Results',
-                    '_selectedAdId': '',
-                  });
-                },
-              ),
-            ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          //row with back button and title
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () {
+                    widget.adsPageStateUpdater({
+                      '_currView': 'Results',
+                      '_selectedAdId': '',
+                    });
+                  },
+                ),
+              ],
+            ),
           ),
-        ),
-        const Text("Ad Details page"),
-        Text(widget.adDetails['title']),
-        ElevatedButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.mail),
-            label: const Text("Respond"))
-      ],
+          GestureDetector(
+            onTap: () => {
+              widget.adsPageStateUpdater({
+                '_currView': 'Profile',
+                '_selectedUserId': widget.adDetails['user_id'],
+              })
+            },
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(widget.adDetails['profile_photo']),
+              radius: MediaQuery.of(context).size.height * .1,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(widget.adDetails['title'],
+                style: const TextStyle(fontWeight: FontWeight.bold)),
+          ),
+          Text("Posted by: ${widget.adDetails['username']}"),
+          Text(
+              "Looking for ${instrumentLookup[widget.adDetails['instrument']]}"),
+          Text(widget.adDetails['city'] + ', ' + widget.adDetails['state']),
+          Text(widget.adDetails['post_date']),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Text("${widget.adDetails['description']}"),
+          ),
+
+          ElevatedButton.icon(
+              onPressed: () {},
+              icon: const Icon(Icons.mail),
+              label: const Text("Respond")),
+        ],
+      ),
     );
   }
 }
