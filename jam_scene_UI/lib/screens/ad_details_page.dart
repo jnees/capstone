@@ -37,9 +37,17 @@ class _AdDetailsState extends State<AdDetails> {
               ],
             ),
           ),
-          CircleAvatar(
-            backgroundImage: NetworkImage(widget.adDetails['profile_photo']),
-            radius: MediaQuery.of(context).size.height * .1,
+          GestureDetector(
+            onTap: () => {
+              widget.adsPageStateUpdater({
+                '_currView': 'Profile',
+                '_selectedUserId': widget.adDetails['user_id'],
+              })
+            },
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(widget.adDetails['profile_photo']),
+              radius: MediaQuery.of(context).size.height * .1,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
