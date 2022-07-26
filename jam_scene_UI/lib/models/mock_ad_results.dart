@@ -52,7 +52,7 @@ final mockAds = [
     'avail_sat_am': true,
     'avail_sat_pm': true,
     'instrument': 3,
-    'title': "Looking for a Geriatric Drummer",
+    'title': "Dinosaur Sr. is looking for a Geriatric Drummer",
     'profile_photo': 'https://xsgames.co/randomusers/avatar.php?g=pixel'
   },
 ];
