@@ -30,7 +30,7 @@ final mockAds = [
   {
     "id": "2",
     "description":
-        "We're putting together a concept band. It is like Alvin and the Chipmunks, only its going to be squirrels. We're going to replace all of the lyrics where they say 'Girls' with 'Squirrels'. We're trying to license a movie called California Squirrels, but we need Katy Perry to be on board so the act has to be tight before we pitch it. Need a drummer who can also sing really high.",
+        "We're putting together a concept band. It is like Alvin and the Chipmunks, only its going to be squirrels. We're going to replace all of the lyrics where they say 'Girls' with 'Squirrels'. We're trying to license a movie called California Squirrels, but we need Katy Perry to be on board so the act has to be tight before we pitch it. Have you seen her on the Voice? She's mean, dude! Need a drummer who can also sing really high.",
     "city": "Seattle",
     "state": "WA",
     'zipcode': "98126",
