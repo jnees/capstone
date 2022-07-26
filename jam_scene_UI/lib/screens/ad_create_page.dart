@@ -23,6 +23,7 @@ class _AdCreateState extends State<AdCreate> {
   String instrument = "Lead Singer";
   final TextEditingController _zipController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
 
   _loadSearchResults() {}
 
@@ -99,6 +100,27 @@ class _AdCreateState extends State<AdCreate> {
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "Please enter a zipcode";
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  maxLength: 90,
+                  minLines: 1,
+                  maxLines: 2,
+                  decoration: const InputDecoration(
+                    labelText: "Title",
+                    border: OutlineInputBorder(),
+                  ),
+                  controller: _titleController,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Please add a title to your ad.";
+                    } else if (value.length > 90) {
+                      return "Limit 90 characters.";
                     }
                     return null;
                   },
