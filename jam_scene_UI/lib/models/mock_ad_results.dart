@@ -7,7 +7,7 @@ final mockAds = [
     "state": "WA",
     'zipcode': "98106",
     "post_date": '7/22/22 16:36',
-    "user_id": 'bee84a4b-e6ac-42d5-a20f-ee703cd60bfa',
+    "user_id": 'bee84a4b-e6ac-42d5-a20f-ee703cd60bfa', // => posted_by
     "username": "ticklishswan525",
     'avail_sun_am': true,
     'avail_sun_pm': true,
@@ -23,7 +23,7 @@ final mockAds = [
     'avail_fri_pm': true,
     'avail_sat_am': true,
     'avail_sat_pm': true,
-    'instrument': 5,
+    'instruments': 5,
     'title': "Legendary Metal Bassist Needed",
     'profile_photo': 'https://randomuser.me/api/portraits/men/81.jpg'
   },
