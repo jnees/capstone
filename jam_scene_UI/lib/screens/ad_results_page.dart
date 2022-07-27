@@ -38,7 +38,7 @@ class AdResults extends StatelessWidget {
         Expanded(
           child: RefreshIndicator(
             onRefresh: () async {
-              await refreshAds();
+              await refreshAds(false);
             },
             child: ListView.separated(
               separatorBuilder: (context, index) => const Divider(

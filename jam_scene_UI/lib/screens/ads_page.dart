@@ -29,13 +29,14 @@ class _AdsPageState extends State<AdsPage> {
   @override
   void initState() {
     super.initState();
-    _getAds();
+    _getAds(true);
   }
 
-  void _getAds() async {
-    setState(() {
-      _isLoading = true;
-    });
+  void _getAds(bool showLoading) async {
+    if (!mounted) {
+      return;
+    }
+    showLoading ? setState(() => _isLoading = true) : null;
 
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     if (token == null) return;
@@ -44,12 +45,18 @@ class _AdsPageState extends State<AdsPage> {
         await http.get(url, headers: {'content-type': 'application/json'});
 
     if (response.statusCode == 200) {
+      if (!mounted) {
+        return;
+      }
       setState(() {
         _isLoading = false;
         results = json.decode(response.body);
         currView = 'Results';
       });
     } else {
+      if (!mounted) {
+        return;
+      }
       setState(() {
         _isLoading = false;
         _dbError = true;
