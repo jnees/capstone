@@ -1,5 +1,8 @@
+import "dart:convert";
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import '../models/instrument_lookup.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AdCreate extends StatefulWidget {
   const AdCreate({Key? key, required this.adsPageStateUpdater})
@@ -24,8 +27,47 @@ class _AdCreateState extends State<AdCreate> {
   final TextEditingController _zipController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _stateController = TextEditingController();
 
-  _loadSearchResults() {}
+  _loadSearchResults() async {
+    Map<String, dynamic> formData = {};
+    formData['posted_by'] = FirebaseAuth.instance.currentUser!.uid;
+    formData['city'] = _cityController.text;
+    formData['state'] = _stateController.text;
+    formData['zip_code'] = _zipController.text;
+    formData['title'] = _titleController.text;
+    formData['description'] = _descriptionController.text;
+    formData['avail_mon_am'] = mon;
+    formData['avail_mon_pm'] = mon;
+    formData['avail_tue_am'] = tue;
+    formData['avail_tue_pm'] = tue;
+    formData['avail_wed_am'] = wed;
+    formData['avail_wed_pm'] = wed;
+    formData['avail_thu_am'] = thu;
+    formData['avail_thu_pm'] = thu;
+    formData['avail_fri_am'] = fri;
+    formData['avail_fri_pm'] = fri;
+    formData['avail_sat_am'] = sat;
+    formData['avail_sat_pm'] = sat;
+    formData['post_date'] = DateTime.now().toString();
+    formData['instruments'] = [
+      instrumentLookup.keys.firstWhere((k) => instrumentLookup[k] == instrument,
+          orElse: () => -1)
+    ];
+
+    var token = await FirebaseAuth.instance.currentUser?.getIdToken();
+    if (token == null) return;
+    var url = Uri.parse('https://jam-scene-app.herokuapp.com/ads');
+    var response = await http.post(url,
+        headers: {'content-type': 'application/json'},
+        body: json.encode(formData));
+    if (response.statusCode == 200) {
+      widget.adsPageStateUpdater({'_currView': 'Results'});
+    } else {
+      debugPrint("Error: ${response.body}");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,11 +104,12 @@ class _AdCreateState extends State<AdCreate> {
                   ],
                 ),
               ),
+              const SectionHeader(text: "Instrument"),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
-                    const Text("Looking for..."),
+                    const Text("I'm looking for..."),
                     const Spacer(),
                     DropdownButton(
                         value: instrument,
@@ -78,13 +121,48 @@ class _AdCreateState extends State<AdCreate> {
                           }
                         },
                         items: [
-                          for (var i in instrumentLookup.values)
+                          for (MapEntry e in instrumentLookup.entries)
                             DropdownMenuItem(
-                              value: i,
-                              child: Text(i),
+                              value: e.value,
+                              child: Text(e.value),
                             ),
                         ]),
                   ],
+                ),
+              ),
+              const SectionHeader(text: "Near Location"),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: "City",
+                    border: OutlineInputBorder(),
+                  ),
+                  controller: _cityController,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Please enter a city";
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: "State Abbrev.",
+                    border: OutlineInputBorder(),
+                  ),
+                  controller: _stateController,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Please enter a state abbreviation";
+                    } else if (value.length != 2) {
+                      return "Please enter a valid abbreviation, like 'CA' or 'WA'.";
+                    }
+                    return null;
+                  },
                 ),
               ),
               Padding(
@@ -105,6 +183,7 @@ class _AdCreateState extends State<AdCreate> {
                   },
                 ),
               ),
+              const SectionHeader(text: "Ad Details"),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
@@ -147,10 +226,7 @@ class _AdCreateState extends State<AdCreate> {
                   },
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text("Must be available..."),
-              ),
+              const SectionHeader(text: "Required Availability"),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Wrap(
@@ -254,5 +330,25 @@ class _AdCreateState extends State<AdCreate> {
         ),
       )
     ]);
+  }
+}
+
+class SectionHeader extends StatelessWidget {
+  const SectionHeader({Key? key, required this.text}) : super(key: key);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          text,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
   }
 }
