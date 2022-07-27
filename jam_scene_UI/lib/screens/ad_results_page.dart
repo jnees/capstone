@@ -6,7 +6,7 @@ class AdResults extends StatelessWidget {
       {Key? key, required this.results, required this.adsPageStateUpdater})
       : super(key: key);
 
-  final List<Map<String, dynamic>> results;
+  final List<dynamic> results;
   final Function adsPageStateUpdater;
 
   @override
@@ -53,7 +53,8 @@ class AdResults extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(results[index]['username']),
-                    Text(instrumentLookup[results[index]['instrument']]!),
+                    Text(instrumentLookup[results[index]['instruments'][0]
+                        ['id']]!),
                   ],
                 ),
 

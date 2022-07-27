@@ -1,5 +1,7 @@
+import "dart:convert";
 import 'package:flutter/material.dart';
-import '../models/mock_ad_results.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
 import '../screens/ad_details_page.dart';
 import '../screens/ad_results_page.dart';
 import '../screens/ad_search_page.dart';
@@ -17,11 +19,12 @@ class AdsPage extends StatefulWidget {
 
 class _AdsPageState extends State<AdsPage> {
   // Using mock data for layout building.
-  late List<Map<String, dynamic>> results;
+  late List<dynamic> results = [];
   late String currView = 'Results';
-  String selectedAdId = '';
+  int selectedAdId = -1;
   String _selectedUserId = '';
   bool _isLoading = true;
+  bool _dbError = false;
 
   @override
   void initState() {
@@ -34,11 +37,24 @@ class _AdsPageState extends State<AdsPage> {
       _isLoading = true;
     });
 
-    setState(() {
-      _isLoading = false;
-      results = mockAds;
-      currView = 'Results';
-    });
+    var token = await FirebaseAuth.instance.currentUser?.getIdToken();
+    if (token == null) return;
+    var url = Uri.parse('https://jam-scene-app.herokuapp.com/ads');
+    var response =
+        await http.get(url, headers: {'content-type': 'application/json'});
+
+    if (response.statusCode == 200) {
+      setState(() {
+        _isLoading = false;
+        results = json.decode(response.body);
+        currView = 'Results';
+      });
+    } else {
+      setState(() {
+        _isLoading = false;
+        _dbError = true;
+      });
+    }
   }
 
   void adsPageStateUpdater(Map<String, dynamic> stateChanges) {
@@ -58,50 +74,53 @@ class _AdsPageState extends State<AdsPage> {
   // Main View Handler for the Ads Tab.
   @override
   Widget build(BuildContext context) {
-    return Builder(builder: (context) {
-      switch (currView) {
-        case 'Results':
-          if (_isLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
-            return AdResults(
-              adsPageStateUpdater: adsPageStateUpdater,
-              results: results,
-            );
-          }
-        case 'AdDetails':
-          if (_isLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
-            return AdDetails(
-              adsPageStateUpdater: adsPageStateUpdater,
-              adDetails: results.firstWhere((ad) => ad['id'] == selectedAdId),
-            );
-          }
-        case 'AdSearch':
-          return AdSearch(adsPageStateUpdater: adsPageStateUpdater);
-        case 'AdCreate':
-          return AdCreate(adsPageStateUpdater: adsPageStateUpdater);
-        case 'Profile':
-          return AdProfileWrapper(
-              adsPageStateUpdater: adsPageStateUpdater,
-              selectedUserId: _selectedUserId);
-        case 'Respond':
-          return Center(
-            child: AdRespond(
-                adsPageStateUpdater: adsPageStateUpdater,
-                adDetails:
-                    results.firstWhere((ad) => ad['id'] == selectedAdId)),
-          );
-        default:
-          return Center(
-            child: Text('Error: Unknown view: $currView'),
-          );
-      }
-    });
+    return _dbError
+        ? const Center(child: Text("Db error, try again."))
+        : Builder(builder: (context) {
+            switch (currView) {
+              case 'Results':
+                if (_isLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else {
+                  return AdResults(
+                    adsPageStateUpdater: adsPageStateUpdater,
+                    results: results,
+                  );
+                }
+              case 'AdDetails':
+                if (_isLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else {
+                  return AdDetails(
+                    adsPageStateUpdater: adsPageStateUpdater,
+                    adDetails:
+                        results.firstWhere((ad) => ad['id'] == selectedAdId),
+                  );
+                }
+              case 'AdSearch':
+                return AdSearch(adsPageStateUpdater: adsPageStateUpdater);
+              case 'AdCreate':
+                return AdCreate(adsPageStateUpdater: adsPageStateUpdater);
+              case 'Profile':
+                return AdProfileWrapper(
+                    adsPageStateUpdater: adsPageStateUpdater,
+                    selectedUserId: _selectedUserId);
+              case 'Respond':
+                return Center(
+                  child: AdRespond(
+                      adsPageStateUpdater: adsPageStateUpdater,
+                      adDetails:
+                          results.firstWhere((ad) => ad['id'] == selectedAdId)),
+                );
+              default:
+                return Center(
+                  child: Text('Error: Unknown view: $currView'),
+                );
+            }
+          });
   }
 }

@@ -30,7 +30,7 @@ class _AdDetailsState extends State<AdDetails> {
                   onPressed: () {
                     widget.adsPageStateUpdater({
                       '_currView': 'Results',
-                      '_selectedAdId': '',
+                      '_selectedAdId': -1,
                     });
                   },
                 ),
@@ -41,7 +41,7 @@ class _AdDetailsState extends State<AdDetails> {
             onTap: () => {
               widget.adsPageStateUpdater({
                 '_currView': 'Profile',
-                '_selectedUserId': widget.adDetails['user_id'],
+                '_selectedUserId': widget.adDetails['posted_by'],
               })
             },
             child: CircleAvatar(
@@ -56,7 +56,7 @@ class _AdDetailsState extends State<AdDetails> {
           ),
           Text("Posted by: ${widget.adDetails['username']}"),
           Text(
-              "Looking for ${instrumentLookup[widget.adDetails['instrument']]}"),
+              "Looking for ${instrumentLookup[widget.adDetails['instruments'][0]['id']]}"),
           Text(widget.adDetails['city'] + ', ' + widget.adDetails['state']),
           Text(widget.adDetails['post_date']),
           Padding(
