@@ -23,7 +23,7 @@ class _AdSearchState extends State<AdSearch> {
               onPressed: () {
                 widget.adsPageStateUpdater({
                   '_currView': 'Results',
-                  '_selectedAdId': '',
+                  '_selectedAdId': -1,
                 });
               },
             ),

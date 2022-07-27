@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import '../models/instrument_lookup.dart';
+import '../components/formatted_date.dart';
 
 class AdResults extends StatelessWidget {
   const AdResults(
-      {Key? key, required this.results, required this.adsPageStateUpdater})
+      {Key? key,
+      required this.results,
+      required this.adsPageStateUpdater,
+      required this.refreshAds})
       : super(key: key);
 
-  final List<Map<String, dynamic>> results;
+  final List<dynamic> results;
   final Function adsPageStateUpdater;
+  final Function refreshAds;
 
   @override
   Widget build(BuildContext context) {
@@ -23,51 +28,59 @@ class AdResults extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.search),
                 onPressed: () {
-                  adsPageStateUpdater({'_currView': "AdSearch"});
+                  adsPageStateUpdater(
+                      {'_currView': "AdSearch", '_selectedAdId': -1});
                 },
               ),
             ],
           ),
         ),
         Expanded(
-          child: ListView.separated(
-            separatorBuilder: (context, index) => const Divider(
-              color: Colors.black45,
-              thickness: 2,
-            ),
-            itemCount: results.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                onTap: () {
-                  adsPageStateUpdater({
-                    '_currView': 'AdDetails',
-                    '_selectedAdId': results[index]['id'],
-                  });
-                },
-                leading: CircleAvatar(
-                  backgroundImage:
-                      NetworkImage(results[index]['profile_photo']),
-                ),
-                title: Text(results[index]['title']),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(results[index]['username']),
-                    Text(instrumentLookup[results[index]['instrument']]!),
-                  ],
-                ),
-
-                /// instruments
-                trailing: Column(
-                  children: [
-                    Text(results[index]["city"] +
-                        ", " +
-                        results[index]["state"]),
-                    Text(results[index]["post_date"]),
-                  ],
-                ),
-              );
+          child: RefreshIndicator(
+            onRefresh: () async {
+              await refreshAds(false);
             },
+            child: ListView.separated(
+              separatorBuilder: (context, index) => const Divider(
+                color: Colors.black45,
+                thickness: 2,
+              ),
+              itemCount: results.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  onTap: () {
+                    adsPageStateUpdater({
+                      '_currView': 'AdDetails',
+                      '_selectedAdId': results[index]['id'],
+                    });
+                  },
+                  leading: CircleAvatar(
+                    backgroundImage:
+                        NetworkImage(results[index]['profile_photo']),
+                  ),
+                  title: Text(results[index]['title']),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(results[index]['username']),
+                      Text(instrumentLookup[results[index]['instruments'][0]
+                          ['id']]!),
+                    ],
+                  ),
+
+                  /// instruments
+                  trailing: Column(
+                    children: [
+                      Text(results[index]["city"] +
+                          ", " +
+                          results[index]["state"]),
+                      FormattedDateFromString(
+                          date: results[index]["post_date"]),
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
         ),
         Padding(

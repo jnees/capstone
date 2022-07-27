@@ -37,7 +37,7 @@ class _AdCreateState extends State<AdCreate> {
           onPressed: () {
             widget.adsPageStateUpdater({
               '_currView': 'Results',
-              '_selectedAdId': '',
+              '_selectedAdId': -1,
             });
           },
         ),
