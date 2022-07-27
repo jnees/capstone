@@ -65,7 +65,9 @@ class _AdDetailsState extends State<AdDetails> {
           ),
 
           ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                widget.adsPageStateUpdater({'_currView': 'Respond'});
+              },
               icon: const Icon(Icons.mail),
               label: const Text("Respond")),
         ],

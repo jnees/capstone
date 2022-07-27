@@ -130,10 +130,10 @@ class _AdCreateState extends State<AdCreate> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   maxLength: 500,
-                  minLines: 4,
+                  minLines: 2,
                   maxLines: 10,
                   decoration: const InputDecoration(
-                    labelText: "What are you looking for?",
+                    labelText: "Ad Description",
                     border: OutlineInputBorder(),
                   ),
                   controller: _descriptionController,
@@ -241,11 +241,14 @@ class _AdCreateState extends State<AdCreate> {
                   ],
                 ),
               ),
-              ElevatedButton(
-                  onPressed: () {
-                    _loadSearchResults();
-                  },
-                  child: const Text("Post Ad")),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: ElevatedButton(
+                    onPressed: () {
+                      _loadSearchResults();
+                    },
+                    child: const Text("Post Your Ad")),
+              ),
             ]),
           ),
         ),
