@@ -86,6 +86,7 @@ class _AdsPageState extends State<AdsPage> {
                 } else {
                   return AdResults(
                     adsPageStateUpdater: adsPageStateUpdater,
+                    refreshAds: _getAds,
                     results: results,
                   );
                 }
