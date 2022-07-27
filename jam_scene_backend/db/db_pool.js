@@ -435,13 +435,14 @@ const sendMessageExisting = async function (message_params) {
 
   try {
     const sent_id = await pool.query(send_message, message_params);
-    return sent_id;
+    return sent_id.rows;
   } catch (error) {
     return error;
   }
 };
 
 const createConvoObj = async function (convo_params) {
+  console.log("i got called");
   const create_convo = `INSERT INTO conversations (
     convoId,
     userId_1,
@@ -450,23 +451,22 @@ const createConvoObj = async function (convo_params) {
 
   try {
     const convoId = await pool.query(create_convo, convo_params);
-    return convoId;
+    console.log(convoId);
+    return convoId.rows;
   } catch (error) {
     return error;
   }
 };
 
 const checkConvoObjById = async function (convoId_params) {
-  const check_convo = "SELECT convoId FROM conversations WHERE convoId = $1";
-
-  let convoId = "0";
+  const check_convo = "SELECT EXISTS(SELECT convoId FROM conversations WHERE convoId = $1);";
   try {
-    convoId = await pool.query(check_convo, convoId_params);
-
+    const convoId_exists = await pool.query(check_convo, convoId_params);
+    console.log(convoId_exists.rows[0].exists);
+    return convoId_exists.rows[0].exists;
   } catch (error) {
     return error;
   }
-  return convoId.rows[0];
 };
 
 module.exports = {

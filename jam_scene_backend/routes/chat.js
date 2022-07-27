@@ -39,7 +39,9 @@ const sendMessage = async (database, req) => {
 
   try {
     const convoId = await database.checkConvoObjById([body.convoId]);
-    if (convoId === "0") {
+    console.log(convoId);
+    if (convoId === false) {
+      console.log("doesn't exist");
       await database.createConvoObj(convo_params);
     }
     const sent_id = await database.sendMessageExisting(message_params);
