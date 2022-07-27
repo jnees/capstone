@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:flutter/material.dart';
+import 'package:jam_scene/styles.dart';
 import '../components/horizontal_or_divider.dart';
 import '../components/logo.dart';
 import '../components/background_texture.dart';
@@ -232,8 +233,7 @@ InputDecoration _textInputBoxDecoration(label) {
   return InputDecoration(
     label: Text(label),
     border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-    ),
+        borderRadius: BorderRadius.circular(12)),
     fillColor: const Color.fromARGB(255, 248, 247, 247),
     filled: true,
   );
