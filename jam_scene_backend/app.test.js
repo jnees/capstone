@@ -30,6 +30,8 @@ const deleteAdObj = jest.fn();
 const updateAdObj = jest.fn();
 const deleteAdInstRelations = jest.fn();
 const getAdSearchInfo = jest.fn();
+const getConvosByUserId = jest.fn();
+const getMessagesByConvoId = jest.fn();
 
 const app = make_app({
   getAllUsers,
@@ -51,7 +53,9 @@ const app = make_app({
   deleteAdObj,
   updateAdObj,
   deleteAdInstRelations,
-  getAdSearchInfo
+  getAdSearchInfo,
+  getConvosByUserId,
+  getMessagesByConvoId
 });
 
 /* ~~~~~~~~~~ User Route Tests ~~~~~~~~~~ */
@@ -325,3 +329,42 @@ describe("POST /ads/search", () => {
   });
 });
 
+/* ~~~~~~~~~~ Chat Route Tests ~~~~~~~~~~ */
+
+describe("GET /conversations/:id", () => {
+  beforeEach(() => {
+    getConvosByUserId.mockReset();
+  });
+
+  test("should respond with 200", async () => {
+    const result = await request(app).get("/conversations/1");
+    expect(result.statusCode).toBe(200);
+  });
+  test("should call getConvosByUserId once", async () => {
+    await request(app).get("/conversations/1");
+    expect(getConvosByUserId.mock.calls.length).toBe(1);
+  });
+});
+
+describe("GET /messages/:id", () => {
+  beforeEach(() => {
+    getMessagesByConvoId.mockReset();
+  });
+
+  test("should respond with 200", async () => {
+    const result = await request(app).get("/messages/1");
+    expect(result.statusCode).toBe(200);
+  });
+  test("should call getMessagesByConvoId once", async () => {
+    await request(app).get("/messages/1");
+    expect(getMessagesByConvoId.mock.calls.length).toBe(1);
+  });
+});
+
+describe("POST /messages", () => {
+
+  test("should respond with 200", async () => {
+    const result = await request(app).post("/messages");
+    expect(result.statusCode).toBe(200);
+  });
+});

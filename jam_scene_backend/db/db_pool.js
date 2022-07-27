@@ -382,6 +382,93 @@ const getAdSearchInfo = async function (query_params1, query_params2, query_para
   }
 };
 
+/* ~~~~~~~~~~~ Chat Queries ~~~~~~~~~~~ */
+
+const getConvosByUserId = async function (id_params) {
+  const get_convos = `SELECT C.convoId, U.id AS friend_id, U.username AS friend_username, U.profile_photo AS friend_profpic 
+  FROM users U INNER JOIN conversations C ON (U.id = C.userId_1 OR U.id = C.userId_2)
+  WHERE (C.userId_1 = $1 OR C.userId_2 = $1) AND U.id != $1;`;
+
+  try {
+    const convo_array = await pool.query(get_convos, id_params);
+    return convo_array.rows;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
+const getLatestMessage = async function (convoId_params) {
+  const get_message = `SELECT body, time_sent FROM messages 
+  WHERE convoId = $1 AND time_sent = (SELECT max(time_sent) 
+  FROM (SELECT * FROM messages WHERE convoId = $1) AS needed_rows);`;
+
+  try {
+    const message_content = await pool.query(get_message, convoId_params);
+    return message_content.rows[0];
+  } catch (error) {
+    return error;
+  }
+};
+
+const getMessagesByConvoId = async function (convoId_params) {
+  const get_messages = `SELECT U.username AS sender_username, U.profile_photo AS sender_photo, U2.username AS receiver_username, U2.profile_photo AS receiver_photo, M.* 
+  FROM messages M INNER JOIN users U ON M.senderid = U.id INNER JOIN users U2 ON M.receiverid = U2.id
+  WHERE M.convoId = $1;`;
+
+  try {
+    const messages = await pool.query(get_messages, convoId_params);
+    return messages.rows;
+  } catch (error) {
+    return error;
+  }
+};
+
+const sendMessageExisting = async function (message_params) {
+  const send_message = `INSERT INTO messages (
+    convoId,
+    senderId,
+    receiverId,
+    body,
+    time_sent
+) VALUES ($1, $2, $3, $4, $5) RETURNING id;`;
+
+  try {
+    const sent_id = await pool.query(send_message, message_params);
+    return sent_id.rows;
+  } catch (error) {
+    return error;
+  }
+};
+
+const createConvoObj = async function (convo_params) {
+  console.log("i got called");
+  const create_convo = `INSERT INTO conversations (
+    convoId,
+    userId_1,
+    userId_2
+) VALUES ($1, $2, $3) RETURNING convoId;`;
+
+  try {
+    const convoId = await pool.query(create_convo, convo_params);
+    console.log(convoId);
+    return convoId.rows;
+  } catch (error) {
+    return error;
+  }
+};
+
+const checkConvoObjById = async function (convoId_params) {
+  const check_convo = "SELECT EXISTS(SELECT convoId FROM conversations WHERE convoId = $1);";
+  try {
+    const convoId_exists = await pool.query(check_convo, convoId_params);
+    console.log(convoId_exists.rows[0].exists);
+    return convoId_exists.rows[0].exists;
+  } catch (error) {
+    return error;
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUserObjById,
@@ -403,5 +490,11 @@ module.exports = {
   deleteAdObj,
   deleteAdInstRelations,
   updateAdObj,
-  getAdSearchInfo
+  getAdSearchInfo,
+  getConvosByUserId,
+  getLatestMessage,
+  getMessagesByConvoId,
+  sendMessageExisting,
+  createConvoObj,
+  checkConvoObjById
 };

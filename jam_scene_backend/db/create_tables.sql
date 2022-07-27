@@ -83,3 +83,18 @@ CREATE TABLE IF NOT EXISTS ads_instruments (
     adID integer REFERENCES ads(id) ON DELETE CASCADE,
     instrumentID integer REFERENCES instruments(id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS conversations (
+    convoId text PRIMARY KEY,
+    userId_1 text REFERENCES users(id) ON DELETE CASCADE,
+    userId_2 text REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS messages (
+    id SERIAL PRIMARY KEY,
+    convoId text REFERENCES conversations(convoId),
+    senderId text REFERENCES users(id) ON DELETE CASCADE,
+    receiverId text REFERENCES users(id) ON DELETE CASCADE,
+    body text,
+    time_sent timestamp
+);

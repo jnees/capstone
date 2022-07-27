@@ -226,3 +226,48 @@ INSERT INTO reviews (
     'r4nD0mSt1ng2',
     'Bobby Beats can really shred! Would totes jam with him again'
 );
+
+INSERT INTO conversations (
+    convoId,
+    userId_1,
+    userId_2
+) VALUES (
+    '51f4696d-e342-4a2d-8bf6-dcbfe687b322+58bef3a4-3609-4ca7-a1f7-6936942ea64e',
+    '51f4696d-e342-4a2d-8bf6-dcbfe687b322',
+    '58bef3a4-3609-4ca7-a1f7-6936942ea64e'
+),
+('51f4696d-e342-4a2d-8bf6-dcbfe687b322+e97ce146-41ce-4d51-b3ca-46566775b131',
+'51f4696d-e342-4a2d-8bf6-dcbfe687b322', 
+'e97ce146-41ce-4d51-b3ca-46566775b131'),
+('e97ce146-41ce-4d51-b3ca-46566775b131+25ea6475-1243-45a5-88c1-a64589ae3953', 
+'e97ce146-41ce-4d51-b3ca-46566775b131', 
+'25ea6475-1243-45a5-88c1-a64589ae3953');
+
+INSERT INTO messages (
+    convoId,
+    senderId,
+    receiverId,
+    body,
+    time_sent
+) VALUES 
+(
+    '51f4696d-e342-4a2d-8bf6-dcbfe687b322+58bef3a4-3609-4ca7-a1f7-6936942ea64e',
+    '51f4696d-e342-4a2d-8bf6-dcbfe687b322',
+    '58bef3a4-3609-4ca7-a1f7-6936942ea64e',
+    'ffffffff',
+    '2022-07-14'
+);
+-- (
+--     'e97ce146-41ce-4d51-b3ca-46566775b131+25ea6475-1243-45a5-88c1-a64589ae3953',
+--     'e97ce146-41ce-4d51-b3ca-46566775b131',
+--     '25ea6475-1243-45a5-88c1-a64589ae3953',
+--     'hiiii',
+--     '2022-07-13'
+-- ),
+-- (
+--     '51f4696d-e342-4a2d-8bf6-dcbfe687b322+e97ce146-41ce-4d51-b3ca-46566775b131',
+--     '51f4696d-e342-4a2d-8bf6-dcbfe687b322', 
+--     'e97ce146-41ce-4d51-b3ca-46566775b131',
+--     'hiihihi',
+--     '2022-07-13'
+-- );
