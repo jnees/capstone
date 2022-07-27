@@ -12,6 +12,17 @@ const getConversations = async (database, req) => {
   }
 };
 
+const getMessages = async (database, req) => {
+  const convoId_params = [req.params.id];
+  try {
+    const messages = await database.getMessagesByConvoId(convoId_params);
+    return messages;
+  } catch (error) {
+    return error;
+  }
+};
+
 module.exports = {
-  getConversations
+  getConversations,
+  getMessages
 };

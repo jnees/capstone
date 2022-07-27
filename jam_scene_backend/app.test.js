@@ -31,6 +31,7 @@ const updateAdObj = jest.fn();
 const deleteAdInstRelations = jest.fn();
 const getAdSearchInfo = jest.fn();
 const getConvosByUserId = jest.fn();
+const getMessagesByConvoId = jest.fn();
 
 const app = make_app({
   getAllUsers,
@@ -53,7 +54,8 @@ const app = make_app({
   updateAdObj,
   deleteAdInstRelations,
   getAdSearchInfo,
-  getConvosByUserId
+  getConvosByUserId,
+  getMessagesByConvoId
 });
 
 /* ~~~~~~~~~~ User Route Tests ~~~~~~~~~~ */
@@ -344,3 +346,17 @@ describe("GET /conversations/:id", () => {
   });
 });
 
+describe("GET /messages/:id", () => {
+  beforeEach(() => {
+    getMessagesByConvoId.mockReset();
+  });
+
+  test("should respond with 200", async () => {
+    const result = await request(app).get("/messages/1");
+    expect(result.statusCode).toBe(200);
+  });
+  test("should call getMessagesByConvoId once", async () => {
+    await request(app).get("/messages/1");
+    expect(getMessagesByConvoId.mock.calls.length).toBe(1);
+  });
+});

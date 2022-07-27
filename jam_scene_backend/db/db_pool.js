@@ -411,6 +411,19 @@ const getLatestMessage = async function (convoId_params) {
   }
 };
 
+const getMessagesByConvoId = async function (convoId_params) {
+  const get_messages = `SELECT U.username AS sender_username, U.profile_photo AS sender_photo, U2.username AS receiver_username, U2.profile_photo AS receiver_photo, M.* 
+  FROM messages M INNER JOIN users U ON M.senderid = U.id INNER JOIN users U2 ON M.receiverid = U2.id
+  WHERE M.convoId = $1;`;
+
+  try {
+    const messages = await pool.query(get_messages, convoId_params);
+    return messages.rows;
+  } catch (error) {
+    return error;
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUserObjById,
@@ -434,5 +447,6 @@ module.exports = {
   updateAdObj,
   getAdSearchInfo,
   getConvosByUserId,
-  getLatestMessage
+  getLatestMessage,
+  getMessagesByConvoId
 };

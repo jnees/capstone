@@ -23,7 +23,6 @@ const createAd = async (database, req) => {
     body.avail_sun_am,
     body.avail_sun_pm,
   ];
-  console.log("hey");
   try {
     const ad_result = await database.addNewAdObj(ad_query_params);
     await database.addNewAdInstRelation(ad_result.id, body.instruments);
