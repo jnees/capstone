@@ -30,6 +30,7 @@ const deleteAdObj = jest.fn();
 const updateAdObj = jest.fn();
 const deleteAdInstRelations = jest.fn();
 const getAdSearchInfo = jest.fn();
+const getConvosByUserId = jest.fn();
 
 const app = make_app({
   getAllUsers,
@@ -51,7 +52,8 @@ const app = make_app({
   deleteAdObj,
   updateAdObj,
   deleteAdInstRelations,
-  getAdSearchInfo
+  getAdSearchInfo,
+  getConvosByUserId
 });
 
 /* ~~~~~~~~~~ User Route Tests ~~~~~~~~~~ */
@@ -322,6 +324,23 @@ describe("POST /ads/search", () => {
       "days": { "sun": false, "mon": true, "tue": false, "wed": false, "thu": false, "fri": false, "sat": true }
     });
     expect(getAdSearchInfo.mock.calls.length).toBe(1);
+  });
+});
+
+/* ~~~~~~~~~~ Chat Route Tests ~~~~~~~~~~ */
+
+describe("GET /conversations/:id", () => {
+  beforeEach(() => {
+    getConvosByUserId.mockReset();
+  });
+
+  test("should respond with 200", async () => {
+    const result = await request(app).get("/conversations/1");
+    expect(result.statusCode).toBe(200);
+  });
+  test("should call getConvosByUserId once", async () => {
+    await request(app).get("/conversations/1");
+    expect(getConvosByUserId.mock.calls.length).toBe(1);
   });
 });
 

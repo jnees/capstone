@@ -5,6 +5,7 @@ function app(database) {
   const users = require("./routes/user.js");
   const reviews = require("./routes/reviews.js");
   const ads = require("./routes/ads.js");
+  const chat = require("./routes/chat.js");
 
   // Add req.body to all requests
   exp_app.use(express.json());
@@ -152,6 +153,18 @@ function app(database) {
 
   exp_app.post("/ads/search", async (req, res) => {
     await ads.searchAds(database, req)
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((error) => {
+        res.send(error);
+      });
+  });
+
+  // Chat Routes:
+
+  exp_app.get("/conversations/:id", async (req, res) => {
+    await chat.getConversations(database, req)
       .then((result) => {
         res.json(result);
       })
