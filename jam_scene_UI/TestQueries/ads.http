@@ -1,6 +1,6 @@
 GET https://jam-scene-app.herokuapp.com/ads
 
-# DELETE https://jam-scene-app.herokuapp.com/ad/11
+# DELETE https://jam-scene-app.herokuapp.com/ad/14
 
 # POST https://jam-scene-app.herokuapp.com/ads HTTP/1.1
 # content-type: application/json
@@ -9,7 +9,7 @@ GET https://jam-scene-app.herokuapp.com/ads
 #     "posted_by": "bee84a4b-e6ac-42d5-a20f-ee703cd60bfa",
 #     "city": "Seattle",
 #     "state": "WA",
-#     "zipcode": "98106",
+#     "zip_code": 98106,
 #     "title": "Legendary Metal Bassist Needed",
 #     "description":
 #         "Local metal legends, Bro Magnon, are back with a new album and need touring bassist. If you can shred and own a bass that is black and at least a little bit pointier than most basses, then pack your bags cause we're shows up and down the coast (of Lake Sammamish) all summer.",
