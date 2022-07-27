@@ -11,14 +11,6 @@ function app(database) {
   exp_app.use(express.urlencoded({ extended: true }));
   exp_app.use(cors({ origin: "*" }));
 
-  // Add logging middleware
-  exp_app.use((req) => {
-    console.log("Request received:");
-    console.log(req.url);
-    console.log(req.method);
-    console.log(req.body);
-  });
-
   // User Routes:
   exp_app.post("/users/search", async (req, res) => {
     await users.userSearch(database, req)
@@ -119,6 +111,8 @@ function app(database) {
   // Ads Routes: 
 
   exp_app.post("/ads", async (req, res) => {
+    console.log(req);
+    console.log(req.body);
     await ads.createAd(database, req)
       .then((result) => {
         res.send(result);
