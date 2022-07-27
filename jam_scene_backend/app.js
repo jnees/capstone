@@ -183,6 +183,16 @@ function app(database) {
       });
   });
 
+  exp_app.post("/messages", async (req, res) => {
+    await chat.sendMessage(database, req)
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((error) => {
+        res.send(error);
+      });
+  });
+
   // Generic Home route
   exp_app.get("/", (req, res) => {
     res.send("Hello World!!!");

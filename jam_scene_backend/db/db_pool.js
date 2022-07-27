@@ -424,6 +424,51 @@ const getMessagesByConvoId = async function (convoId_params) {
   }
 };
 
+const sendMessageExisting = async function (message_params) {
+  const send_message = `INSERT INTO messages (
+    convoId,
+    senderId,
+    receiverId,
+    body,
+    time_sent
+) VALUES ($1, $2, $3, $4, $5) RETURNING id;`;
+
+  try {
+    const sent_id = await pool.query(send_message, message_params);
+    return sent_id;
+  } catch (error) {
+    return error;
+  }
+};
+
+const createConvoObj = async function (convo_params) {
+  const create_convo = `INSERT INTO conversations (
+    convoId,
+    userId_1,
+    userId_2
+) VALUES ($1, $2, $3) RETURNING convoId;`;
+
+  try {
+    const convoId = await pool.query(create_convo, convo_params);
+    return convoId;
+  } catch (error) {
+    return error;
+  }
+};
+
+const checkConvoObjById = async function (convoId_params) {
+  const check_convo = "SELECT convoId FROM conversations WHERE convoId = $1";
+
+  let convoId = "0";
+  try {
+    convoId = await pool.query(check_convo, convoId_params);
+
+  } catch (error) {
+    return error;
+  }
+  return convoId.rows[0];
+};
+
 module.exports = {
   getAllUsers,
   getUserObjById,
@@ -448,5 +493,8 @@ module.exports = {
   getAdSearchInfo,
   getConvosByUserId,
   getLatestMessage,
-  getMessagesByConvoId
+  getMessagesByConvoId,
+  sendMessageExisting,
+  createConvoObj,
+  checkConvoObjById
 };

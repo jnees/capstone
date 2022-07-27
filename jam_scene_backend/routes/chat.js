@@ -22,7 +22,36 @@ const getMessages = async (database, req) => {
   }
 };
 
+const sendMessage = async (database, req) => {
+  const body = req.body;
+  const convo_params = [
+    body.convoId,
+    body.senderId,
+    body.receiverId
+  ];
+  const message_params = [
+    body.convoId,
+    body.senderId,
+    body.receiverId,
+    body.body,
+    body.time_sent
+  ];
+
+  try {
+    const convoId = await database.checkConvoObjById([body.convoId]);
+    if (convoId === "0") {
+      await database.createConvoObj(convo_params);
+    }
+    const sent_id = await database.sendMessageExisting(message_params);
+    return sent_id;
+  } catch (error) {
+    return error;
+  }
+
+};
+
 module.exports = {
   getConversations,
-  getMessages
+  getMessages,
+  sendMessage
 };

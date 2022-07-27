@@ -360,3 +360,11 @@ describe("GET /messages/:id", () => {
     expect(getMessagesByConvoId.mock.calls.length).toBe(1);
   });
 });
+
+describe("POST /messages", () => {
+
+  test("should respond with 200", async () => {
+    const result = await request(app).post("/messages");
+    expect(result.statusCode).toBe(200);
+  });
+});
