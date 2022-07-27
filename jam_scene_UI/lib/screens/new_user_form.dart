@@ -293,7 +293,7 @@ class _NewUserFormState extends State<NewUserForm> {
               Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: SizedBox(
-                    height: 250,
+                    height: 270,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
                         border: Border.all(
@@ -344,7 +344,7 @@ class _NewUserFormState extends State<NewUserForm> {
               Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: SizedBox(
-                    height: 250,
+                    height: 270,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
                         border: Border.all(
