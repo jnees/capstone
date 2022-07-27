@@ -3,9 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
+import 'package:jam_scene/components/instrument_tags.dart';
 import 'package:jam_scene/styles.dart';
 import '../models/instrument_lookup.dart';
 import 'dart:convert';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class NewUserForm extends StatefulWidget {
   const NewUserForm({Key? key}) : super(key: key);
@@ -113,6 +115,19 @@ class _NewUserFormState extends State<NewUserForm> {
     return response.statusCode;
   }
 
+  Widget coloredBar() {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: SizedBox(
+        height: 10,
+        width: MediaQuery.of(context).size.width * 0.98,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: Styles.salmonJam,
+          ),
+        )));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -125,25 +140,9 @@ class _NewUserFormState extends State<NewUserForm> {
                 "Get ready to rock! Tell us about yourself.",
                 style: Styles.titleMedium,
               ),
+              coloredBar(),
               Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: SizedBox(
-                  height: 10,
-                  width: MediaQuery.of(context).size.width * 0.98,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: Styles.salmonJam,
-                      // border: Border.all(
-                      //   color: Styles.salmonJam,
-                      //   width: 2,
-                      //   ),
-                      // borderRadius: BorderRadius.circular(10),
-                    ),
-                  )
-                )
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   decoration: const InputDecoration(
                     labelText: 'Select a username',
@@ -158,7 +157,7 @@ class _NewUserFormState extends State<NewUserForm> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(20.0),
                 child: TextFormField(
                   decoration: const InputDecoration(
                     labelText: 'Enter your first name',
@@ -173,7 +172,7 @@ class _NewUserFormState extends State<NewUserForm> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(20.0),
                 child: TextFormField(
                   decoration: const InputDecoration(
                     labelText: 'Enter your last name',
@@ -188,7 +187,7 @@ class _NewUserFormState extends State<NewUserForm> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(20.0),
                 child: TextFormField(
                   decoration: const InputDecoration(
                     labelText: 'Enter your city ',
@@ -203,7 +202,7 @@ class _NewUserFormState extends State<NewUserForm> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(20.0),
                 child: TextFormField(
                   controller: _stateController,
                   decoration: const InputDecoration(
@@ -218,7 +217,7 @@ class _NewUserFormState extends State<NewUserForm> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(20.0),
                 child: TextFormField(
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
@@ -234,7 +233,7 @@ class _NewUserFormState extends State<NewUserForm> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(20.0),
                 child: TextFormField(
                   decoration: const InputDecoration(
                     labelText: 'Tell us about yourself',
@@ -250,7 +249,7 @@ class _NewUserFormState extends State<NewUserForm> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(20.0),
                 child: TextFormField(
                   decoration: const InputDecoration(
                     labelText: 'Who are your influences?',
@@ -265,7 +264,7 @@ class _NewUserFormState extends State<NewUserForm> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(20.0),
                 child: TextFormField(
                   decoration: const InputDecoration(
                     labelText: 'Links to recordings',
@@ -279,23 +278,47 @@ class _NewUserFormState extends State<NewUserForm> {
                   controller: _recordingsController,
                 ),
               ),
-              const Text("What instruments do you play?"),
+              const SizedBox(height: 30),
               Padding(
-                  padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      "What instruments do you play?",
+                      style: Styles.headline6,),
+                  ],
+                ),
+              ),
+              Padding(
+                  padding: const EdgeInsets.all(20.0),
                   child: SizedBox(
-                    height: 300,
+                    height: 250,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: Styles.salmonJam,
-                          width: 2,
+                          width: 3.0,
                         ),
-                        borderRadius: BorderRadius.circular(10),
+                        // borderRadius: BorderRadius.circular(10),
                       ),
                       child: ListView(
                           children: List.generate(instruments.length, (index) {
                         return CheckboxListTile(
-                          title: Text(instrumentLookup[index + 1]!),
+                          title: Row(
+                            children: [
+                              SizedBox(
+                                height: 22.0,
+                                width: 22.0,
+                                child: SvgPicture.asset(
+                                  'assets/instruments/${index + 1}.svg',
+                                  color: Colors.grey[800],
+                                ),
+                              ),
+                              SizedBox(width: 10,),
+                              Text(instrumentLookup[index + 1]!),
+                            ],
+                          ),
                           value: instruments[index + 1],
                           onChanged: (bool? value) {
                             setState(() {
@@ -306,18 +329,29 @@ class _NewUserFormState extends State<NewUserForm> {
                       })),
                     ),
                   )),
-              const Text("When can you jam?"),
+              const SizedBox(height: 30),
               Padding(
-                  padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      "When can you jam?",
+                      style: Styles.headline6,),
+                  ],
+                ),
+              ),
+              Padding(
+                  padding: const EdgeInsets.all(20.0),
                   child: SizedBox(
-                    height: 400,
+                    height: 250,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: Styles.salmonJam,
-                          width: 2,
+                          width: 3.0,
                         ),
-                        borderRadius: BorderRadius.circular(10),
+                        // borderRadius: BorderRadius.circular(10),
                       ),
                       child: ListView(
                         children: [
@@ -456,22 +490,31 @@ class _NewUserFormState extends State<NewUserForm> {
                   child: loading
                       ? CircularProgressIndicator()
                       : ElevatedButton(
-                          onPressed: () {
-                            // Validate will return true if the form is valid, or false if
-                            // the form is invalid.
-                            if (_formKey.currentState!.validate()) {
-                              _sendToDatabase().then(
-                                (status) {
-                                  if (status == 200) {
-                                    Navigator.of(context)
-                                        .pushReplacementNamed("/");
-                                  }
-                                },
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(2.0)
+                          ),
+                          padding: EdgeInsets.all(20.0),
+                          textStyle: Styles.titleMedium,
+                          primary: Styles.charcoal,
+                          ),
+                        onPressed: () {
+                          // Validate will return true if the form is valid, or false if
+                          // the form is invalid.
+                          if (_formKey.currentState!.validate()) {
+                            _sendToDatabase().then(
+                              (status) {
+                                if (status == 200) {
+                                  Navigator.of(context)
+                                      .pushReplacementNamed("/");
+                                }
+                              },
                               );
                             }
                           },
                           child: const Text('Submit'),
                         )),
+              const SizedBox(height: 20),
             ],
           ),
         ));
