@@ -284,7 +284,7 @@ const deleteAdInstRelations = async function (adId) {
 };
 
 const getAllAdObjs = async function () {
-  const get_all_query = "SELECT * FROM ads ORDER BY post_date DESC;";
+  const get_all_query = "SELECT U.username, U.profile_photo, A.* FROM ads A INNER JOIN users U ON A.posted_by = U.id ORDER BY post_date DESC;";
 
   try {
     const all_ads = await pool.query(get_all_query);
