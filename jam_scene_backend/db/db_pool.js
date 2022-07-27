@@ -163,11 +163,9 @@ const getSearchInfo = async function (query_params1, query_params2, query_params
 };
 
 const getInstByUserId = async function (userId_param) {
-
   const inst_query = `SELECT I.id, I.name FROM 
   users_instruments UI INNER JOIN instruments I ON UI.instrumentID = I.id 
   WHERE UI.userID = $1`;
-
   try {
     const inst_array = await pool.query(inst_query, userId_param);
     return inst_array.rows;

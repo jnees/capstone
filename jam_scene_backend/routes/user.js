@@ -154,7 +154,7 @@ const userSearch = async (database, req) => {
     const users = await database.getSearchInfo(query_params1, query_params2, query_params3);
     if (users.length > 0) {
       for (let index in users) {
-        const inst_array = await database.getInstByUserId(users[index].id);
+        const inst_array = await database.getInstByUserId([users[index].id]);
         users[index]["instruments"] = inst_array;
       }
     }
