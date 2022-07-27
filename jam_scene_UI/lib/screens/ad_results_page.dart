@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/instrument_lookup.dart';
+import '../components/formatted_date.dart';
 
 class AdResults extends StatelessWidget {
   const AdResults(
@@ -64,7 +65,7 @@ class AdResults extends StatelessWidget {
                     Text(results[index]["city"] +
                         ", " +
                         results[index]["state"]),
-                    Text(results[index]["post_date"]),
+                    FormattedDateFromString(date: results[index]["post_date"]),
                   ],
                 ),
               );
