@@ -33,7 +33,7 @@ class _AdsPageState extends State<AdsPage> {
     setState(() {
       _isLoading = true;
     });
-    await Future.delayed(const Duration(seconds: 1));
+
     setState(() {
       _isLoading = false;
       results = mockAds;

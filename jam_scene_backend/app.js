@@ -11,6 +11,14 @@ function app(database) {
   exp_app.use(express.urlencoded({ extended: true }));
   exp_app.use(cors({ origin: "*" }));
 
+  // Add logging middleware
+  exp_app.use((req, res) => {
+    console.log('Request received:')
+    console.log(req.url)
+    console.log(req.method)
+    console.log(req.body)
+  })
+
   // User Routes:
   exp_app.post("/users/search", async (req, res) => {
     await users.userSearch(database, req)
