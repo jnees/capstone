@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-// import 'package:intl/intl.dart';
 import '../models/mock_ad_results.dart';
 import '../screens/ad_details_page.dart';
 import '../screens/ad_results_page.dart';
 import '../screens/ad_search_page.dart';
 import '../screens/ad_create_page.dart';
 import '../screens/ad_profile_wrapper.dart';
+import '../screens/ad_respond_page.dart';
 
 class AdsPage extends StatefulWidget {
   const AdsPage({Key? key}) : super(key: key);
@@ -90,6 +90,13 @@ class _AdsPageState extends State<AdsPage> {
           return AdProfileWrapper(
               adsPageStateUpdater: adsPageStateUpdater,
               selectedUserId: _selectedUserId);
+        case 'Respond':
+          return Center(
+            child: AdRespond(
+                adsPageStateUpdater: adsPageStateUpdater,
+                adDetails:
+                    results.firstWhere((ad) => ad['id'] == selectedAdId)),
+          );
         default:
           return Center(
             child: Text('Error: Unknown view: $currView'),
