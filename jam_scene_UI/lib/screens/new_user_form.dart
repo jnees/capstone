@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
-import 'package:jam_scene/components/instrument_tags.dart';
 import 'package:jam_scene/styles.dart';
 import '../models/instrument_lookup.dart';
 import 'dart:convert';
@@ -117,15 +116,15 @@ class _NewUserFormState extends State<NewUserForm> {
 
   Widget coloredBar() {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: SizedBox(
-        height: 10,
-        width: MediaQuery.of(context).size.width * 0.98,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: Styles.salmonJam,
-          ),
-        )));
+        padding: const EdgeInsets.all(20.0),
+        child: SizedBox(
+            height: 10,
+            width: MediaQuery.of(context).size.width * 0.98,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: Styles.salmonJam,
+              ),
+            )));
   }
 
   @override
@@ -286,7 +285,8 @@ class _NewUserFormState extends State<NewUserForm> {
                   children: const [
                     Text(
                       "What instruments do you play?",
-                      style: Styles.headline6,),
+                      style: Styles.headline6,
+                    ),
                   ],
                 ),
               ),
@@ -315,7 +315,9 @@ class _NewUserFormState extends State<NewUserForm> {
                                   color: Colors.grey[800],
                                 ),
                               ),
-                              SizedBox(width: 10,),
+                              SizedBox(
+                                width: 10,
+                              ),
                               Text(instrumentLookup[index + 1]!),
                             ],
                           ),
@@ -337,7 +339,8 @@ class _NewUserFormState extends State<NewUserForm> {
                   children: const [
                     Text(
                       "When can you jam?",
-                      style: Styles.headline6,),
+                      style: Styles.headline6,
+                    ),
                   ],
                 ),
               ),
@@ -490,25 +493,24 @@ class _NewUserFormState extends State<NewUserForm> {
                   child: loading
                       ? CircularProgressIndicator()
                       : ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(2.0)
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(2.0)),
+                            padding: EdgeInsets.all(20.0),
+                            textStyle: Styles.titleMedium,
+                            primary: Styles.charcoal,
                           ),
-                          padding: EdgeInsets.all(20.0),
-                          textStyle: Styles.titleMedium,
-                          primary: Styles.charcoal,
-                          ),
-                        onPressed: () {
-                          // Validate will return true if the form is valid, or false if
-                          // the form is invalid.
-                          if (_formKey.currentState!.validate()) {
-                            _sendToDatabase().then(
-                              (status) {
-                                if (status == 200) {
-                                  Navigator.of(context)
-                                      .pushReplacementNamed("/");
-                                }
-                              },
+                          onPressed: () {
+                            // Validate will return true if the form is valid, or false if
+                            // the form is invalid.
+                            if (_formKey.currentState!.validate()) {
+                              _sendToDatabase().then(
+                                (status) {
+                                  if (status == 200) {
+                                    Navigator.of(context)
+                                        .pushReplacementNamed("/");
+                                  }
+                                },
                               );
                             }
                           },
