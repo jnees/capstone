@@ -4,6 +4,24 @@ GET https://jam-scene-app.herokuapp.com/ads
 
 ###
 
+POST https://jam-scene-app.herokuapp.com/ads/search HTTP/1.1
+content-type: application/json
+
+  {
+    "days": {"sun": true,
+            "mon": true,
+            "tue": true,
+            "wed": true,
+            "thu": true,
+            "fri": true,
+            "sat": true},
+    "city": "Seattle",
+    "state": "WA",
+    "instrument": "Bass"
+  }
+
+###
+
 DELETE https://jam-scene-app.herokuapp.com/ad/19
 
 ###

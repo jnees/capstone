@@ -19,12 +19,14 @@ class AdsPage extends StatefulWidget {
 
 class _AdsPageState extends State<AdsPage> {
   // Using mock data for layout building.
+  late List<dynamic> unfilteredData = [];
   late List<dynamic> results = [];
   late String currView = 'Results';
   int selectedAdId = -1;
   String _selectedUserId = '';
   bool _isLoading = true;
   bool _dbError = false;
+  bool _filtered = false;
 
   @override
   void initState() {
@@ -50,8 +52,11 @@ class _AdsPageState extends State<AdsPage> {
       }
       setState(() {
         _isLoading = false;
-        results = json.decode(response.body);
+        var data = json.decode(response.body);
+        results = data;
+        unfilteredData = data;
         currView = 'Results';
+        _filtered = false;
       });
     } else {
       if (!mounted) {
@@ -62,6 +67,31 @@ class _AdsPageState extends State<AdsPage> {
         _dbError = true;
       });
     }
+  }
+
+  void setFilter(
+      {String? zipcode, String? city, String? state, String? instrument}) {
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _filtered = true;
+      results = unfilteredData
+          .where((ad) =>
+              (zipcode == "" || ad['zipcode'] == zipcode) &&
+              (city == "" || ad['city'] == city) &&
+              (state == "" || ad['state'] == state) &&
+              (instrument == "" || ad['instruments'][0]['name'] == instrument))
+          .toList();
+    });
+  }
+
+  void clearFilter() {
+    setState(() {
+      results = unfilteredData;
+      _filtered = false;
+    });
   }
 
   void adsPageStateUpdater(Map<String, dynamic> stateChanges) {
@@ -95,6 +125,7 @@ class _AdsPageState extends State<AdsPage> {
                     adsPageStateUpdater: adsPageStateUpdater,
                     refreshAds: _getAds,
                     results: results,
+                    isFiltered: _filtered,
                   );
                 }
               case 'AdDetails':
@@ -110,7 +141,10 @@ class _AdsPageState extends State<AdsPage> {
                   );
                 }
               case 'AdSearch':
-                return AdSearch(adsPageStateUpdater: adsPageStateUpdater);
+                return AdSearch(
+                    adsPageStateUpdater: adsPageStateUpdater,
+                    setFilter: setFilter,
+                    clearFilter: clearFilter);
               case 'AdCreate':
                 return AdCreate(adsPageStateUpdater: adsPageStateUpdater);
               case 'Profile':
