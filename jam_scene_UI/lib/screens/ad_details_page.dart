@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../models/instrument_lookup.dart';
 import '../components/formatted_date.dart';
 
@@ -15,6 +16,27 @@ class AdDetails extends StatefulWidget {
 }
 
 class _AdDetailsState extends State<AdDetails> {
+  late bool creatorView;
+
+  @override
+  void initState() {
+    super.initState();
+    _isCreator();
+  }
+
+  void _isCreator() {
+    var user = FirebaseAuth.instance.currentUser!.uid;
+    if (user == widget.adDetails['posted_by']) {
+      setState(() {
+        creatorView = true;
+      });
+    } else {
+      setState(() {
+        creatorView = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -64,13 +86,24 @@ class _AdDetailsState extends State<AdDetails> {
             padding: const EdgeInsets.all(12.0),
             child: Text("${widget.adDetails['description']}"),
           ),
-
-          ElevatedButton.icon(
-              onPressed: () {
-                widget.adsPageStateUpdater({'_currView': 'Respond'});
-              },
-              icon: const Icon(Icons.mail),
-              label: const Text("Respond")),
+          creatorView
+              ? ElevatedButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.delete),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.red,
+                  ),
+                  label: const Text('Delete Ad'),
+                )
+              : ElevatedButton.icon(
+                  onPressed: () {
+                    widget.adsPageStateUpdater({'_currView': 'Respond'});
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.green,
+                  ),
+                  icon: const Icon(Icons.mail),
+                  label: const Text("Respond")),
         ],
       ),
     );
