@@ -18,6 +18,11 @@ class Styles {
     fontSize: 16.0,
     color: charcoal,
   );
+  static const headline6_i = TextStyle(
+    fontSize: 16.0,
+    color: charcoal,
+    fontStyle: FontStyle.italic,
+  );
   static const titleLarge = TextStyle(
     fontSize: 40.0,
     color: charcoal,
@@ -29,5 +34,11 @@ class Styles {
     color: charcoal,
     fontFamily: 'Oswald',
     fontWeight: FontWeight.w500,
+  );
+  static const titleSmall = TextStyle(
+    fontSize: 20.0,
+    color: charcoal,
+    fontFamily: 'Oswald',
+    fontWeight: FontWeight.w300,
   );
 }
