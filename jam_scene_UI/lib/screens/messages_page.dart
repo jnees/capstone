@@ -12,7 +12,7 @@ class MessagesPage extends StatefulWidget {
 }
 
 class _MessagesPageState extends State<MessagesPage> {
-  late String currView = 'Conversations';
+  late String currView = 'Loading';
   late List<dynamic> conversations = [];
   bool dbError = false;
   // final currentUid = FirebaseAuth.instance.currentUser!.uid;
@@ -25,6 +25,10 @@ class _MessagesPageState extends State<MessagesPage> {
   }
 
   void _getConversations() async {
+    setState(() {
+      currView = "Loading";
+    });
+
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     if (token == null) return;
     var url = Uri.parse(
@@ -38,6 +42,7 @@ class _MessagesPageState extends State<MessagesPage> {
       var data = json.decode(response.body);
       setState(() {
         conversations = data;
+        currView = "Conversations";
       });
     } else {
       setState(() {
@@ -50,6 +55,8 @@ class _MessagesPageState extends State<MessagesPage> {
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
       switch (currView) {
+        case 'Loading':
+          return const Center(child: CircularProgressIndicator());
         case 'Conversations':
           return ConversationsPage(conversations: conversations);
 
