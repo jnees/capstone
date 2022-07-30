@@ -67,108 +67,130 @@ class _ProfilePageState extends State<ProfilePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: CircleAvatar(
-                                  radius: 50,
-                                  backgroundImage:
-                                      NetworkImage(profileData.profilePhoto),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(profileData.username,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold)),
-                              Text(location.join(", ")),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Wrap(
-                        alignment: WrapAlignment.center,
-                        runSpacing: -10,
-                        spacing: 5,
-                        children: [
-                          for (var instrument in profileData.instruments)
-                            InstrumentTag(iid: instrument['id']),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Flexible(
-                              child: Text(profileData.description,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 4)),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: const Text("Send Message"),
-                          )
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Column(
                               children: [
-                                const Text(
-                                  "Influences",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  profileData.influences,
-                                  maxLines: 4,
-                                  overflow: TextOverflow.ellipsis,
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: CircleAvatar(
+                                    radius: 50,
+                                    backgroundImage:
+                                        NetworkImage(profileData.profilePhoto),
+                                  ),
                                 ),
                               ],
                             ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Column(
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text("Recordings",
+                                Text(profileData.username,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold)),
+                                Text(location.join(", ")),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Wrap(
+                          alignment: WrapAlignment.center,
+                          runSpacing: -10,
+                          spacing: 5,
+                          children: [
+                            for (var instrument in profileData.instruments)
+                              InstrumentTag(iid: instrument['id']),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Flexible(
+                                child: Text(profileData.description,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 4)),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {},
+                              child: const Text("Send Message"),
+                            )
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    "Influences",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    profileData.influences,
+                                    maxLines: 4,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text("Recordings",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                  Text(profileData.recordings),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const [
+                                Text("Availability",
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold)),
-                                Text(profileData.recordings),
                               ],
                             ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text("Availability",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,

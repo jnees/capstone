@@ -2,16 +2,23 @@ import 'package:flutter/material.dart';
 import '../components/formatted_date.dart';
 
 class ConversationsPage extends StatelessWidget {
-  const ConversationsPage({Key? key, required this.conversations})
+  const ConversationsPage(
+      {Key? key,
+      required this.conversations,
+      required this.messagesTabStateUpdater})
       : super(key: key);
 
   final List<dynamic> conversations;
+  final Function messagesTabStateUpdater;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text("Most recent conversations"),
+        const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text("Most recent conversations"),
+        ),
         conversations.isEmpty
             ? const Text("No conversations")
             : Expanded(
@@ -28,7 +35,12 @@ class ConversationsPage extends StatelessWidget {
                           maxLines: 2, overflow: TextOverflow.ellipsis),
                       trailing: FormattedDateFromString(
                           date: conversation['latest_message']['time_sent']),
-                      onTap: () {},
+                      onTap: () {
+                        messagesTabStateUpdater({
+                          '_currView': "Messages",
+                          '_selectedConversation': conversation['convoid']
+                        });
+                      },
                     );
                   },
                 ),
