@@ -2,7 +2,9 @@ import "dart:convert";
 import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/material.dart";
 import 'package:http/http.dart' as http;
+import 'package:jam_scene/components/visual_components.dart';
 import 'package:jam_scene/models/instrument_lookup.dart';
+import 'package:jam_scene/styles.dart';
 import '../screens/profile_page.dart';
 
 class SearchPage extends StatefulWidget {
@@ -154,19 +156,27 @@ class _SearchPageState extends State<SearchPage> {
               key: _formkey,
               child: Column(
                 children: [
+                  const SizedBox(height: 15),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+                    child: ColoredBar(),
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
-                      Text("Find Musicians"),
+                      Text(
+                        "Search for Musicians",
+                        style: Styles.titleLarge,
+                        ),
                     ],
                   ),
+                  const SizedBox(height: 10),
                   DecoratedBox(
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: Colors.blue,
-                        width: 2,
+                        color: Styles.charcoal,
+                        width: 3.0,
                       ),
-                      borderRadius: BorderRadius.circular(8),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
