@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
-import 'package:jam_scene/components/instrument_tags.dart';
 import 'package:jam_scene/styles.dart';
 import 'package:jam_scene/components/visual_components.dart';
 import '../models/instrument_lookup.dart';
@@ -276,7 +275,8 @@ class _NewUserFormState extends State<NewUserForm> {
                   children: const [
                     Text(
                       "What instruments do you play?",
-                      style: Styles.headline6,),
+                      style: Styles.headline6,
+                    ),
                   ],
                 ),
               ),
@@ -318,7 +318,8 @@ class _NewUserFormState extends State<NewUserForm> {
                   children: const [
                     Text(
                       "When can you jam?",
-                      style: Styles.headline6,),
+                      style: Styles.headline6,
+                    ),
                   ],
                 ),
               ),
@@ -471,25 +472,24 @@ class _NewUserFormState extends State<NewUserForm> {
                   child: loading
                       ? CircularProgressIndicator()
                       : ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(2.0)
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(2.0)),
+                            padding: EdgeInsets.all(20.0),
+                            textStyle: Styles.titleMedium,
+                            primary: Styles.charcoal,
                           ),
-                          padding: EdgeInsets.all(20.0),
-                          textStyle: Styles.titleMedium,
-                          primary: Styles.charcoal,
-                          ),
-                        onPressed: () {
-                          // Validate will return true if the form is valid, or false if
-                          // the form is invalid.
-                          if (_formKey.currentState!.validate()) {
-                            _sendToDatabase().then(
-                              (status) {
-                                if (status == 200) {
-                                  Navigator.of(context)
-                                      .pushReplacementNamed("/");
-                                }
-                              },
+                          onPressed: () {
+                            // Validate will return true if the form is valid, or false if
+                            // the form is invalid.
+                            if (_formKey.currentState!.validate()) {
+                              _sendToDatabase().then(
+                                (status) {
+                                  if (status == 200) {
+                                    Navigator.of(context)
+                                        .pushReplacementNamed("/");
+                                  }
+                                },
                               );
                             }
                           },

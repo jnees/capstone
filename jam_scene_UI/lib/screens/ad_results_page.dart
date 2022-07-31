@@ -7,12 +7,14 @@ class AdResults extends StatelessWidget {
       {Key? key,
       required this.results,
       required this.adsPageStateUpdater,
-      required this.refreshAds})
+      required this.refreshAds,
+      required this.isFiltered})
       : super(key: key);
 
   final List<dynamic> results;
   final Function adsPageStateUpdater;
   final Function refreshAds;
+  final bool isFiltered;
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +25,24 @@ class AdResults extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              const Text("Showing most recent ads..."),
+              isFiltered
+                  ? const Text("Showing filtered ads...")
+                  : const Text("Showing most recent ads..."),
               const Spacer(),
-              IconButton(
-                icon: const Icon(Icons.search),
-                onPressed: () {
-                  adsPageStateUpdater(
-                      {'_currView': "AdSearch", '_selectedAdId': -1});
-                },
-              ),
+              isFiltered
+                  ? IconButton(
+                      icon: const Icon(Icons.clear),
+                      onPressed: () {
+                        refreshAds(true);
+                      },
+                    )
+                  : IconButton(
+                      icon: const Icon(Icons.search),
+                      onPressed: () {
+                        adsPageStateUpdater(
+                            {'_currView': "AdSearch", '_selectedAdId': -1});
+                      },
+                    ),
             ],
           ),
         ),
