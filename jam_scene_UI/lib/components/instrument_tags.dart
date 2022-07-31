@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:jam_scene/styles.dart';
 
 // Reference:
 // Icons used from https://www.smashingmagazine.com/?p=250833
@@ -23,19 +24,19 @@ class InstrumentTag extends StatelessWidget {
   };
 
   final colors = {
-    1: const Color.fromRGBO(3, 217, 158, 1),
-    2: const Color.fromRGBO(242, 8, 25, 1),
-    3: const Color.fromRGBO(255, 167, 23, 1),
-    4: const Color.fromRGBO(45, 188, 0, 1),
-    5: const Color.fromRGBO(197, 18, 232, 1),
-    6: const Color.fromRGBO(57, 83, 212, 1),
-    7: const Color.fromRGBO(3, 217, 158, 1),
-    8: const Color.fromRGBO(242, 8, 25, 1),
-    9: const Color.fromRGBO(255, 167, 23, 1),
-    10: const Color.fromRGBO(45, 188, 0, 1),
-    11: const Color.fromRGBO(197, 18, 232, 1),
-    12: const Color.fromRGBO(57, 83, 212, 1),
-    13: const Color.fromRGBO(3, 217, 158, 1),
+    1: Styles.tag1,
+    2: Styles.tag2,
+    3: Styles.tag3,
+    4: Styles.tag4,
+    5: Styles.tag5,
+    6: Styles.tag6,
+    7: Styles.tag7,
+    8: Styles.tag8,
+    9: Styles.tag9,
+    10: Styles.tag10,
+    11: Styles.tag11,
+    12: Styles.tag12,
+    13: Styles.tag13,
   };
 
   InstrumentTag({Key? key, required this.iid}) : super(key: key);

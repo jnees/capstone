@@ -133,9 +133,12 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  "Influences",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 3.0),
+                                  child: Text(
+                                    "Influences",
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
                                 ),
                                 Text(
                                   profileData.influences,
@@ -155,9 +158,12 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text("Recordings",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 3.0),
+                                  child: Text("Recordings",
+                                      style:
+                                          TextStyle(fontWeight: FontWeight.bold)),
+                                ),
                                 Text(profileData.recordings),
                               ],
                             ),
@@ -168,14 +174,17 @@ class _ProfilePageState extends State<ProfilePage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: const [
-                          Text("Instruments",
-                            style:
-                            TextStyle(fontWeight: FontWeight.bold)),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 3.0),
+                            child: Text("Instruments",
+                              style:
+                              TextStyle(fontWeight: FontWeight.bold)),
+                          ),
                         ],
                       ),
                       Wrap(
                         alignment: WrapAlignment.center,
-                        runSpacing: -10,
+                        runSpacing: -5,
                         spacing: 10,
                         children: [
                           for (var instrument in profileData.instruments)
@@ -189,9 +198,12 @@ class _ProfilePageState extends State<ProfilePage> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: const [
-                              Text("Availability",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 3.0),
+                                child: Text("Availability",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                              ),
                             ],
                           ),
                         ],
