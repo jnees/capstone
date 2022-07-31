@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:jam_scene/styles.dart';
+import 'package:jam_scene/components/visual_components.dart';
 import '../models/instrument_lookup.dart';
 import 'dart:convert';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -114,19 +115,6 @@ class _NewUserFormState extends State<NewUserForm> {
     return response.statusCode;
   }
 
-  Widget coloredBar() {
-    return Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: SizedBox(
-            height: 10,
-            width: MediaQuery.of(context).size.width * 0.98,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: Styles.salmonJam,
-              ),
-            )));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -139,7 +127,9 @@ class _NewUserFormState extends State<NewUserForm> {
                 "Get ready to rock! Tell us about yourself.",
                 style: Styles.titleMedium,
               ),
-              coloredBar(),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: ColoredBar()),
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: TextFormField(
@@ -307,17 +297,6 @@ class _NewUserFormState extends State<NewUserForm> {
                         return CheckboxListTile(
                           title: Row(
                             children: [
-                              SizedBox(
-                                height: 22.0,
-                                width: 22.0,
-                                child: SvgPicture.asset(
-                                  'assets/instruments/${index + 1}.svg',
-                                  color: Colors.grey[800],
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
                               Text(instrumentLookup[index + 1]!),
                             ],
                           ),
