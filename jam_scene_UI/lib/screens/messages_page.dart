@@ -70,7 +70,8 @@ class _MessagesPageState extends State<MessagesPage> {
         case 'Conversations':
           return ConversationsPage(
               conversations: conversations,
-              messagesTabStateUpdater: messagesTabStateUpdater);
+              messagesTabStateUpdater: messagesTabStateUpdater,
+              messageUpdater: _getConversations);
         case 'Messages':
           return ChatMessagesPage(
               selectedConversation: selectedConversation,
