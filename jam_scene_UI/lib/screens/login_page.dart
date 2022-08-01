@@ -185,7 +185,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12)),
+                                borderRadius: BorderRadius.circular(2.0)),
                             textStyle: const TextStyle(
                               fontSize: 28,
                             ),
@@ -231,7 +231,7 @@ class _LoginPageState extends State<LoginPage> {
 InputDecoration _textInputBoxDecoration(label) {
   return InputDecoration(
     label: Text(label),
-    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+    border: OutlineInputBorder(borderRadius: BorderRadius.circular(2.0)),
     fillColor: const Color.fromARGB(255, 248, 247, 247),
     filled: true,
   );
