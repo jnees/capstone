@@ -35,8 +35,8 @@ class ConversationsPage extends StatelessWidget {
                       var conversation = conversations[index];
                       return ListTile(
                         leading: CircleAvatar(
-                            child:
-                                Image.network(conversation['friend_profpic'])),
+                            backgroundImage:
+                                NetworkImage(conversation['friend_profpic'])),
                         title: Text(conversation['friend_username']),
                         subtitle: Text(conversation['latest_message']['body'],
                             maxLines: 2, overflow: TextOverflow.ellipsis),
