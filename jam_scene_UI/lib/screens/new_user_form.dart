@@ -7,7 +7,6 @@ import 'package:jam_scene/styles.dart';
 import 'package:jam_scene/components/visual_components.dart';
 import '../models/instrument_lookup.dart';
 import 'dart:convert';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class NewUserForm extends StatefulWidget {
   const NewUserForm({Key? key}) : super(key: key);
@@ -127,9 +126,7 @@ class _NewUserFormState extends State<NewUserForm> {
                 "Get ready to rock! Tell us about yourself.",
                 style: Styles.titleMedium,
               ),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: ColoredBar()),
+              Padding(padding: const EdgeInsets.all(20.0), child: ColoredBar()),
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: TextFormField(
