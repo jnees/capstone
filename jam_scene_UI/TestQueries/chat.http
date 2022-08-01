@@ -12,7 +12,7 @@ content-type: application/json
     "convoId": "1bdbaeae-0c1a-42cb-9cba-e737a76f9b36+MqEuBlsfIug8Ozfjl2o8IkIyPr43",
     "senderId": "1bdbaeae-0c1a-42cb-9cba-e737a76f9b36",
     "receiverId": "MqEuBlsfIug8Ozfjl2o8IkIyPr43",
-    "body": "French horn!",
+    "body": "I know!",
     "time_sent": "2022-8-01 13:41:00"
   }
 

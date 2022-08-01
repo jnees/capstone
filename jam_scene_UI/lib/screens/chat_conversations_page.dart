@@ -25,7 +25,9 @@ class ConversationsPage extends StatelessWidget {
             ? const Text("No conversations")
             : Expanded(
                 child: RefreshIndicator(
-                  onRefresh: () async {},
+                  onRefresh: () async {
+                    messageUpdater();
+                  },
                   child: ListView.separated(
                     separatorBuilder: (context, index) => const Divider(),
                     itemCount: conversations.length,
