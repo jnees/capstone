@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:jam_scene/components/visual_components.dart';
+import 'package:jam_scene/styles.dart';
 import '../models/instrument_lookup.dart';
 import '../components/formatted_date.dart';
 
@@ -60,6 +62,10 @@ class _AdDetailsState extends State<AdDetails> {
               ],
             ),
           ),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+            child: ColoredBar(),
+          ),
           GestureDetector(
             onTap: () => {
               widget.adsPageStateUpdater({
@@ -69,23 +75,34 @@ class _AdDetailsState extends State<AdDetails> {
             },
             child: CircleAvatar(
               backgroundImage: NetworkImage(widget.adDetails['profile_photo']),
-              radius: MediaQuery.of(context).size.height * .1,
+              radius: MediaQuery.of(context).size.height * .08,
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(widget.adDetails['title'],
-                style: const TextStyle(fontWeight: FontWeight.bold)),
+            child: Text(
+              widget.adDetails['title'],
+              style: Styles.titleMedSmall,
+              textAlign: TextAlign.center,
+            ),
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+            child: Text(
+              "${widget.adDetails['description']}",
+              style: Styles.titleSmallest,
+            ),
+          ),
+          const SizedBox(height: 10),
           Text("Posted by: ${widget.adDetails['username']}"),
           Text(
               "Looking for ${instrumentLookup[widget.adDetails['instruments'][0]['id']]}"),
-          Text(widget.adDetails['city'] + ', ' + widget.adDetails['state']),
-          FormattedDateFromString(date: widget.adDetails['post_date']),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Text("${widget.adDetails['description']}"),
+          Text(
+            widget.adDetails['city'] + ', ' + widget.adDetails['state'],
+            style: Styles.headline7Ital,
           ),
+          FormattedDateFromString(date: widget.adDetails['post_date']),
+          const SizedBox(height: 10),
           creatorView
               ? ElevatedButton.icon(
                   onPressed: () {},
@@ -104,6 +121,10 @@ class _AdDetailsState extends State<AdDetails> {
                   ),
                   icon: const Icon(Icons.mail),
                   label: const Text("Respond")),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+            child: ColoredBar(),
+          ),
         ],
       ),
     );

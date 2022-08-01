@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:jam_scene/styles.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -52,16 +53,29 @@ class _SettingsPageState extends State<SettingsPage> {
     return Center(
       child: Column(
         children: [
-          ElevatedButton(onPressed: _logOut, child: const Text("Log Out")),
-          ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.red,
+          const Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Text(
+              "User Settings",
+              style: Styles.titleMedium,
               ),
-              onPressed: () => showDialog(
-                  builder: (_) => deleteWarning(),
-                  context: context,
-                  barrierDismissible: true),
-              child: const Text("Delete Account")),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: ElevatedButton(onPressed: _logOut, child: const Text("Log Out")),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.red,
+                ),
+                onPressed: () => showDialog(
+                    builder: (_) => deleteWarning(),
+                    context: context,
+                    barrierDismissible: true),
+                child: const Text("Delete Account")),
+          ),
         ],
       ),
     );
