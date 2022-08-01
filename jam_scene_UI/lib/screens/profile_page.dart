@@ -43,12 +43,18 @@ class _ProfilePageState extends State<ProfilePage> {
     var uri = Uri.parse(url);
     var response = await http.get(uri, headers: {'Authorization': token});
     if (jsonDecode(response.body)['user'].isEmpty) {
+      if (!mounted) {
+        return;
+      }
       return setState(() {
         loading = false;
         newUser = true;
       });
     }
 
+    if (!mounted) {
+      return;
+    }
     setState(() {
       profileData = ProfileData.fromJson(jsonDecode(response.body)['user'][0]);
       loading = false;
