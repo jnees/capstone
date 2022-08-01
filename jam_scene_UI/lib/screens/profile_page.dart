@@ -89,11 +89,10 @@ class _ProfilePageState extends State<ProfilePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(profileData.username,
-                                  style: Styles.titleMedium
-                                  ),
+                                  style: Styles.titleMedium),
                               Text(
                                 location.join(", "),
-                                style: Styles.headline6_i,
+                                style: Styles.headline6Ital,
                               ),
                             ],
                           ),
@@ -108,11 +107,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           Flexible(
                               child: Text(
-                                profileData.description,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 4,
-                                style: Styles.titleSmall,
-                                )),
+                            profileData.description,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 4,
+                            style: Styles.titleSmall,
+                          )),
                         ],
                       ),
                       const SizedBox(height: 10),
@@ -130,25 +129,24 @@ class _ProfilePageState extends State<ProfilePage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 3.0),
-                                  child: Text(
-                                    "Influences",
-                                    style: TextStyle(fontWeight: FontWeight.bold),
-                                  ),
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 3.0),
+                                child: Text(
+                                  "Influences",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
-                                Text(
-                                  profileData.influences,
-                                  maxLines: 4,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                              ),
+                              Text(
+                                profileData.influences,
+                                maxLines: 4,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ))
+                        ],
                       ),
                       const SizedBox(height: 10),
                       Row(
@@ -161,8 +159,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 const Padding(
                                   padding: EdgeInsets.symmetric(vertical: 3.0),
                                   child: Text("Recordings",
-                                      style:
-                                          TextStyle(fontWeight: FontWeight.bold)),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
                                 ),
                                 Text(profileData.recordings),
                               ],
@@ -177,8 +175,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 3.0),
                             child: Text("Instruments",
-                              style:
-                              TextStyle(fontWeight: FontWeight.bold)),
+                                style: TextStyle(fontWeight: FontWeight.bold)),
                           ),
                         ],
                       ),
