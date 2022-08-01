@@ -1,6 +1,7 @@
 import "dart:convert";
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:jam_scene/styles.dart';
 import '../models/instrument_lookup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -96,10 +97,9 @@ class _AdCreateState extends State<AdCreate> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text("Create an ad",
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text(
+                      "Create An Ad",
+                      style: Styles.titleLarge,
                     ),
                   ],
                 ),

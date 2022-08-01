@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jam_scene/styles.dart';
 import '../models/instrument_lookup.dart';
 import '../components/formatted_date.dart';
 
@@ -73,9 +74,9 @@ class AdResults extends StatelessWidget {
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(results[index]['username']),
-                      Text(instrumentLookup[results[index]['instruments'][0]
-                          ['id']]!),
+                      // Text(results[index]['username']),
+                      Text('${results[index]['username']} is looking for ${instrumentLookup[results[index]['instruments'][0]
+                          ['id']]!}'),
                     ],
                   ),
 
@@ -84,7 +85,8 @@ class AdResults extends StatelessWidget {
                     children: [
                       Text(results[index]["city"] +
                           ", " +
-                          results[index]["state"]),
+                          results[index]["state"],
+                          style: Styles.headline7Ital,),
                       FormattedDateFromString(
                           date: results[index]["post_date"]),
                     ],

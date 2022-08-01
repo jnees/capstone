@@ -38,6 +38,11 @@ class Styles {
     color: charcoal,
     fontStyle: FontStyle.italic,
   );
+  static const headline7Ital = TextStyle(
+    fontSize: 14.0,
+    color: charcoal,
+    fontStyle: FontStyle.italic,
+  );
   static const titleLarge = TextStyle(
     fontSize: 40.0,
     color: charcoal,
