@@ -37,7 +37,6 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
         await http.get(url, headers: {'content-type': 'application/json'});
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
-      debugPrint(data.toString());
       setState(() {
         messages = data;
         loadingMessages = false;
@@ -107,18 +106,26 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
                 flex: 9, child: Center(child: CircularProgressIndicator()))
             : Expanded(
                 flex: 9,
-                child: RefreshIndicator(
-                  triggerMode: RefreshIndicatorTriggerMode.onEdge,
-                  onRefresh: () async {
-                    _updateMessages();
+                child: NotificationListener(
+                  onNotification: (ScrollNotification notification) {
+                    if (notification is ScrollEndNotification) {
+                      _updateMessages();
+                    }
+                    return true;
                   },
-                  child: ListView.builder(
-                      itemCount: messages.length,
-                      itemBuilder: (context, index) {
-                        return messages[index]["senderid"] == uid
-                            ? SenderChatMessage(message: messages[index])
-                            : ReceiverChatMessage(message: messages[index]);
-                      }),
+                  child: RefreshIndicator(
+                    triggerMode: RefreshIndicatorTriggerMode.onEdge,
+                    onRefresh: () async {
+                      _updateMessages();
+                    },
+                    child: ListView.builder(
+                        itemCount: messages.length,
+                        itemBuilder: (context, index) {
+                          return messages[index]["senderid"] == uid
+                              ? SenderChatMessage(message: messages[index])
+                              : ReceiverChatMessage(message: messages[index]);
+                        }),
+                  ),
                 ),
               ),
         Form(
