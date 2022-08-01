@@ -31,9 +31,6 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
   }
 
   void _updateMessages() async {
-    setState(() {
-      loadingMessages = true;
-    });
     var url = Uri.parse(
         'https://jam-scene-app.herokuapp.com/messages/${widget.selectedConversation}');
     var response =
@@ -68,6 +65,8 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
       'time_sent': DateTime.now().toString(),
     };
 
+    messages.add(message);
+
     var body = json.encode(message);
 
     Uri url = Uri.parse('https://jam-scene-app.herokuapp.com/messages');
@@ -76,7 +75,7 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
         .post(url, body: body, headers: {'content-type': 'application/json'});
 
     if (response.statusCode == 200) {
-      // _updateMessages();
+      _updateMessages();
       messageController.clear();
     } else {
       debugPrint("Error sending message");
@@ -87,32 +86,41 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () {
-                widget.messagesTabStateUpdater({
-                  '_currView': 'Conversations',
-                  '_selectedConversation': "",
-                });
-              },
-            ),
-          ],
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  widget.messagesTabStateUpdater({
+                    '_currView': 'Conversations',
+                    '_selectedConversation': "",
+                  });
+                },
+              ),
+            ],
+          ),
         ),
         loadingMessages
-            ? const Center(child: CircularProgressIndicator())
+            ? const Expanded(
+                flex: 9, child: Center(child: CircularProgressIndicator()))
             : Expanded(
-                child: ListView.builder(
-                    itemCount: messages.length,
-                    itemBuilder: (context, index) {
-                      return messages[index]["senderid"] == uid
-                          ? SenderChatMessage(message: messages[index])
-                          : ReceiverChatMessage(message: messages[index]);
-                    }),
+                flex: 9,
+                child: RefreshIndicator(
+                  triggerMode: RefreshIndicatorTriggerMode.onEdge,
+                  onRefresh: () async {
+                    _updateMessages();
+                  },
+                  child: ListView.builder(
+                      itemCount: messages.length,
+                      itemBuilder: (context, index) {
+                        return messages[index]["senderid"] == uid
+                            ? SenderChatMessage(message: messages[index])
+                            : ReceiverChatMessage(message: messages[index]);
+                      }),
+                ),
               ),
-        const Spacer(),
         Form(
             key: chatFormKey,
             child: Center(
