@@ -3,15 +3,17 @@ GET https://jam-scene-app.herokuapp.com/conversations/e97ce146-41ce-4d51-b3ca-46
 
 ### 
 
+## "MqEuBlsfIug8Ozfjl2o8IkIyPr43"
+## "1bdbaeae-0c1a-42cb-9cba-e737a76f9b36"
 POST https://jam-scene-app.herokuapp.com/messages HTTP/1.1
 content-type: application/json
 
   {
     "convoId": "1bdbaeae-0c1a-42cb-9cba-e737a76f9b36+MqEuBlsfIug8Ozfjl2o8IkIyPr43",
-    "senderId": "MqEuBlsfIug8Ozfjl2o8IkIyPr43",
-    "receiverId": "1bdbaeae-0c1a-42cb-9cba-e737a76f9b36",
-    "body": "Hey! Aren't you the drummer from that movie Whiplash?",
-    "time_sent": "2022-7-27 16:39:00"
+    "senderId": "1bdbaeae-0c1a-42cb-9cba-e737a76f9b36",
+    "receiverId": "MqEuBlsfIug8Ozfjl2o8IkIyPr43",
+    "body": "French horn!",
+    "time_sent": "2022-8-01 13:41:00"
   }
 
 ###
