@@ -26,6 +26,9 @@ class _MessagesPageState extends State<MessagesPage> {
   }
 
   void _getConversations() async {
+    if (!mounted) {
+      return;
+    }
     setState(() {
       currView = "Loading";
     });
@@ -39,6 +42,9 @@ class _MessagesPageState extends State<MessagesPage> {
 
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
+      if (!mounted) {
+        return;
+      }
       setState(() {
         conversations = data;
         currView = "Conversations";
@@ -51,6 +57,9 @@ class _MessagesPageState extends State<MessagesPage> {
   }
 
   void messagesTabStateUpdater(Map<String, dynamic> stateChanges) {
+    if (!mounted) {
+      return;
+    }
     setState(() {
       if (stateChanges.containsKey('_currView')) {
         currView = stateChanges['_currView'];
@@ -70,7 +79,8 @@ class _MessagesPageState extends State<MessagesPage> {
         case 'Conversations':
           return ConversationsPage(
               conversations: conversations,
-              messagesTabStateUpdater: messagesTabStateUpdater);
+              messagesTabStateUpdater: messagesTabStateUpdater,
+              messageUpdater: _getConversations);
         case 'Messages':
           return ChatMessagesPage(
               selectedConversation: selectedConversation,
