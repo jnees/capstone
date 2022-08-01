@@ -33,7 +33,7 @@ class Styles {
     fontSize: 16.0,
     color: charcoal,
   );
-  static const headline6_i = TextStyle(
+  static const headline6Ital = TextStyle(
     fontSize: 16.0,
     color: charcoal,
     fontStyle: FontStyle.italic,
