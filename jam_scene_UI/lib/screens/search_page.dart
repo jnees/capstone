@@ -130,7 +130,7 @@ class _SearchPageState extends State<SearchPage> {
                             NetworkImage(results[index]["profile_photo"]),
                       ),
                       title: Text(results[index]["username"]),
-                      subtitle: Wrap(spacing: 3, runSpacing: -10, children: [
+                      subtitle: Wrap(spacing: 10, runSpacing: -5, children: [
                         for (var instrument in results[index]["instruments"])
                           Chip(
                               label: Text(instrument['name']),
@@ -138,7 +138,8 @@ class _SearchPageState extends State<SearchPage> {
                       ]),
                       trailing: Text(results[index]["city"] +
                           ", " +
-                          results[index]["state"]),
+                          results[index]["state"],
+                          style: Styles.headline7Ital,),
                     );
                   },
                 ),
