@@ -68,26 +68,28 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void _showMessageForm() {
     showModalBottomSheet(
+      backgroundColor: Styles.salmonJamTint2,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
         ),
       ),
       context: context,
       builder: (context) => Column(
         children: [
+          const SizedBox(height: 10.0),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text("Send a message to ${profileData.username}",
                 style: Styles.headline6),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             child: Form(
               key: GlobalKey<FormState>(),
               child: TextFormField(
-                minLines: 4,
+                minLines: 5,
                 maxLines: 6,
                 controller: messageController,
                 decoration: const InputDecoration(
@@ -97,12 +99,15 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
           ),
-          ElevatedButton(
-            child: const Text('Send'),
-            onPressed: () {
-              Navigator.of(context).pop();
-              _sendMessage();
-            },
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: ElevatedButton(
+              child: const Text('Send'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _sendMessage();
+              },
+            ),
           ),
         ],
       ),

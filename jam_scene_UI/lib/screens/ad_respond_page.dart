@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:jam_scene/styles.dart';
 
 class AdRespond extends StatefulWidget {
   const AdRespond(
@@ -50,54 +51,60 @@ class _AdRespondState extends State<AdRespond> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        children: [
-          // back button row
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  widget.adsPageStateUpdater({
-                    '_currView': 'AdDetails',
-                  });
-                },
-              )
-            ],
-          ),
-          Text('Responding to user ${widget.adDetails['username']}'),
-          // response form
-          Form(
-            key: adRespondFormKey,
-            child: Column(
+      child: Container(
+        color: Styles.salmonJamTint2,
+        child: Column(
+          children: [
+            // back button row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: messageController,
-                    maxLines: null,
-                    minLines: 6,
-                    decoration: const InputDecoration(
-                      labelText: 'Message',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-                // send button
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                    child: const Text('Send'),
-                    onPressed: () {
-                      sendMessage(context);
-                    },
-                  ),
-                ),
+                IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () {
+                    widget.adsPageStateUpdater({
+                      '_currView': 'AdDetails',
+                    });
+                  },
+                )
               ],
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Text('Responding to user ${widget.adDetails['username']}'),
+            ),
+            // response form
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              child: Form(
+                key: adRespondFormKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: messageController,
+                      maxLines: null,
+                      minLines: 6,
+                      decoration: const InputDecoration(
+                        labelText: 'Message',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    // send button
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: ElevatedButton(
+                        child: const Text('Send'),
+                        onPressed: () {
+                          sendMessage(context);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
