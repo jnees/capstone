@@ -9,11 +9,11 @@ POST https://jam-scene-app.herokuapp.com/messages HTTP/1.1
 content-type: application/json
 
   {
-    "convoId": "1bdbaeae-0c1a-42cb-9cba-e737a76f9b36+MqEuBlsfIug8Ozfjl2o8IkIyPr43",
-    "senderId": "1bdbaeae-0c1a-42cb-9cba-e737a76f9b36",
+    "convoId": "MqEuBlsfIug8Ozfjl2o8IkIyPr43+bee84a4b-e6ac-42d5-a20f-ee703cd60bfa",
+    "senderId": "bee84a4b-e6ac-42d5-a20f-ee703cd60bfa",
     "receiverId": "MqEuBlsfIug8Ozfjl2o8IkIyPr43",
-    "body": "I know!",
-    "time_sent": "2022-8-01 13:41:00"
+    "body": "The Gatekeepers",
+    "time_sent": "2022-8-01 15:52:00"
   }
 
 ###
@@ -22,9 +22,24 @@ POST https://jam-scene-app.herokuapp.com/messages HTTP/1.1
 content-type: application/json
 
   {
-    "convoId": "1bdbaeae-0c1a-42cb-9cba-e737a76f9b36+MqEuBlsfIug8Ozfjl2o8IkIyPr43",
+    "convoId": "MqEuBlsfIug8Ozfjl2o8IkIyPr43+bee84a4b-e6ac-42d5-a20f-ee703cd60bfa",
+    "senderId": "MqEuBlsfIug8Ozfjl2o8IkIyPr43",
+    "receiverId": "bee84a4b-e6ac-42d5-a20f-ee703cd60bfa",
+    "body": "Cool, what's the band called?",
+    "time_sent": "2022-8-01 15:52:00"
+  }
+
+
+
+###
+
+POST https://jam-scene-app.herokuapp.com/messages HTTP/1.1
+content-type: application/json
+
+  {
+    "convoId": "MqEuBlsfIug8Ozfjl2o8IkIyPr43+bee84a4b-e6ac-42d5-a20f-ee703cd60bfa",
     "senderId": "1bdbaeae-0c1a-42cb-9cba-e737a76f9b36",
     "receiverId": "MqEuBlsfIug8Ozfjl2o8IkIyPr43",
-    "body": "What in gods name would make you think that?",
+    "body": "The Gatekeepers",
     "time_sent": "2022-7-27 16:40:00"
   }
