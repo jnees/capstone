@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:jam_scene/components/visual_components.dart';
 import 'package:jam_scene/styles.dart';
+import 'package:http/http.dart' as http;
 import '../models/instrument_lookup.dart';
 import '../components/formatted_date.dart';
 
@@ -18,12 +20,43 @@ class AdDetails extends StatefulWidget {
 }
 
 class _AdDetailsState extends State<AdDetails> {
+  final GlobalKey adRespondFormKey = GlobalKey<FormState>();
+  final TextEditingController messageController = TextEditingController();
   late bool creatorView;
 
   @override
   void initState() {
     super.initState();
     _isCreator();
+  }
+
+  String? getConvoId() {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    List<String> users = [uid, widget.adDetails['posted_by']];
+    users.sort();
+    return "${users[0]}+${users[1]}";
+  }
+
+  void _sendMessage() async {
+    if (messageController.text.isEmpty) {
+      return;
+    }
+    var message = {
+      'convoId': getConvoId(),
+      'senderId': FirebaseAuth.instance.currentUser!.uid,
+      'receiverId': widget.adDetails['posted_by'],
+      'body': messageController.text,
+      'time_sent': DateTime.now().toString(),
+    };
+
+    var url = Uri.parse('https://jam-scene-app.herokuapp.com/messages/');
+    var response = await http.post(url,
+        headers: {'content-type': 'application/json'},
+        body: json.encode(message));
+    if (response.statusCode == 200) {
+      messageController.clear();
+      widget.adsPageStateUpdater({'_currView': 'AdDetails'});
+    }
   }
 
   void _isCreator() {
@@ -37,6 +70,55 @@ class _AdDetailsState extends State<AdDetails> {
         creatorView = false;
       });
     }
+  }
+
+  void _showMessageForm() {
+    showModalBottomSheet(
+      backgroundColor: Styles.salmonJamTint2,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
+        ),
+      ),
+      context: context,
+      builder: (context) => Column(
+        children: [
+          const SizedBox(height: 10.0),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text("Send a message to ${widget.adDetails['username']}",
+                style: Styles.headline6),
+          ),
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            child: Form(
+              key: adRespondFormKey,
+              child: TextFormField(
+                minLines: 5,
+                maxLines: 6,
+                controller: messageController,
+                decoration: const InputDecoration(
+                  labelText: 'Message',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: ElevatedButton(
+              child: const Text('Send'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _sendMessage();
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -87,7 +169,8 @@ class _AdDetailsState extends State<AdDetails> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
             child: Text(
               "${widget.adDetails['description']}",
               style: Styles.titleSmallest,
@@ -114,10 +197,10 @@ class _AdDetailsState extends State<AdDetails> {
                 )
               : ElevatedButton.icon(
                   onPressed: () {
-                    widget.adsPageStateUpdater({'_currView': 'Respond'});
+                    _showMessageForm();
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.green,
+                    primary: Styles.charcoal,
                   ),
                   icon: const Icon(Icons.mail),
                   label: const Text("Respond")),
