@@ -8,7 +8,7 @@ import 'package:jam_scene/screens/new_user_form.dart';
 import 'package:jam_scene/styles.dart';
 import '../models/profile_data.dart';
 import '../components/formatted_date.dart';
-// import '../components/instrument_tags.dart';
+import '../components/availability_table.dart';
 
 class ProfilePage extends StatefulWidget {
   final String? otherUserId;
@@ -25,6 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
   bool loading = true;
   bool newUser = false;
   TextEditingController messageController = TextEditingController();
+  TextEditingController reviewController = TextEditingController();
   late bool ownProfile;
 
   @override
@@ -46,7 +47,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void _sendMessage() async {
-    if (widget.otherUserId == null) {
+    if (widget.otherUserId == null || messageController.text.isEmpty) {
       return;
     }
     var message = {
@@ -57,12 +58,34 @@ class _ProfilePageState extends State<ProfilePage> {
       'time_sent': DateTime.now().toString(),
     };
 
-    var url = Uri.parse('https://jam-scene-app.herokuapp.com/messages/');
+    Uri url = Uri.parse('https://jam-scene-app.herokuapp.com/messages/');
     var response = await http.post(url,
         headers: {'content-type': 'application/json'},
         body: json.encode(message));
     if (response.statusCode == 200) {
       messageController.clear();
+    }
+  }
+
+  void _submitReview() async {
+    if (reviewController.text.isEmpty) {
+      return;
+    }
+
+    Map<String, dynamic> review = {
+      "for_user": profileData.id,
+      "by_user": uid,
+      "time_posted": DateTime.now().toString(),
+      "description": reviewController.text,
+    };
+
+    Uri url = Uri.parse('https://jam-scene-app.herokuapp.com/reviews');
+    var response = await http.post(url,
+        headers: {'content-type': 'application/json'},
+        body: json.encode(review));
+    if (response.statusCode == 200) {
+      reviewController.clear();
+      _fetchProfileData();
     }
   }
 
@@ -102,6 +125,50 @@ class _ProfilePageState extends State<ProfilePage> {
             onPressed: () {
               Navigator.of(context).pop();
               _sendMessage();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showReviewForm() {
+    showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      context: context,
+      builder: (context) => Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text("Review ${profileData.username}?",
+                style: Styles.headline6),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Form(
+              key: GlobalKey<FormState>(),
+              child: TextFormField(
+                minLines: 4,
+                maxLines: 6,
+                controller: reviewController,
+                decoration: InputDecoration(
+                    labelText: 'Review',
+                    border: const OutlineInputBorder(),
+                    hintText:
+                        "What is great about jamming with ${profileData.username}?"),
+              ),
+            ),
+          ),
+          ElevatedButton(
+            child: const Text('Submit'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              _submitReview();
             },
           ),
         ],
@@ -170,16 +237,18 @@ class _ProfilePageState extends State<ProfilePage> {
                             ],
                           ),
                           const SizedBox(width: 20),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(profileData.username,
-                                  style: Styles.titleMedium),
-                              Text(
-                                location.join(", "),
-                                style: Styles.headline6Ital,
-                              ),
-                            ],
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(profileData.username,
+                                    style: Styles.titleMedium),
+                                Text(
+                                  location.join(", "),
+                                  style: Styles.headline6Ital,
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -308,84 +377,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.all(12.0),
-                                  child: Table(
-                                    children: [
-                                      const TableRow(children: [
-                                        Text("Day",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold)),
-                                        Text("AM",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold)),
-                                        Text("PM",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold)),
-                                      ]),
-                                      TableRow(children: [
-                                        const Text("Sunday"),
-                                        profileData.availSunAm
-                                            ? const Text("✅")
-                                            : const Text("-"),
-                                        profileData.availSunPm
-                                            ? const Text("✅")
-                                            : const Text("-"),
-                                      ]),
-                                      TableRow(children: [
-                                        const Text("Monday"),
-                                        profileData.availMonAm
-                                            ? const Text("✅")
-                                            : const Text("-"),
-                                        profileData.availMonPm
-                                            ? const Text("✅")
-                                            : const Text("-"),
-                                      ]),
-                                      TableRow(children: [
-                                        const Text("Tuesday"),
-                                        profileData.availTueAm
-                                            ? const Text("✅")
-                                            : const Text("-"),
-                                        profileData.availTuePm
-                                            ? const Text("✅")
-                                            : const Text("-"),
-                                      ]),
-                                      TableRow(children: [
-                                        const Text("Wednesday"),
-                                        profileData.availWedAm
-                                            ? const Text("✅")
-                                            : const Text("-"),
-                                        profileData.availWedPm
-                                            ? const Text("✅")
-                                            : const Text("-"),
-                                      ]),
-                                      TableRow(children: [
-                                        const Text("Thursday"),
-                                        profileData.availThuAm
-                                            ? const Text("✅")
-                                            : const Text("-"),
-                                        profileData.availThuPm
-                                            ? const Text("✅")
-                                            : const Text("-"),
-                                      ]),
-                                      TableRow(children: [
-                                        const Text("Friday"),
-                                        profileData.availFriAm
-                                            ? const Text("✅")
-                                            : const Text("-"),
-                                        profileData.availFriPm
-                                            ? const Text("✅")
-                                            : const Text("-"),
-                                      ]),
-                                      TableRow(children: [
-                                        const Text("Saturday"),
-                                        profileData.availSatAm
-                                            ? const Text("✅")
-                                            : const Text("-"),
-                                        profileData.availSatPm
-                                            ? const Text("✅")
-                                            : const Text("-"),
-                                      ]),
-                                    ],
-                                  ),
+                                  child: AvailabilityTable(
+                                      profileData: profileData),
                                 ),
                               ),
                             ),
@@ -419,6 +412,18 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             ),
                             const Divider()
+                          ],
+                        ),
+                      if (!ownProfile)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                _showReviewForm();
+                              },
+                              child: const Text("Add a Review"),
+                            )
                           ],
                         ),
                     ],
