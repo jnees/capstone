@@ -23,11 +23,89 @@ class _ProfilePageState extends State<ProfilePage> {
   String uid = FirebaseAuth.instance.currentUser!.uid;
   bool loading = true;
   bool newUser = false;
+  TextEditingController messageController = TextEditingController();
+  late bool ownProfile;
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      ownProfile = widget.otherUserId == null;
+    });
     _fetchProfileData();
+  }
+
+  String? getConvoId() {
+    if (widget.otherUserId == null) {
+      return null;
+    }
+    List<String> users = [uid, widget.otherUserId!];
+    users.sort();
+    return "${users[0]}+${users[1]}";
+  }
+
+  void _sendMessage() async {
+    if (widget.otherUserId == null) {
+      return;
+    }
+    var message = {
+      'convoId': getConvoId(),
+      'senderId': uid,
+      'receiverId': widget.otherUserId,
+      'body': messageController.text,
+      'time_sent': DateTime.now().toString(),
+    };
+
+    var url = Uri.parse('https://jam-scene-app.herokuapp.com/messages/');
+    var response = await http.post(url,
+        headers: {'content-type': 'application/json'},
+        body: json.encode(message));
+    if (response.statusCode == 200) {
+      messageController.clear();
+    }
+  }
+
+  void _showMessageForm() {
+    showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      context: context,
+      builder: (context) => Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text("Send a message to ${profileData.username}",
+                style: Styles.headline6),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Form(
+              key: GlobalKey<FormState>(),
+              child: TextFormField(
+                minLines: 4,
+                maxLines: 6,
+                controller: messageController,
+                decoration: const InputDecoration(
+                  labelText: 'Message',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ),
+          ),
+          ElevatedButton(
+            child: const Text('Send'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              _sendMessage();
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   void _fetchProfileData() async {
@@ -121,15 +199,19 @@ class _ProfilePageState extends State<ProfilePage> {
                         ],
                       ),
                       const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: const Text("Send Message"),
-                          )
-                        ],
-                      ),
+                      !ownProfile
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    _showMessageForm();
+                                  },
+                                  child: const Text("Send Message"),
+                                )
+                              ],
+                            )
+                          : const SizedBox(),
                       const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
