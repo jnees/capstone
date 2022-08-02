@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 
 class Styles {
   static const salmonJam = Color.fromRGBO(245, 169, 134, 1);
+  static const charcoal = Color.fromARGB(255, 38, 37, 35);
   static const lavenderJam = Color.fromARGB(255, 153, 147, 178);
   static const berryJam = Color.fromARGB(255, 80, 3, 99);
-  static const charcoal = Color.fromARGB(255, 38, 37, 35);
+  static const salmonJamTint1 = Color.fromRGBO(248, 190, 164, 1);
+  static const salmonJamTint2 = Color.fromRGBO(249, 201, 179, 1);
+  static const salmonJamTone1 = Color.fromRGBO(214, 148, 117, 1);
 
   // tag colors
   static const tag1 = Color.fromARGB(255, 96, 205, 251);
