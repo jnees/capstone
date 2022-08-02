@@ -7,6 +7,7 @@ import 'package:jam_scene/components/visual_components.dart';
 import 'package:jam_scene/screens/new_user_form.dart';
 import 'package:jam_scene/styles.dart';
 import '../models/profile_data.dart';
+import '../components/formatted_date.dart';
 // import '../components/instrument_tags.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -193,7 +194,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               child: Text(
                             profileData.description,
                             overflow: TextOverflow.ellipsis,
-                            maxLines: 4,
+                            maxLines: 8,
                             style: Styles.titleSmall,
                           )),
                         ],
@@ -391,7 +392,35 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 1000),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 3.0),
+                        child: Text("Reviews",
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                      for (var review in profileData.reviews)
+                        Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: ListTile(
+                                leading: CircleAvatar(
+                                  backgroundImage:
+                                      NetworkImage(review['profile_photo']),
+                                ),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(review['by_user']),
+                                    FormattedDateFromString(
+                                        date: review['time_posted']),
+                                  ],
+                                ),
+                                subtitle: Text(review["description"]),
+                              ),
+                            ),
+                            const Divider()
+                          ],
+                        ),
                     ],
                   ),
                 ),

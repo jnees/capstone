@@ -1,0 +1,23 @@
+POST https://jam-scene-app.herokuapp.com/reviews HTTP/1.1
+content-type: application/json
+
+    {
+        "for_user": "MqEuBlsfIug8Ozfjl2o8IkIyPr43",
+        "by_user": "bee84a4b-e6ac-42d5-a20f-ee703cd60bfa",
+        "time_posted": "2022-8-01 20:32:00",
+        "description": "Drums: 8.0/10. Deviled Eggs he showed up with: 10/10."
+    }
+
+###
+
+PUT https://jam-scene-app.herokuapp.com/review/8 HTTP/1.1
+content-type: application/json
+
+    {
+        "description": "Drums: 6/10. Deviled Eggs he showed up with: 10/10."
+    }
+
+###
+
+DELETE https://jam-scene-app.herokuapp.com/review/6 HTTP/1.1
+content-type: application/json

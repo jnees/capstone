@@ -27,6 +27,7 @@ class ProfileData {
   final bool availSunPm;
   final String profilePhoto;
   final List instruments;
+  final List reviews;
 
   const ProfileData(
       {required this.id,
@@ -56,38 +57,39 @@ class ProfileData {
       required this.availSunAm,
       required this.availSunPm,
       required this.profilePhoto,
-      required this.instruments});
+      required this.instruments,
+      required this.reviews});
 
   factory ProfileData.fromJson(Map<String, dynamic> json) {
     return ProfileData(
-      id: json['id'],
-      email: json['email'],
-      username: json['username'],
-      firstName: json['first_name'],
-      lastName: json['last_name'],
-      city: json['city'],
-      state: json['state'],
-      zipcode: json['zipcode'],
-      influences: json['influences'],
-      recordings: json['recordings'],
-      description: json['description'],
-      joinDate: DateTime.parse(json['join_date']),
-      availMonAm: json['avail_mon_am'],
-      availMonPm: json['avail_mon_pm'],
-      availTueAm: json['avail_tue_am'],
-      availTuePm: json['avail_tue_pm'],
-      availWedAm: json['avail_wed_am'],
-      availWedPm: json['avail_wed_pm'],
-      availThuAm: json['avail_thu_am'],
-      availThuPm: json['avail_thu_pm'],
-      availFriAm: json['avail_fri_am'],
-      availFriPm: json['avail_fri_pm'],
-      availSatAm: json['avail_sat_am'],
-      availSatPm: json['avail_sat_pm'],
-      availSunAm: json['avail_sun_am'],
-      availSunPm: json['avail_sun_pm'],
-      profilePhoto: json['profile_photo'],
-      instruments: json['instruments'],
-    );
+        id: json['id'],
+        email: json['email'],
+        username: json['username'],
+        firstName: json['first_name'],
+        lastName: json['last_name'],
+        city: json['city'],
+        state: json['state'],
+        zipcode: json['zipcode'],
+        influences: json['influences'],
+        recordings: json['recordings'],
+        description: json['description'],
+        joinDate: DateTime.parse(json['join_date']),
+        availMonAm: json['avail_mon_am'],
+        availMonPm: json['avail_mon_pm'],
+        availTueAm: json['avail_tue_am'],
+        availTuePm: json['avail_tue_pm'],
+        availWedAm: json['avail_wed_am'],
+        availWedPm: json['avail_wed_pm'],
+        availThuAm: json['avail_thu_am'],
+        availThuPm: json['avail_thu_pm'],
+        availFriAm: json['avail_fri_am'],
+        availFriPm: json['avail_fri_pm'],
+        availSatAm: json['avail_sat_am'],
+        availSatPm: json['avail_sat_pm'],
+        availSunAm: json['avail_sun_am'],
+        availSunPm: json['avail_sun_pm'],
+        profilePhoto: json['profile_photo'],
+        instruments: json['instruments'],
+        reviews: json['reviews']);
   }
 }
