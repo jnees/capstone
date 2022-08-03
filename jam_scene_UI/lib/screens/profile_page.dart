@@ -214,6 +214,41 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
+  void _deleteReview(reviewId) async {
+    String? token = await FirebaseAuth.instance.currentUser?.getIdToken();
+    if (token == null) return;
+    Uri uri = Uri.parse('https://jam-scene-app.herokuapp.com/review/$reviewId');
+    var response = await http.delete(uri, headers: {'Authorization': token});
+    if (response.statusCode == 200) {
+      _fetchProfileData();
+    }
+  }
+
+  void _warnDeleteReview(reviewId) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Review'),
+        content: const Text('Are you sure you want to delete this review?'),
+        actions: [
+          ElevatedButton(
+            child: const Text('Cancel'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          ElevatedButton(
+            child: const Text('Delete'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              _deleteReview(reviewId);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return loading
@@ -411,7 +446,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         tooltip: "Delete Review",
                                         icon: const Icon(Icons.delete),
                                         onPressed: () {
-                                          // _deleteReview(review['id']);
+                                          _warnDeleteReview(review['reviewid']);
                                         },
                                       )
                                     : null,

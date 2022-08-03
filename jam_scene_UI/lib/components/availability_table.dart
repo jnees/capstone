@@ -69,10 +69,9 @@ class DayText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: TableCell(
-            verticalAlignment: TableCellVerticalAlignment.fill,
-            child: Text(day)));
+      padding: const EdgeInsets.all(8.0),
+      child: Text(day),
+    );
   }
 }
 
@@ -83,11 +82,8 @@ class CheckText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.all(4.0),
-      child: TableCell(
-          verticalAlignment: TableCellVerticalAlignment.fill, child: Text("✅")),
-    );
+    return const TableCell(
+        verticalAlignment: TableCellVerticalAlignment.fill, child: Text("✅"));
   }
 }
 
@@ -98,10 +94,11 @@ class DashText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.all(4.0),
-      child: TableCell(
-          verticalAlignment: TableCellVerticalAlignment.fill, child: Text("-")),
-    );
+    return const TableCell(
+        verticalAlignment: TableCellVerticalAlignment.fill,
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text("-"),
+        ));
   }
 }
