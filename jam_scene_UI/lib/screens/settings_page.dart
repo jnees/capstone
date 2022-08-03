@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:jam_scene/styles.dart';
@@ -58,24 +59,24 @@ class _SettingsPageState extends State<SettingsPage> {
             child: Text(
               "User Settings",
               style: Styles.titleMedium,
-              ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: ElevatedButton(onPressed: _logOut, child: const Text("Log Out")),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.red,
-                ),
-                onPressed: () => showDialog(
-                    builder: (_) => deleteWarning(),
-                    context: context,
-                    barrierDismissible: true),
-                child: const Text("Delete Account")),
+                onPressed: _logOut, child: const Text("Log Out")),
           ),
+          Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.red,
+                  ),
+                  onPressed: () => showDialog(
+                      builder: (_) => deleteWarning(),
+                      context: context,
+                      barrierDismissible: true),
+                  child: const Text("Delete Account"))),
         ],
       ),
     );

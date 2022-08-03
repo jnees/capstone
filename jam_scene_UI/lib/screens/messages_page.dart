@@ -45,6 +45,7 @@ class _MessagesPageState extends State<MessagesPage> {
       if (!mounted) {
         return;
       }
+      debugPrint(data);
       setState(() {
         conversations = data;
         currView = "Conversations";

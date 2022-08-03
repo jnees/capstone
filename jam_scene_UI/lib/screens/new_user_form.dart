@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:jam_scene/styles.dart';
 import 'package:jam_scene/components/visual_components.dart';
@@ -61,8 +62,19 @@ class _NewUserFormState extends State<NewUserForm> {
 
   bool loading = false;
 
+  getDefaultImageURL() async {
+    var url = await FirebaseStorage.instance
+        .refFromURL("gs://jamscene-410d6.appspot.com/blank_profile.png")
+        .getDownloadURL();
+    return url;
+  }
+
   Future<int> _sendToDatabase() async {
     loading = true;
+
+    String? photoURL = FirebaseAuth.instance.currentUser?.photoURL;
+    // Set a default profile image if none is provided by the user's google account.
+    photoURL ??= await getDefaultImageURL();
 
     Map formData = {};
     formData['uid'] = FirebaseAuth.instance.currentUser!.uid;
@@ -92,7 +104,7 @@ class _NewUserFormState extends State<NewUserForm> {
     formData['avail_sun_am'] = sunAmAvail;
     formData['avail_sun_pm'] = sunPmAvail;
     formData['instruments'] = [];
-    formData['photo'] = FirebaseAuth.instance.currentUser!.photoURL;
+    formData['photo'] = photoURL;
 
     for (var key in instruments.keys) {
       if (instruments[key]! == true) {
