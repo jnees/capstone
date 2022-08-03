@@ -108,7 +108,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 style: Styles.headline6),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             child: Form(
               key: GlobalKey<FormState>(),
               child: TextFormField(
@@ -405,10 +406,19 @@ class _ProfilePageState extends State<ProfilePage> {
                                   backgroundImage:
                                       NetworkImage(review['profile_photo']),
                                 ),
+                                trailing: review['by_user'] == uid || ownProfile
+                                    ? IconButton(
+                                        tooltip: "Delete Review",
+                                        icon: const Icon(Icons.delete),
+                                        onPressed: () {
+                                          // _deleteReview(review['id']);
+                                        },
+                                      )
+                                    : null,
                                 title: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(review['by_user']),
+                                    Text(review['by_username']),
                                     FormattedDateFromString(
                                         date: review['time_posted']),
                                   ],

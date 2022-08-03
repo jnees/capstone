@@ -14,46 +14,94 @@ class AvailabilityTable extends StatelessWidget {
     return Table(
       children: [
         const TableRow(children: [
-          Text("Day", style: TextStyle(fontWeight: FontWeight.bold)),
+          Text("", style: TextStyle(fontWeight: FontWeight.bold)),
           Text("AM", style: TextStyle(fontWeight: FontWeight.bold)),
           Text("PM", style: TextStyle(fontWeight: FontWeight.bold)),
         ]),
         TableRow(children: [
-          const Text("Sunday"),
-          profileData.availSunAm ? const Text("✅") : const Text("-"),
-          profileData.availSunPm ? const Text("✅") : const Text("-"),
+          const DayText(day: "Sunday"),
+          profileData.availSunAm ? const CheckText() : const DashText(),
+          profileData.availSunPm ? const CheckText() : const DashText(),
         ]),
         TableRow(children: [
-          const Text("Monday"),
-          profileData.availMonAm ? const Text("✅") : const Text("-"),
-          profileData.availMonPm ? const Text("✅") : const Text("-"),
+          const DayText(day: "Monday"),
+          profileData.availMonAm ? const CheckText() : const DashText(),
+          profileData.availMonPm ? const CheckText() : const DashText(),
         ]),
         TableRow(children: [
-          const Text("Tuesday"),
-          profileData.availTueAm ? const Text("✅") : const Text("-"),
-          profileData.availTuePm ? const Text("✅") : const Text("-"),
+          const DayText(day: "Tuesday"),
+          profileData.availTueAm ? const CheckText() : const DashText(),
+          profileData.availTuePm ? const CheckText() : const DashText(),
         ]),
         TableRow(children: [
-          const Text("Wednesday"),
-          profileData.availWedAm ? const Text("✅") : const Text("-"),
-          profileData.availWedPm ? const Text("✅") : const Text("-"),
+          const DayText(day: "Wednesday"),
+          profileData.availWedAm ? const CheckText() : const DashText(),
+          profileData.availWedPm ? const CheckText() : const DashText(),
         ]),
         TableRow(children: [
-          const Text("Thursday"),
-          profileData.availThuAm ? const Text("✅") : const Text("-"),
-          profileData.availThuPm ? const Text("✅") : const Text("-"),
+          const DayText(day: "Thursday"),
+          profileData.availThuAm ? const CheckText() : const DashText(),
+          profileData.availThuPm ? const CheckText() : const DashText(),
         ]),
         TableRow(children: [
-          const Text("Friday"),
-          profileData.availFriAm ? const Text("✅") : const Text("-"),
-          profileData.availFriPm ? const Text("✅") : const Text("-"),
+          const DayText(day: "Friday"),
+          profileData.availFriAm ? const CheckText() : const DashText(),
+          profileData.availFriPm ? const CheckText() : const DashText(),
         ]),
         TableRow(children: [
-          const Text("Saturday"),
-          profileData.availSatAm ? const Text("✅") : const Text("-"),
-          profileData.availSatPm ? const Text("✅") : const Text("-"),
+          const DayText(day: "Saturday"),
+          profileData.availSatAm ? const CheckText() : const DashText(),
+          profileData.availSatPm ? const CheckText() : const DashText(),
         ]),
       ],
+    );
+  }
+}
+
+class DayText extends StatelessWidget {
+  const DayText({
+    Key? key,
+    required this.day,
+  }) : super(key: key);
+
+  final String day;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: TableCell(
+            verticalAlignment: TableCellVerticalAlignment.fill,
+            child: Text(day)));
+  }
+}
+
+class CheckText extends StatelessWidget {
+  const CheckText({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.all(4.0),
+      child: TableCell(
+          verticalAlignment: TableCellVerticalAlignment.fill, child: Text("✅")),
+    );
+  }
+}
+
+class DashText extends StatelessWidget {
+  const DashText({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.all(4.0),
+      child: TableCell(
+          verticalAlignment: TableCellVerticalAlignment.fill, child: Text("-")),
     );
   }
 }

@@ -38,10 +38,10 @@ class ConversationsPage extends StatelessWidget {
                             backgroundImage:
                                 NetworkImage(conversation['friend_profpic'])),
                         title: Text(conversation['friend_username']),
-                        subtitle: Text(conversation['latest_message']['body'],
+                        subtitle: Text(conversation['latest_body'],
                             maxLines: 2, overflow: TextOverflow.ellipsis),
                         trailing: FormattedDateFromString(
-                            date: conversation['latest_message']['time_sent']),
+                            date: conversation['latest_time_sent']),
                         onTap: () {
                           messagesTabStateUpdater({
                             '_currView': "Messages",
