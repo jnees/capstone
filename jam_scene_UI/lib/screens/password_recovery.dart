@@ -59,23 +59,37 @@ class _PasswordRecoveryState extends State<PasswordRecovery> {
               ),
               //submit button
               const SizedBox(height: 10),
-              ElevatedButton(
-                child: const Text('Send Recovery Email'),
-                onPressed: () {
-                  if (recoveryEmailController.text.isNotEmpty) {
-                    _sendRecoveryEmail(recoveryEmailController.text);
-                    widget.loginStateSetter({'passwordRecovery': false});
-                    // show message that recovery email has been sent
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        behavior: SnackBarBehavior.floating,
-                        margin: const EdgeInsets.only(bottom: 50.0),
-                        content: Text(
-                            "Recovery message sent to ${recoveryEmailController.text}"),
-                      ),
-                    );
-                  }
-                },
+              FractionallySizedBox(
+                widthFactor: .5,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                      child: const Text('Cancel'),
+                      onPressed: () {
+                        widget.loginStateSetter({'passwordRecovery': false});
+                      },
+                    ),
+                    ElevatedButton(
+                      child: const Text('Send Recovery Email'),
+                      onPressed: () {
+                        if (recoveryEmailController.text.isNotEmpty) {
+                          _sendRecoveryEmail(recoveryEmailController.text);
+                          widget.loginStateSetter({'passwordRecovery': false});
+                          // show message that recovery email has been sent
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              behavior: SnackBarBehavior.floating,
+                              margin: const EdgeInsets.only(bottom: 50.0),
+                              content: Text(
+                                  "Recovery message sent to ${recoveryEmailController.text}"),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
