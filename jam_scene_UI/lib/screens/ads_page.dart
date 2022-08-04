@@ -17,7 +17,6 @@ class AdsPage extends StatefulWidget {
 }
 
 class _AdsPageState extends State<AdsPage> {
-  // Using mock data for layout building.
   late List<dynamic> unfilteredData = [];
   late List<dynamic> results = [];
   late String currView = 'Results';

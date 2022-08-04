@@ -9,6 +9,7 @@ import 'package:jam_scene/styles.dart';
 import '../models/profile_data.dart';
 import '../components/formatted_date.dart';
 import '../components/availability_table.dart';
+import '../screens/edit_profile_form.dart';
 
 class ProfilePage extends StatefulWidget {
   final String? otherUserId;
@@ -27,6 +28,7 @@ class _ProfilePageState extends State<ProfilePage> {
   TextEditingController messageController = TextEditingController();
   TextEditingController reviewController = TextEditingController();
   late bool ownProfile;
+  bool editingProfile = false;
 
   @override
   void initState() {
@@ -251,181 +253,208 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  void profileStateSetter(Map<String, dynamic> stateChanges) {
+    setState(() {
+      if (stateChanges.containsKey('edittingProfile')) {
+        editingProfile = stateChanges['edittingProfile'];
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return loading
         ? const Center(child: CircularProgressIndicator())
         : newUser
             ? const NewUserForm()
-            : Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: CircleAvatar(
-                                  radius: 50,
-                                  backgroundImage:
-                                      NetworkImage(profileData.profilePhoto),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(width: 20),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(profileData.username,
-                                    style: Styles.titleMedium),
-                                Text(
-                                  location.join(", "),
-                                  style: Styles.headline6Ital,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10.0),
-                        child: ColoredBar(),
-                      ),
-                      Row(
+            : editingProfile
+                ? EditProfileForm(
+                    profileData: profileData,
+                    profileStateSetter: profileStateSetter)
+                : Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: SingleChildScrollView(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Flexible(
-                              child: Text(
-                            profileData.description,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 8,
-                            style: Styles.titleSmall,
-                          )),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      !ownProfile
-                          ? Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    _showMessageForm();
-                                  },
-                                  child: const Text("Send Message"),
-                                )
-                              ],
-                            )
-                          : const SizedBox(),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(
-                              child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              const Padding(
-                                padding: EdgeInsets.symmetric(vertical: 3.0),
-                                child: Text(
-                                  "Influences",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                              Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: CircleAvatar(
+                                      radius: 50,
+                                      backgroundImage: NetworkImage(
+                                          profileData.profilePhoto),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(width: 20),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(profileData.username,
+                                        style: Styles.titleMedium),
+                                    Text(
+                                      location.join(", "),
+                                      style: Styles.headline6Ital,
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Text(
-                                profileData.influences,
-                                maxLines: 4,
+                              if (ownProfile) const SizedBox(width: 20),
+                              if (ownProfile)
+                                IconButton(
+                                  tooltip: "Edit Profile",
+                                  icon: const Icon(Icons.edit),
+                                  onPressed: () {
+                                    setState(() {
+                                      editingProfile = true;
+                                    });
+                                  },
+                                ),
+                            ],
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 10.0),
+                            child: ColoredBar(),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Flexible(
+                                  child: Text(
+                                profileData.description,
                                 overflow: TextOverflow.ellipsis,
+                                maxLines: 8,
+                                style: Styles.titleSmall,
+                              )),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          !ownProfile
+                              ? Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        _showMessageForm();
+                                      },
+                                      child: const Text("Send Message"),
+                                    )
+                                  ],
+                                )
+                              : const SizedBox(),
+                          const SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                  child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 3.0),
+                                    child: Text(
+                                      "Influences",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  Text(
+                                    profileData.influences,
+                                    maxLines: 4,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ))
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 3.0),
+                                      child: Text("Recordings",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                    Text(profileData.recordings),
+                                  ],
+                                ),
                               ),
                             ],
-                          ))
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 3.0),
-                                  child: Text("Recordings",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold)),
-                                ),
-                                Text(profileData.recordings),
-                              ],
-                            ),
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: const [
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 3.0),
-                            child: Text("Instruments",
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ),
-                        ],
-                      ),
-                      Wrap(
-                        alignment: WrapAlignment.center,
-                        runSpacing: -5,
-                        spacing: 10,
-                        children: [
-                          for (var instrument in profileData.instruments)
-                            InstrumentTag(iid: instrument['id']),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          const SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: const [
                               Padding(
                                 padding: EdgeInsets.symmetric(vertical: 3.0),
-                                child: Text("Availability",
+                                child: Text("Instruments",
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold)),
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: SizedBox(
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Styles.charcoal,
-                                    width: 3,
+                          Wrap(
+                            alignment: WrapAlignment.center,
+                            runSpacing: -5,
+                            spacing: 10,
+                            children: [
+                              for (var instrument in profileData.instruments)
+                                InstrumentTag(iid: instrument['id']),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: const [
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 3.0),
+                                    child: Text("Availability",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: SizedBox(
+                                  child: DecoratedBox(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Styles.charcoal,
+                                        width: 3,
+                                      ),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: AvailabilityTable(
+                                          profileData: profileData),
+                                    ),
                                   ),
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: AvailabilityTable(
-                                      profileData: profileData),
-                                ),
-                              ),
-                            ),
-                          ),
                         ],
                       ),
                       const SizedBox(height: 10),
@@ -464,25 +493,64 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                                 title: Text(review["description"]),
                               ),
+                            ],
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 3.0),
+                            child: Text("Reviews",
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          for (var review in profileData.reviews)
+                            Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(3.0),
+                                  child: ListTile(
+                                    leading: CircleAvatar(
+                                      backgroundImage:
+                                          NetworkImage(review['profile_photo']),
+                                    ),
+                                    trailing:
+                                        review['by_user'] == uid || ownProfile
+                                            ? IconButton(
+                                                tooltip: "Delete Review",
+                                                icon: const Icon(Icons.delete),
+                                                onPressed: () {
+                                                  _warnDeleteReview(
+                                                      review['reviewid']);
+                                                },
+                                              )
+                                            : null,
+                                    title: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(review['by_username']),
+                                        FormattedDateFromString(
+                                            date: review['time_posted']),
+                                      ],
+                                    ),
+                                    subtitle: Text(review["description"]),
+                                  ),
+                                ),
+                                const Divider()
+                              ],
                             ),
-                            const Divider()
-                          ],
-                        ),
-                      if (!ownProfile)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                _showReviewForm();
-                              },
-                              child: const Text("Add a Review"),
-                            )
-                          ],
-                        ),
-                    ],
-                  ),
-                ),
-              );
+                          if (!ownProfile)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    _showReviewForm();
+                                  },
+                                  child: const Text("Add a Review"),
+                                )
+                              ],
+                            ),
+                        ],
+                      ),
+                    ),
+                  );
   }
 }
