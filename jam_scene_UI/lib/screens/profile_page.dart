@@ -426,6 +426,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ],
                       ),
+                      const SizedBox(height: 10),
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 3.0),
                         child: Text("Reviews",
@@ -450,15 +451,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                         },
                                       )
                                     : null,
-                                title: Column(
+                                subtitle: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(review['by_username']),
+                                    const SizedBox(width: 10.0),
                                     FormattedDateFromString(
                                         date: review['time_posted']),
                                   ],
                                 ),
-                                subtitle: Text(review["description"]),
+                                title: Text(review["description"]),
                               ),
                             ),
                             const Divider()
