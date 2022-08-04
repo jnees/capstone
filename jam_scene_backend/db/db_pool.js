@@ -135,11 +135,11 @@ const getSearchInfo = async function (query_params1, query_params2, query_params
   AND zipcode = $8) AND id IN (SELECT UI.userID FROM users_instruments UI INNER JOIN instruments I 
   ON UI.instrumentid = I.id AND I.id = (SELECT id FROM instruments WHERE name = $9));`;
 
-  const search_query_no_avail = `SELECT id, username, city, state, profile_photo FROM users WHERE id IN 
+  const search_query_no_avail = `SELECT id, username, city, state, profile_photo, description FROM users WHERE id IN 
   (SELECT id FROM users WHERE zipcode = $1) AND id IN (SELECT UI.userID FROM users_instruments UI INNER JOIN instruments I 
   ON UI.instrumentid = I.id AND I.id = (SELECT id FROM instruments WHERE name = $2));`;
 
-  const search_query_only_inst = `SELECT id, username, city, state, profile_photo FROM users WHERE id IN (SELECT UI.userID FROM users_instruments UI INNER JOIN instruments I 
+  const search_query_only_inst = `SELECT id, username, city, state, profile_photo, description FROM users WHERE id IN (SELECT UI.userID FROM users_instruments UI INNER JOIN instruments I 
   ON UI.instrumentid = I.id AND I.id = (SELECT id FROM instruments WHERE name = $1));`;
 
   try {

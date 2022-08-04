@@ -133,7 +133,7 @@ class _SearchPageState extends State<SearchPage> {
                       subtitle: Column(
                         children: [
                           Text(
-                            results[index]['first_name'],
+                            results[index]['description'],
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
