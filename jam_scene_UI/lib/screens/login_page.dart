@@ -53,6 +53,7 @@ class _LoginPageState extends State<LoginPage> {
       // ignore: unused_catch_clause
     } on FirebaseAuthException catch (e) {
       _setIsLoading();
+      debugPrint(e.message);
       return null;
     }
   }

@@ -25,6 +25,7 @@ class _SettingsPageState extends State<SettingsPage> {
     var response = await http.delete(url, headers: {'Authorization': token});
     if (response.statusCode == 200) {
       _logOut();
+      await FirebaseAuth.instance.currentUser!.delete();
     } else {
       debugPrint("Error deleting account");
     }
