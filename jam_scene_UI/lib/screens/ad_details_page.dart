@@ -103,6 +103,7 @@ class _AdDetailsState extends State<AdDetails> {
                 minLines: 5,
                 maxLines: 6,
                 controller: messageController,
+                autofocus: true,
                 decoration: const InputDecoration(
                   labelText: 'Message',
                   border: OutlineInputBorder(),
