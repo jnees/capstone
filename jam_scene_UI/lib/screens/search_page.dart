@@ -132,10 +132,13 @@ class _SearchPageState extends State<SearchPage> {
                       title: Text(results[index]["username"]),
                       subtitle: Column(
                         children: [
-                          Text(
-                            results[index]['description'],
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              results[index]['description'],
+                              maxLines: 4,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                           Wrap(spacing: 10, runSpacing: -5, children: [
                             for (var instrument in results[index]
