@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:jam_scene/components/visual_components.dart';
 import 'package:jam_scene/styles.dart';
-import 'package:http/http.dart' as http;
 import '../models/instrument_lookup.dart';
 import '../components/formatted_date.dart';
 
@@ -120,7 +119,11 @@ class _AdDetailsState extends State<AdDetails> {
                 _sendMessage();
               },
             ),
-
+          ),
+        ],
+      ),
+    );
+  }
 
   void _warnDeleteAd(adId) async {
     await showDialog(
