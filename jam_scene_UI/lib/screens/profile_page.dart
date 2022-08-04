@@ -108,7 +108,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 style: Styles.headline6),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             child: Form(
               key: GlobalKey<FormState>(),
               child: TextFormField(
@@ -211,6 +212,41 @@ class _ProfilePageState extends State<ProfilePage> {
       loading = false;
       location = [profileData.city, profileData.state];
     });
+  }
+
+  void _deleteReview(reviewId) async {
+    String? token = await FirebaseAuth.instance.currentUser?.getIdToken();
+    if (token == null) return;
+    Uri uri = Uri.parse('https://jam-scene-app.herokuapp.com/review/$reviewId');
+    var response = await http.delete(uri, headers: {'Authorization': token});
+    if (response.statusCode == 200) {
+      _fetchProfileData();
+    }
+  }
+
+  void _warnDeleteReview(reviewId) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Review'),
+        content: const Text('Are you sure you want to delete this review?'),
+        actions: [
+          ElevatedButton(
+            child: const Text('Cancel'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          ElevatedButton(
+            child: const Text('Delete'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              _deleteReview(reviewId);
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -405,10 +441,19 @@ class _ProfilePageState extends State<ProfilePage> {
                                   backgroundImage:
                                       NetworkImage(review['profile_photo']),
                                 ),
+                                trailing: review['by_user'] == uid || ownProfile
+                                    ? IconButton(
+                                        tooltip: "Delete Review",
+                                        icon: const Icon(Icons.delete),
+                                        onPressed: () {
+                                          _warnDeleteReview(review['reviewid']);
+                                        },
+                                      )
+                                    : null,
                                 title: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(review['by_user']),
+                                    Text(review['by_username']),
                                     FormattedDateFromString(
                                         date: review['time_posted']),
                                   ],

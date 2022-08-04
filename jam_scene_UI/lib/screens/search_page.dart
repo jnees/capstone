@@ -130,16 +130,26 @@ class _SearchPageState extends State<SearchPage> {
                             NetworkImage(results[index]["profile_photo"]),
                       ),
                       title: Text(results[index]["username"]),
-                      subtitle: Wrap(spacing: 10, runSpacing: -5, children: [
-                        for (var instrument in results[index]["instruments"])
-                          Chip(
-                              label: Text(instrument['name']),
-                              backgroundColor: Colors.grey[300]),
-                      ]),
-                      trailing: Text(results[index]["city"] +
-                          ", " +
-                          results[index]["state"],
-                          style: Styles.headline7Ital,),
+                      subtitle: Column(
+                        children: [
+                          Text(
+                            results[index]['description'],
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Wrap(spacing: 10, runSpacing: -5, children: [
+                            for (var instrument in results[index]
+                                ["instruments"])
+                              Chip(
+                                  label: Text(instrument['name']),
+                                  backgroundColor: Colors.grey[300]),
+                          ]),
+                        ],
+                      ),
+                      trailing: Text(
+                        results[index]["city"] + ", " + results[index]["state"],
+                        style: Styles.headline7Ital,
+                      ),
                     );
                   },
                 ),
@@ -156,10 +166,12 @@ class _SearchPageState extends State<SearchPage> {
           : Form(
               key: _formkey,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const SizedBox(height: 15),
                   const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+                    padding:
+                        EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
                     child: ColoredBar(),
                   ),
                   Row(
@@ -168,7 +180,7 @@ class _SearchPageState extends State<SearchPage> {
                       Text(
                         "Search for Musicians",
                         style: Styles.titleLarge,
-                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 10),

@@ -25,6 +25,7 @@ class _SettingsPageState extends State<SettingsPage> {
     var response = await http.delete(url, headers: {'Authorization': token});
     if (response.statusCode == 200) {
       _logOut();
+      await FirebaseAuth.instance.currentUser!.delete();
     } else {
       debugPrint("Error deleting account");
     }
@@ -58,24 +59,24 @@ class _SettingsPageState extends State<SettingsPage> {
             child: Text(
               "User Settings",
               style: Styles.titleMedium,
-              ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: ElevatedButton(onPressed: _logOut, child: const Text("Log Out")),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.red,
-                ),
-                onPressed: () => showDialog(
-                    builder: (_) => deleteWarning(),
-                    context: context,
-                    barrierDismissible: true),
-                child: const Text("Delete Account")),
+                onPressed: _logOut, child: const Text("Log Out")),
           ),
+          Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.red,
+                  ),
+                  onPressed: () => showDialog(
+                      builder: (_) => deleteWarning(),
+                      context: context,
+                      barrierDismissible: true),
+                  child: const Text("Delete Account"))),
         ],
       ),
     );

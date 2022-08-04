@@ -5,6 +5,7 @@ import '../components/horizontal_or_divider.dart';
 import '../components/logo.dart';
 import '../components/background_texture.dart';
 import '../models/google_sign_in_functions.dart';
+import '../screens/password_recovery.dart';
 
 /*
   Login and registration forms are contained in this widget. Note that this
@@ -26,9 +27,9 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  bool passwordRecovery = false;
   bool _isLoading = false;
   bool _isSigningUp = false;
 
@@ -36,6 +37,14 @@ class _LoginPageState extends State<LoginPage> {
     // Toggles loading state.
     setState(() {
       _isLoading = !_isLoading;
+    });
+  }
+
+  void loginStateUpdater(Map<String, dynamic> stateChanges) {
+    setState(() {
+      if (stateChanges.containsKey('passwordRecovery')) {
+        passwordRecovery = stateChanges['passwordRecovery'];
+      }
     });
   }
 
@@ -50,13 +59,11 @@ class _LoginPageState extends State<LoginPage> {
         password: _passwordController.text,
       );
 
-      // Update the user's display name
-      await credential.user!.updateDisplayName(_usernameController.text);
-
       return credential;
       // ignore: unused_catch_clause
     } on FirebaseAuthException catch (e) {
       _setIsLoading();
+      debugPrint(e.message);
       return null;
     }
   }
@@ -83,147 +90,149 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         // Stack Allows Background Texture to be under form.
-        body: Stack(
-          children: [
-            const BackgroundTexture(),
-            Column(
-              children: [
-                const Logo(),
-                Form(
-                  key: _formKey,
-                  child: Column(mainAxisSize: MainAxisSize.max, children: [
-                    if (_isSigningUp)
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          width: 450,
-                          child: TextFormField(
-                            validator: (String? input) {
-                              if (input == null || input.isEmpty) {
-                                return 'Please enter a username';
-                              }
-                              return null;
-                            },
-                            controller: _usernameController,
-                            decoration: _textInputBoxDecoration("Username"),
-                          ),
-                        ),
-                      ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                        width: 450,
-                        child: TextFormField(
-                          controller: _emailController,
-                          decoration: _textInputBoxDecoration("Email"),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                        width: 450,
-                        child: TextFormField(
-                          obscureText: true,
-                          controller: _passwordController,
-                          decoration: _textInputBoxDecoration("Password"),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 450,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            flex: 5,
-                            child: Padding(
-                              padding: const EdgeInsets.all(1),
-                              child: TextButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      _isSigningUp = !_isSigningUp;
-                                    });
-                                  },
-                                  child: _isSigningUp
-                                      ? const Text(
-                                          "Use Existing Sign In",
-                                          style: TextStyle(color: Colors.black),
-                                        )
-                                      : const Text("Register",
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 15))),
+        body: SingleChildScrollView(
+          child: Stack(
+            children: [
+              const BackgroundTexture(),
+              passwordRecovery
+                  ? PasswordRecovery(
+                      loginStateSetter: loginStateUpdater,
+                    )
+                  : Column(
+                      children: [
+                        const Logo(),
+                        Form(
+                          key: _formKey,
+                          child:
+                              Column(mainAxisSize: MainAxisSize.max, children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SizedBox(
+                                width: 450,
+                                child: TextFormField(
+                                  controller: _emailController,
+                                  decoration: _textInputBoxDecoration("Email"),
+                                ),
+                              ),
                             ),
-                          ),
-                          const Spacer(
-                            flex: 1,
-                          ),
-                          Expanded(
-                            flex: 5,
-                            child: Padding(
-                              padding: const EdgeInsets.all(1),
-                              child: TextButton(
-                                  onPressed: () {},
-                                  child: const Text("Help",
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 15))),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SizedBox(
+                                width: 450,
+                                child: TextFormField(
+                                  obscureText: true,
+                                  controller: _passwordController,
+                                  decoration:
+                                      _textInputBoxDecoration("Password"),
+                                ),
+                              ),
                             ),
-                          )
-                        ],
-                      ),
-                    ),
-                    // Empty Space
-                    const SizedBox(
-                      width: 450,
-                      height: 30,
-                    ),
-                    // Sign In Button
-                    SizedBox(
-                      width: 400,
-                      height: 60,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(2.0)),
-                            textStyle: const TextStyle(
-                              fontSize: 28,
+                            SizedBox(
+                              width: 450,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    flex: 5,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(1),
+                                      child: TextButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              _isSigningUp = !_isSigningUp;
+                                            });
+                                          },
+                                          child: _isSigningUp
+                                              ? const Text(
+                                                  "Use Existing Sign In",
+                                                  style: TextStyle(
+                                                      color: Colors.black),
+                                                )
+                                              : const Text("Register",
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 15))),
+                                    ),
+                                  ),
+                                  const Spacer(
+                                    flex: 1,
+                                  ),
+                                  Expanded(
+                                    flex: 5,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(1),
+                                      child: TextButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              passwordRecovery = true;
+                                            });
+                                          },
+                                          child: const Text("Forgot password?",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 15))),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
-                            primary: const Color(0xFFF5A986)),
-                        onPressed: () async {
-                          _isSigningUp
-                              ? await _signUpWithEmailAndPassword()
-                              : await _loginWithEmailAndPassword();
+                            // Empty Space
+                            const SizedBox(
+                              width: 450,
+                              height: 30,
+                            ),
+                            // Sign In Button
+                            SizedBox(
+                              width: 400,
+                              height: 60,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(2.0)),
+                                    textStyle: const TextStyle(
+                                      fontSize: 28,
+                                    ),
+                                    primary: const Color(0xFFF5A986)),
+                                onPressed: () async {
+                                  _isSigningUp
+                                      ? await _signUpWithEmailAndPassword()
+                                      : await _loginWithEmailAndPassword();
 
-                          if (FirebaseAuth.instance.currentUser != null) {}
-                        },
-                        child: _isLoading
-                            ? const CircularProgressIndicator()
-                            : Text(_isSigningUp ? 'Sign Up' : 'Log In'),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: double.maxFinite,
-                      child: Padding(
-                        padding: EdgeInsets.all(22.0),
-                        child: HorizontalOrDivider(),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: SizedBox(
-                          width: 300,
-                          height: 60,
-                          child: SignInButton(
-                            Buttons.Google,
-                            onPressed: signInWithGoogle,
-                          )),
-                    ),
-                  ]),
-                ),
-              ],
-            )
-          ],
+                                  if (FirebaseAuth.instance.currentUser !=
+                                      null) {}
+                                },
+                                child: _isLoading
+                                    ? const CircularProgressIndicator()
+                                    : Text(_isSigningUp ? 'Sign Up' : 'Log In'),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: double.maxFinite,
+                              child: Padding(
+                                padding: EdgeInsets.all(22.0),
+                                child: HorizontalOrDivider(),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: SizedBox(
+                                  width: 300,
+                                  height: 60,
+                                  child: SignInButton(
+                                    Buttons.Google,
+                                    onPressed: signInWithGoogle,
+                                  )),
+                            ),
+                            const SizedBox(
+                              height: 300,
+                            ),
+                          ]),
+                        ),
+                      ],
+                    )
+            ],
+          ),
         ));
   }
 }

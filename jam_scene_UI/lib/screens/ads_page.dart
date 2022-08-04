@@ -137,6 +137,7 @@ class _AdsPageState extends State<AdsPage> {
                     adsPageStateUpdater: adsPageStateUpdater,
                     adDetails:
                         results.firstWhere((ad) => ad['id'] == selectedAdId),
+                    refreshAds: _getAds,
                   );
                 }
               case 'AdSearch':
@@ -145,7 +146,10 @@ class _AdsPageState extends State<AdsPage> {
                     setFilter: setFilter,
                     clearFilter: clearFilter);
               case 'AdCreate':
-                return AdCreate(adsPageStateUpdater: adsPageStateUpdater);
+                return AdCreate(
+                  adsPageStateUpdater: adsPageStateUpdater,
+                  refreshAds: _getAds,
+                );
               case 'Profile':
                 return AdProfileWrapper(
                     adsPageStateUpdater: adsPageStateUpdater,

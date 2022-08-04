@@ -126,7 +126,7 @@ const getUserObjById = async function (userId_param) {
 };
 
 const getSearchInfo = async function (query_params1, query_params2, query_params3) {
-  const search_query = `SELECT id, username, city, state, profile_photo FROM users WHERE id IN 
+  const search_query = `SELECT id, username, city, state, profile_photo, description FROM users WHERE id IN 
   (SELECT id FROM users WHERE ((avail_mon_am = $2 AND avail_mon_am = TRUE) OR (avail_mon_pm = $2 AND avail_mon_pm = TRUE) OR
     (avail_tue_am = $3 AND avail_tue_am = TRUE) OR (avail_tue_pm = $3 AND avail_tue_pm = TRUE) OR (avail_wed_am = $4 AND avail_wed_am = TRUE) OR
     (avail_wed_pm = $4 AND avail_wed_pm = TRUE) OR (avail_thu_am = $5 AND avail_thu_am = TRUE) OR (avail_thu_pm = $5 AND avail_thu_pm = TRUE) OR
@@ -135,11 +135,11 @@ const getSearchInfo = async function (query_params1, query_params2, query_params
   AND zipcode = $8) AND id IN (SELECT UI.userID FROM users_instruments UI INNER JOIN instruments I 
   ON UI.instrumentid = I.id AND I.id = (SELECT id FROM instruments WHERE name = $9));`;
 
-  const search_query_no_avail = `SELECT id, username, city, state, profile_photo FROM users WHERE id IN 
+  const search_query_no_avail = `SELECT id, username, city, state, profile_photo, description FROM users WHERE id IN 
   (SELECT id FROM users WHERE zipcode = $1) AND id IN (SELECT UI.userID FROM users_instruments UI INNER JOIN instruments I 
   ON UI.instrumentid = I.id AND I.id = (SELECT id FROM instruments WHERE name = $2));`;
 
-  const search_query_only_inst = `SELECT id, username, city, state, profile_photo FROM users WHERE id IN (SELECT UI.userID FROM users_instruments UI INNER JOIN instruments I 
+  const search_query_only_inst = `SELECT id, username, city, state, profile_photo, description FROM users WHERE id IN (SELECT UI.userID FROM users_instruments UI INNER JOIN instruments I 
   ON UI.instrumentid = I.id AND I.id = (SELECT id FROM instruments WHERE name = $1));`;
 
   try {
@@ -189,9 +189,12 @@ const addNewReviewObj = async function (create_review_params) {
 };
 
 const getReviewsByUserId = async function (user_id) {
-  const get_reviews_query = `SELECT * FROM 
-  (SELECT reviews.by_user, reviews.for_user, users.username, users.profile_photo, reviews.description, reviews.time_posted 
-    FROM users INNER JOIN reviews ON users.id = reviews.by_user) AS S WHERE S.for_user = $1 ORDER BY time_posted DESC;`;
+  // const get_reviews_query = `SELECT * FROM 
+  // (SELECT reviews.by_user, reviews.for_user, users.username, users.profile_photo, reviews.description, reviews.time_posted 
+  //   FROM users INNER JOIN reviews ON users.id = reviews.by_user) AS S WHERE S.for_user = $1 ORDER BY time_posted DESC;`;
+
+  const get_reviews_query = `SELECT * FROM (SELECT reviews.id AS reviewId, reviews.by_user, reviews.for_user, users.username AS by_username, users.profile_photo, 
+      reviews.description, reviews.time_posted FROM users INNER JOIN reviews ON users.id = reviews.by_user) AS S WHERE S.for_user = $1 ORDER BY time_posted DESC;`;
 
   try {
     const review_array = await pool.query(get_reviews_query, user_id);
@@ -383,28 +386,16 @@ const getAdSearchInfo = async function (query_params1, query_params2, query_para
 /* ~~~~~~~~~~~ Chat Queries ~~~~~~~~~~~ */
 
 const getConvosByUserId = async function (id_params) {
-  const get_convos = `SELECT C.convoId, U.id AS friend_id, U.username AS friend_username, U.profile_photo AS friend_profpic 
-  FROM users U INNER JOIN conversations C ON (U.id = C.userId_1 OR U.id = C.userId_2)
-  WHERE (C.userId_1 = $1 OR C.userId_2 = $1) AND U.id != $1;`;
+  const get_convos = `SELECT C.convoId, M.body AS latest_body, M.time_sent AS latest_time_sent, U.id AS friend_id, U.username AS friend_username, U.profile_photo AS friend_profpic FROM users U INNER JOIN conversations C ON 
+  (U.id = C.userId_1 OR U.id = C.userId_2) INNER JOIN 
+  messages M ON M.convoId = C.convoId WHERE time_sent = (SELECT max(time_sent) FROM messages WHERE convoId = C.convoId) 
+  AND (C.userId_1 = $1 OR C.userId_2 = $1) AND U.id != $1 ORDER BY time_sent DESC;`;
 
   try {
     const convo_array = await pool.query(get_convos, id_params);
     return convo_array.rows;
   } catch (error) {
     console.log(error);
-    return error;
-  }
-};
-
-const getLatestMessage = async function (convoId_params) {
-  const get_message = `SELECT body, time_sent FROM messages 
-  WHERE convoId = $1 AND time_sent = (SELECT max(time_sent) 
-  FROM (SELECT * FROM messages WHERE convoId = $1) AS needed_rows);`;
-
-  try {
-    const message_content = await pool.query(get_message, convoId_params);
-    return message_content.rows[0];
-  } catch (error) {
     return error;
   }
 };
@@ -490,7 +481,6 @@ module.exports = {
   updateAdObj,
   getAdSearchInfo,
   getConvosByUserId,
-  getLatestMessage,
   getMessagesByConvoId,
   sendMessageExisting,
   createConvoObj,
