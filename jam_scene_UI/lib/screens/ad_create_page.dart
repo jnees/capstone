@@ -6,9 +6,11 @@ import '../models/instrument_lookup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AdCreate extends StatefulWidget {
-  const AdCreate({Key? key, required this.adsPageStateUpdater})
+  const AdCreate(
+      {Key? key, required this.adsPageStateUpdater, required this.refreshAds})
       : super(key: key);
   final Function adsPageStateUpdater;
+  final Function refreshAds;
 
   @override
   State<AdCreate> createState() => _AdCreateState();
@@ -65,6 +67,7 @@ class _AdCreateState extends State<AdCreate> {
         body: json.encode(formData));
     if (response.statusCode == 200) {
       widget.adsPageStateUpdater({'_currView': 'Results'});
+      widget.refreshAds(true);
     } else {
       debugPrint("Error: ${response.body}");
     }
