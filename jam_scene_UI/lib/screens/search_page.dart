@@ -136,10 +136,10 @@ class _SearchPageState extends State<SearchPage> {
                               label: Text(instrument['name']),
                               backgroundColor: Colors.grey[300]),
                       ]),
-                      trailing: Text(results[index]["city"] +
-                          ", " +
-                          results[index]["state"],
-                          style: Styles.headline7Ital,),
+                      trailing: Text(
+                        results[index]["city"] + ", " + results[index]["state"],
+                        style: Styles.headline7Ital,
+                      ),
                     );
                   },
                 ),
@@ -150,184 +150,188 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: !showSearchForm
-          ? _buildSearchResults(context)
-          : Form(
-              key: _formkey,
-              child: Column(
-                children: [
-                  const SizedBox(height: 15),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
-                    child: ColoredBar(),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(
-                        "Search for Musicians",
-                        style: Styles.titleLarge,
-                        ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Styles.charcoal,
-                        width: 3.0,
-                      ),
+    return SingleChildScrollView(
+      child: Center(
+        child: !showSearchForm
+            ? _buildSearchResults(context)
+            : Form(
+                key: _formkey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 15),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 20.0),
+                      child: ColoredBar(),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                        width: 300,
-                        height: 400,
-                        child: Column(
-                          children: [
-                            Expanded(
-                              child: Row(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Text(
+                          "Search for Musicians",
+                          style: Styles.titleLarge,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    DecoratedBox(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Styles.charcoal,
+                          width: 3.0,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          width: 300,
+                          height: 400,
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    const Text("Looking for..."),
+                                    const Spacer(),
+                                    DropdownButton(
+                                        value: instrument,
+                                        onChanged: (selectedValue) {
+                                          if (selectedValue is String) {
+                                            setState(() {
+                                              instrument = selectedValue;
+                                            });
+                                          }
+                                        },
+                                        items: [
+                                          for (var i in instrumentLookup.values)
+                                            DropdownMenuItem(
+                                              value: i,
+                                              child: Text(i),
+                                            ),
+                                        ]),
+                                  ],
+                                ),
+                              ),
+                              TextFormField(
+                                decoration: const InputDecoration(
+                                  labelText: "Near zipcode",
+                                  hintText: "90210",
+                                ),
+                                controller: _zipController,
+                                keyboardType: TextInputType.number,
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return "Please enter a zipcode";
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text("Must be available..."),
+                              ),
+                              Wrap(
                                 children: [
-                                  const Text("Looking for..."),
-                                  const Spacer(),
-                                  DropdownButton(
-                                      value: instrument,
-                                      onChanged: (selectedValue) {
-                                        if (selectedValue is String) {
+                                  FractionallySizedBox(
+                                      widthFactor: .45,
+                                      child: CheckboxListTile(
+                                        value: sun,
+                                        title: const Text("Sun"),
+                                        onChanged: (value) {
                                           setState(() {
-                                            instrument = selectedValue;
+                                            sun = value as bool;
                                           });
-                                        }
-                                      },
-                                      items: [
-                                        for (var i in instrumentLookup.values)
-                                          DropdownMenuItem(
-                                            value: i,
-                                            child: Text(i),
-                                          ),
-                                      ]),
-                                ],
-                              ),
-                            ),
-                            TextFormField(
-                              decoration: const InputDecoration(
-                                labelText: "Near zipcode",
-                                hintText: "90210",
-                              ),
-                              controller: _zipController,
-                              keyboardType: TextInputType.number,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return "Please enter a zipcode";
-                                }
-                                return null;
-                              },
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text("Must be available..."),
-                            ),
-                            Wrap(
-                              children: [
-                                FractionallySizedBox(
+                                        },
+                                      )),
+                                  FractionallySizedBox(
                                     widthFactor: .45,
                                     child: CheckboxListTile(
-                                      value: sun,
-                                      title: const Text("Sun"),
+                                      value: mon,
+                                      title: const Text("Mon"),
                                       onChanged: (value) {
                                         setState(() {
-                                          sun = value as bool;
+                                          mon = value as bool;
                                         });
                                       },
-                                    )),
-                                FractionallySizedBox(
-                                  widthFactor: .45,
-                                  child: CheckboxListTile(
-                                    value: mon,
-                                    title: const Text("Mon"),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        mon = value as bool;
-                                      });
-                                    },
+                                    ),
                                   ),
-                                ),
-                                FractionallySizedBox(
-                                  widthFactor: .45,
-                                  child: CheckboxListTile(
-                                    value: tue,
-                                    title: const Text("Tue"),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        tue = value as bool;
-                                      });
-                                    },
+                                  FractionallySizedBox(
+                                    widthFactor: .45,
+                                    child: CheckboxListTile(
+                                      value: tue,
+                                      title: const Text("Tue"),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          tue = value as bool;
+                                        });
+                                      },
+                                    ),
                                   ),
-                                ),
-                                FractionallySizedBox(
-                                  widthFactor: .45,
-                                  child: CheckboxListTile(
-                                    value: wed,
-                                    title: const Text("Wed"),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        wed = value as bool;
-                                      });
-                                    },
+                                  FractionallySizedBox(
+                                    widthFactor: .45,
+                                    child: CheckboxListTile(
+                                      value: wed,
+                                      title: const Text("Wed"),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          wed = value as bool;
+                                        });
+                                      },
+                                    ),
                                   ),
-                                ),
-                                FractionallySizedBox(
-                                  widthFactor: .45,
-                                  child: CheckboxListTile(
-                                    value: thu,
-                                    title: const Text("Thu"),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        thu = value as bool;
-                                      });
-                                    },
+                                  FractionallySizedBox(
+                                    widthFactor: .45,
+                                    child: CheckboxListTile(
+                                      value: thu,
+                                      title: const Text("Thu"),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          thu = value as bool;
+                                        });
+                                      },
+                                    ),
                                   ),
-                                ),
-                                FractionallySizedBox(
-                                  widthFactor: .45,
-                                  child: CheckboxListTile(
-                                    value: fri,
-                                    title: const Text("Fri"),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        fri = value as bool;
-                                      });
-                                    },
+                                  FractionallySizedBox(
+                                    widthFactor: .45,
+                                    child: CheckboxListTile(
+                                      value: fri,
+                                      title: const Text("Fri"),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          fri = value as bool;
+                                        });
+                                      },
+                                    ),
                                   ),
-                                ),
-                                FractionallySizedBox(
-                                  widthFactor: .45,
-                                  child: CheckboxListTile(
-                                    value: sat,
-                                    title: const Text("Sat"),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        sat = value as bool;
-                                      });
-                                    },
+                                  FractionallySizedBox(
+                                    widthFactor: .45,
+                                    child: CheckboxListTile(
+                                      value: sat,
+                                      title: const Text("Sat"),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          sat = value as bool;
+                                        });
+                                      },
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            ElevatedButton(
-                                onPressed: () {
-                                  _loadSearchResults();
-                                },
-                                child: const Text("Search"))
-                          ],
+                                ],
+                              ),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    _loadSearchResults();
+                                  },
+                                  child: const Text("Search"))
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
+      ),
     );
   }
 }
