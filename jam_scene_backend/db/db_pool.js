@@ -126,7 +126,7 @@ const getUserObjById = async function (userId_param) {
 };
 
 const getSearchInfo = async function (query_params1, query_params2, query_params3) {
-  const search_query = `SELECT id, username, city, state, profile_photo FROM users WHERE id IN 
+  const search_query = `SELECT id, username, city, state, profile_photo, description FROM users WHERE id IN 
   (SELECT id FROM users WHERE ((avail_mon_am = $2 AND avail_mon_am = TRUE) OR (avail_mon_pm = $2 AND avail_mon_pm = TRUE) OR
     (avail_tue_am = $3 AND avail_tue_am = TRUE) OR (avail_tue_pm = $3 AND avail_tue_pm = TRUE) OR (avail_wed_am = $4 AND avail_wed_am = TRUE) OR
     (avail_wed_pm = $4 AND avail_wed_pm = TRUE) OR (avail_thu_am = $5 AND avail_thu_am = TRUE) OR (avail_thu_pm = $5 AND avail_thu_pm = TRUE) OR
