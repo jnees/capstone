@@ -455,46 +455,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                   ),
                                 ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 3.0),
-                        child: Text("Reviews",
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                      ),
-                      for (var review in profileData.reviews)
-                        Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(3.0),
-                              child: ListTile(
-                                leading: CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage(review['profile_photo']),
-                                ),
-                                trailing: review['by_user'] == uid || ownProfile
-                                    ? IconButton(
-                                        tooltip: "Delete Review",
-                                        icon: const Icon(Icons.delete),
-                                        onPressed: () {
-                                          _warnDeleteReview(review['reviewid']);
-                                        },
-                                      )
-                                    : null,
-                                subtitle: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(review['by_username']),
-                                    const SizedBox(width: 10.0),
-                                    FormattedDateFromString(
-                                        date: review['time_posted']),
-                                  ],
-                                ),
-                                title: Text(review["description"]),
-                              ),
+                              )
                             ],
                           ),
+                          const SizedBox(height: 10),
                           const Padding(
                             padding: EdgeInsets.symmetric(vertical: 3.0),
                             child: Text("Reviews",
@@ -521,19 +485,19 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 },
                                               )
                                             : null,
-                                    title: Column(
+                                    subtitle: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(review['by_username']),
+                                        const SizedBox(width: 10.0),
                                         FormattedDateFromString(
                                             date: review['time_posted']),
                                       ],
                                     ),
-                                    subtitle: Text(review["description"]),
+                                    title: Text(review["description"]),
                                   ),
-                                ),
-                                const Divider()
+                                )
                               ],
                             ),
                           if (!ownProfile)
