@@ -113,6 +113,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Form(
               key: GlobalKey<FormState>(),
               child: TextFormField(
+                autofocus: true,
                 minLines: 5,
                 maxLines: 6,
                 controller: messageController,
@@ -161,6 +162,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: TextFormField(
                 minLines: 4,
                 maxLines: 6,
+                autofocus: true,
                 controller: reviewController,
                 decoration: InputDecoration(
                     labelText: 'Review',
