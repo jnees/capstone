@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
 import 'package:jam_scene/components/visual_components.dart';
 import 'package:jam_scene/styles.dart';
 import '../models/instrument_lookup.dart';
@@ -7,11 +8,15 @@ import '../components/formatted_date.dart';
 
 class AdDetails extends StatefulWidget {
   const AdDetails(
-      {Key? key, required this.adsPageStateUpdater, required this.adDetails})
+      {Key? key,
+      required this.adsPageStateUpdater,
+      required this.adDetails,
+      required this.refreshAds})
       : super(key: key);
 
   final Function adsPageStateUpdater;
   final Map<String, dynamic> adDetails;
+  final Function refreshAds;
 
   @override
   State<AdDetails> createState() => _AdDetailsState();
@@ -36,6 +41,42 @@ class _AdDetailsState extends State<AdDetails> {
       setState(() {
         creatorView = false;
       });
+    }
+  }
+
+  void _warnDeleteAd(adId) async {
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Ad'),
+        content: const Text('Are you sure you want to delete this ad?'),
+        actions: [
+          ElevatedButton(
+            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(context, false),
+          ),
+          ElevatedButton(
+            child: const Text('Delete'),
+            onPressed: () {
+              Navigator.pop(context);
+              _deleteAd(adId);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _deleteAd(adId) async {
+    var token = await FirebaseAuth.instance.currentUser?.getIdToken();
+    if (token == null) return;
+    var url = Uri.parse('https://jam-scene-app.herokuapp.com/ad/$adId');
+    var response = await http.delete(url, headers: {'Authorization': token});
+    if (response.statusCode == 200) {
+      widget.adsPageStateUpdater({'_currView': 'Results'});
+      widget.refreshAds(true);
+    } else {
+      debugPrint("Error: ${response.body}");
     }
   }
 
@@ -87,7 +128,8 @@ class _AdDetailsState extends State<AdDetails> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
             child: Text(
               "${widget.adDetails['description']}",
               style: Styles.titleSmallest,
@@ -105,7 +147,9 @@ class _AdDetailsState extends State<AdDetails> {
           const SizedBox(height: 10),
           creatorView
               ? ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    _warnDeleteAd(widget.adDetails['id']);
+                  },
                   icon: const Icon(Icons.delete),
                   style: ElevatedButton.styleFrom(
                     primary: Colors.red,
@@ -116,9 +160,6 @@ class _AdDetailsState extends State<AdDetails> {
                   onPressed: () {
                     widget.adsPageStateUpdater({'_currView': 'Respond'});
                   },
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.green,
-                  ),
                   icon: const Icon(Icons.mail),
                   label: const Text("Respond")),
           const Padding(
