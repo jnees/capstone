@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:jam_scene/screens/profile_builder.dart';
 import 'package:jam_scene/styles.dart';
@@ -24,21 +25,25 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+
     return MaterialApp(
       initialRoute: AuthenticationWrapper.routeName,
       title: 'JamScene',
       routes: routes,
       theme: ThemeData(
-        fontFamily: 'Josefin_Sans',
-        textTheme: const TextTheme(
-          headline1: Styles.headline1,
-          headline6: Styles.headline6,
-        ),
-        colorScheme: ColorScheme.fromSwatch().copyWith(
-          primary: Styles.charcoal,
-          secondary: Styles.salmonJam,
-        )
-      ),
+          fontFamily: 'Josefin_Sans',
+          textTheme: const TextTheme(
+            headline1: Styles.headline1,
+            headline6: Styles.headline6,
+          ),
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+            primary: Styles.charcoal,
+            secondary: Styles.salmonJam,
+          )),
     );
   }
 }

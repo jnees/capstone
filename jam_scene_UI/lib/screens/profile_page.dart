@@ -92,6 +92,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void _showMessageForm() {
+    Key profileMessageFormKey = GlobalKey<FormState>();
     showModalBottomSheet(
       backgroundColor: Styles.salmonJamTint2,
       shape: const RoundedRectangleBorder(
@@ -101,7 +102,9 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
       context: context,
+      isScrollControlled: true,
       builder: (context) => Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(height: 10.0),
           Padding(
@@ -113,10 +116,9 @@ class _ProfilePageState extends State<ProfilePage> {
             padding:
                 const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             child: Form(
-              key: GlobalKey<FormState>(),
+              key: profileMessageFormKey,
               child: TextFormField(
-                autofocus: true,
-                minLines: 5,
+                minLines: 2,
                 maxLines: 6,
                 controller: messageController,
                 decoration: const InputDecoration(
@@ -127,7 +129,8 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
             child: ElevatedButton(
               child: const Text('Send'),
               onPressed: () {
@@ -142,29 +145,34 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void _showReviewForm() {
+    Key profileReviewFormKey = GlobalKey<FormState>();
     showModalBottomSheet(
+      backgroundColor: Styles.salmonJamTint2,
+      isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
         ),
       ),
       context: context,
       builder: (context) => Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
+          const SizedBox(height: 10.0),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text("Review ${profileData.username}?",
                 style: Styles.headline6),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             child: Form(
-              key: GlobalKey<FormState>(),
+              key: profileReviewFormKey,
               child: TextFormField(
-                minLines: 4,
+                minLines: 2,
                 maxLines: 6,
-                autofocus: true,
                 controller: reviewController,
                 decoration: InputDecoration(
                     labelText: 'Review',
@@ -174,13 +182,18 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
           ),
-          ElevatedButton(
-            child: const Text('Submit'),
-            onPressed: () {
-              Navigator.of(context).pop();
-              _submitReview();
-            },
+          Padding(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: ElevatedButton(
+              child: const Text('Submit'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _submitReview();
+              },
+            ),
           ),
+          const SizedBox(height: 10)
         ],
       ),
     );

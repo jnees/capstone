@@ -86,7 +86,9 @@ class _AdDetailsState extends State<AdDetails> {
         ),
       ),
       context: context,
+      isScrollControlled: true,
       builder: (context) => Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(height: 10.0),
           Padding(
@@ -112,7 +114,8 @@ class _AdDetailsState extends State<AdDetails> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
             child: ElevatedButton(
               child: const Text('Send'),
               onPressed: () {

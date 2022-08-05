@@ -83,83 +83,86 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  widget.messagesTabStateUpdater({
-                    '_currView': 'Conversations',
-                    '_selectedConversation': "",
-                  });
-                },
-              ),
-            ],
-          ),
-        ),
-        loadingMessages
-            ? const Expanded(
-                flex: 9, child: Center(child: CircularProgressIndicator()))
-            : Expanded(
-                flex: 9,
-                child: NotificationListener(
-                  onNotification: (ScrollNotification notification) {
-                    if (notification is ScrollEndNotification) {
-                      _updateMessages();
-                    }
-                    return true;
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Column(
+        children: [
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () {
+                    widget.messagesTabStateUpdater({
+                      '_currView': 'Conversations',
+                      '_selectedConversation': "",
+                    });
                   },
-                  child: RefreshIndicator(
-                    triggerMode: RefreshIndicatorTriggerMode.onEdge,
-                    onRefresh: () async {
-                      _updateMessages();
+                ),
+              ],
+            ),
+          ),
+          loadingMessages
+              ? const Expanded(
+                  flex: 9, child: Center(child: CircularProgressIndicator()))
+              : Expanded(
+                  flex: 9,
+                  child: NotificationListener(
+                    onNotification: (ScrollNotification notification) {
+                      if (notification is ScrollEndNotification) {
+                        _updateMessages();
+                      }
+                      return true;
                     },
-                    child: ListView.builder(
-                        itemCount: messages.length,
-                        itemBuilder: (context, index) {
-                          return messages[index]["senderid"] == uid
-                              ? SenderChatMessage(message: messages[index])
-                              : ReceiverChatMessage(message: messages[index]);
-                        }),
+                    child: RefreshIndicator(
+                      triggerMode: RefreshIndicatorTriggerMode.onEdge,
+                      onRefresh: () async {
+                        _updateMessages();
+                      },
+                      child: ListView.builder(
+                          itemCount: messages.length,
+                          itemBuilder: (context, index) {
+                            return messages[index]["senderid"] == uid
+                                ? SenderChatMessage(message: messages[index])
+                                : ReceiverChatMessage(message: messages[index]);
+                          }),
+                    ),
                   ),
                 ),
-              ),
-        Form(
-            key: chatFormKey,
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: FractionallySizedBox(
-                  widthFactor: 1,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          controller: messageController,
-                          decoration: InputDecoration(
-                            hintText: 'Type a message...',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(23),
+          Form(
+              key: chatFormKey,
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FractionallySizedBox(
+                    widthFactor: 1,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: messageController,
+                            decoration: InputDecoration(
+                              hintText: 'Type a message...',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(23),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.send),
-                        onPressed: () {
-                          sendMessage();
-                        },
-                      ),
-                    ],
+                        IconButton(
+                          icon: const Icon(Icons.send),
+                          onPressed: () {
+                            sendMessage();
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            )),
-      ],
+              )),
+        ],
+      ),
     );
   }
 }

@@ -91,244 +91,247 @@ class _AdCreateState extends State<AdCreate> {
       ]),
       // Create Ad Form
       Expanded(
-        child: SingleChildScrollView(
-          child: Form(
-            key: _adCreateFormKey,
-            child: Column(children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      "Create An Ad",
-                      style: Styles.titleLarge,
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: SingleChildScrollView(
+            child: Form(
+              key: _adCreateFormKey,
+              child: Column(children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text(
+                        "Create An Ad",
+                        style: Styles.titleLarge,
+                      ),
+                    ],
+                  ),
+                ),
+                const SectionHeader(text: "Instrument"),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      const Text("I'm looking for..."),
+                      const Spacer(),
+                      DropdownButton(
+                          value: instrument,
+                          onChanged: (selectedValue) {
+                            if (selectedValue is String) {
+                              setState(() {
+                                instrument = selectedValue;
+                              });
+                            }
+                          },
+                          items: [
+                            for (MapEntry e in instrumentLookup.entries)
+                              DropdownMenuItem(
+                                value: e.value,
+                                child: Text(e.value),
+                              ),
+                          ]),
+                    ],
+                  ),
+                ),
+                const SectionHeader(text: "Near Location"),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: "City",
+                      border: OutlineInputBorder(),
                     ),
-                  ],
-                ),
-              ),
-              const SectionHeader(text: "Instrument"),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    const Text("I'm looking for..."),
-                    const Spacer(),
-                    DropdownButton(
-                        value: instrument,
-                        onChanged: (selectedValue) {
-                          if (selectedValue is String) {
-                            setState(() {
-                              instrument = selectedValue;
-                            });
-                          }
-                        },
-                        items: [
-                          for (MapEntry e in instrumentLookup.entries)
-                            DropdownMenuItem(
-                              value: e.value,
-                              child: Text(e.value),
-                            ),
-                        ]),
-                  ],
-                ),
-              ),
-              const SectionHeader(text: "Near Location"),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: "City",
-                    border: OutlineInputBorder(),
+                    controller: _cityController,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Please enter a city";
+                      }
+                      return null;
+                    },
                   ),
-                  controller: _cityController,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Please enter a city";
-                    }
-                    return null;
-                  },
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: "State Abbrev.",
-                    border: OutlineInputBorder(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: "State Abbrev.",
+                      border: OutlineInputBorder(),
+                    ),
+                    controller: _stateController,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Please enter a state abbreviation";
+                      } else if (value.length != 2) {
+                        return "Please enter a valid abbreviation, like 'CA' or 'WA'.";
+                      }
+                      return null;
+                    },
                   ),
-                  controller: _stateController,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Please enter a state abbreviation";
-                    } else if (value.length != 2) {
-                      return "Please enter a valid abbreviation, like 'CA' or 'WA'.";
-                    }
-                    return null;
-                  },
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: "Near zipcode",
-                    hintText: "90210",
-                    border: OutlineInputBorder(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: "Near zipcode",
+                      hintText: "90210",
+                      border: OutlineInputBorder(),
+                    ),
+                    controller: _zipController,
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Please enter a zipcode";
+                      }
+                      return null;
+                    },
                   ),
-                  controller: _zipController,
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Please enter a zipcode";
-                    }
-                    return null;
-                  },
                 ),
-              ),
-              const SectionHeader(text: "Ad Details"),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  maxLength: 90,
-                  minLines: 1,
-                  maxLines: 2,
-                  decoration: const InputDecoration(
-                    labelText: "Title",
-                    border: OutlineInputBorder(),
+                const SectionHeader(text: "Ad Details"),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    maxLength: 90,
+                    minLines: 1,
+                    maxLines: 2,
+                    decoration: const InputDecoration(
+                      labelText: "Title",
+                      border: OutlineInputBorder(),
+                    ),
+                    controller: _titleController,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Please add a title to your ad.";
+                      } else if (value.length > 90) {
+                        return "Limit 90 characters.";
+                      }
+                      return null;
+                    },
                   ),
-                  controller: _titleController,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Please add a title to your ad.";
-                    } else if (value.length > 90) {
-                      return "Limit 90 characters.";
-                    }
-                    return null;
-                  },
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  maxLength: 500,
-                  minLines: 2,
-                  maxLines: 10,
-                  decoration: const InputDecoration(
-                    labelText: "Ad Description",
-                    border: OutlineInputBorder(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    maxLength: 500,
+                    minLines: 2,
+                    maxLines: 10,
+                    decoration: const InputDecoration(
+                      labelText: "Ad Description",
+                      border: OutlineInputBorder(),
+                    ),
+                    controller: _descriptionController,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Please enter some text";
+                      } else if (value.length > 500) {
+                        return "Limit 500 characters.";
+                      }
+                      return null;
+                    },
                   ),
-                  controller: _descriptionController,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Please enter some text";
-                    } else if (value.length > 500) {
-                      return "Limit 500 characters.";
-                    }
-                    return null;
-                  },
                 ),
-              ),
-              const SectionHeader(text: "Required Availability"),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Wrap(
-                  children: [
-                    FractionallySizedBox(
+                const SectionHeader(text: "Required Availability"),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Wrap(
+                    children: [
+                      FractionallySizedBox(
+                          widthFactor: .45,
+                          child: CheckboxListTile(
+                            value: sun,
+                            title: const Text("Sun"),
+                            onChanged: (value) {
+                              setState(() {
+                                sun = value as bool;
+                              });
+                            },
+                          )),
+                      FractionallySizedBox(
                         widthFactor: .45,
                         child: CheckboxListTile(
-                          value: sun,
-                          title: const Text("Sun"),
+                          value: mon,
+                          title: const Text("Mon"),
                           onChanged: (value) {
                             setState(() {
-                              sun = value as bool;
+                              mon = value as bool;
                             });
                           },
-                        )),
-                    FractionallySizedBox(
-                      widthFactor: .45,
-                      child: CheckboxListTile(
-                        value: mon,
-                        title: const Text("Mon"),
-                        onChanged: (value) {
-                          setState(() {
-                            mon = value as bool;
-                          });
-                        },
+                        ),
                       ),
-                    ),
-                    FractionallySizedBox(
-                      widthFactor: .45,
-                      child: CheckboxListTile(
-                        value: tue,
-                        title: const Text("Tue"),
-                        onChanged: (value) {
-                          setState(() {
-                            tue = value as bool;
-                          });
-                        },
+                      FractionallySizedBox(
+                        widthFactor: .45,
+                        child: CheckboxListTile(
+                          value: tue,
+                          title: const Text("Tue"),
+                          onChanged: (value) {
+                            setState(() {
+                              tue = value as bool;
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                    FractionallySizedBox(
-                      widthFactor: .45,
-                      child: CheckboxListTile(
-                        value: wed,
-                        title: const Text("Wed"),
-                        onChanged: (value) {
-                          setState(() {
-                            wed = value as bool;
-                          });
-                        },
+                      FractionallySizedBox(
+                        widthFactor: .45,
+                        child: CheckboxListTile(
+                          value: wed,
+                          title: const Text("Wed"),
+                          onChanged: (value) {
+                            setState(() {
+                              wed = value as bool;
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                    FractionallySizedBox(
-                      widthFactor: .45,
-                      child: CheckboxListTile(
-                        value: thu,
-                        title: const Text("Thu"),
-                        onChanged: (value) {
-                          setState(() {
-                            thu = value as bool;
-                          });
-                        },
+                      FractionallySizedBox(
+                        widthFactor: .45,
+                        child: CheckboxListTile(
+                          value: thu,
+                          title: const Text("Thu"),
+                          onChanged: (value) {
+                            setState(() {
+                              thu = value as bool;
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                    FractionallySizedBox(
-                      widthFactor: .45,
-                      child: CheckboxListTile(
-                        value: fri,
-                        title: const Text("Fri"),
-                        onChanged: (value) {
-                          setState(() {
-                            fri = value as bool;
-                          });
-                        },
+                      FractionallySizedBox(
+                        widthFactor: .45,
+                        child: CheckboxListTile(
+                          value: fri,
+                          title: const Text("Fri"),
+                          onChanged: (value) {
+                            setState(() {
+                              fri = value as bool;
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                    FractionallySizedBox(
-                      widthFactor: .45,
-                      child: CheckboxListTile(
-                        value: sat,
-                        title: const Text("Sat"),
-                        onChanged: (value) {
-                          setState(() {
-                            sat = value as bool;
-                          });
-                        },
+                      FractionallySizedBox(
+                        widthFactor: .45,
+                        child: CheckboxListTile(
+                          value: sat,
+                          title: const Text("Sat"),
+                          onChanged: (value) {
+                            setState(() {
+                              sat = value as bool;
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: ElevatedButton(
-                    onPressed: () {
-                      _loadSearchResults();
-                    },
-                    child: const Text("Post Your Ad")),
-              ),
-            ]),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        _loadSearchResults();
+                      },
+                      child: const Text("Post Your Ad")),
+                ),
+              ]),
+            ),
           ),
         ),
       )
