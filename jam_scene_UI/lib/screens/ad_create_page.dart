@@ -91,9 +91,9 @@ class _AdCreateState extends State<AdCreate> {
       ]),
       // Create Ad Form
       Expanded(
-        child: SingleChildScrollView(
-          child: GestureDetector(
-            onTap: () => FocusScope.of(context).unfocus(),
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: SingleChildScrollView(
             child: Form(
               key: _adCreateFormKey,
               child: Column(children: [

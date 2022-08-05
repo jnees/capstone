@@ -53,9 +53,9 @@ class _AdSearchState extends State<AdSearch> {
           ],
         ),
         Expanded(
-          child: SingleChildScrollView(
-            child: GestureDetector(
-              onTap: () => FocusScope.of(context).unfocus(),
+          child: GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: SingleChildScrollView(
               child: Form(
                 key: adSearchFormKey,
                 child: Column(children: [
