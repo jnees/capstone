@@ -1,6 +1,5 @@
 # flake8: noqa
 import datetime
-from lib2to3.pgen2 import token
 import time
 import requests
 import json
