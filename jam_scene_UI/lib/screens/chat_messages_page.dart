@@ -73,8 +73,6 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
     var token = await FirebaseAuth.instance.currentUser!.getIdToken();
     Uri url = Uri.parse('https://jam-scene-app.herokuapp.com/messages');
 
-    var token = await FirebaseAuth.instance.currentUser!.getIdToken();
-
     final response = await http.post(url,
         body: body,
         headers: {'content-type': 'application/json', 'authorization': token});

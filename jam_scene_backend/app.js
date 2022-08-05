@@ -312,7 +312,6 @@ function app(database) {
   // Chat Routes:
 
   exp_app.get("/conversations/:id", async (req, res) => {
-    console.log(req.headers);
     const token = req.headers.authorization;
     let auth = true;
     await admin.auth().verifyIdToken(token, true)
