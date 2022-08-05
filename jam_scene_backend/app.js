@@ -26,6 +26,9 @@ function app(database) {
   // User Routes:
   exp_app.post("/users/search", async (req, res) => {
     // Check header
+    if (!req.headers.authorization) {
+      return res.status(401).send("Unauthorized");
+    }
     const token = req.headers.authorization;
     let auth = true;
     await admin.auth().verifyIdToken(token, true)
@@ -49,6 +52,9 @@ function app(database) {
   });
 
   exp_app.post("/users", async (req, res) => {
+    if (!req.headers.authorization) {
+      return res.status(401).send("Unauthorized");
+    }
     const token = req.headers.authorization;
     let auth = true;
     await admin.auth().verifyIdToken(token, true)
@@ -83,6 +89,9 @@ function app(database) {
   });
 
   exp_app.put("/user/:id", async (req, res) => {
+    if (!req.headers.authorization) {
+      return res.status(401).send("Unauthorized");
+    }
     const token = req.headers.authorization;
     let auth = true;
     await admin.auth().verifyIdToken(token, true)
@@ -106,6 +115,9 @@ function app(database) {
   });
 
   exp_app.delete("/user/:id", async (req, res) => {
+    if (!req.headers.authorization) {
+      return res.status(401).send("Unauthorized");
+    }
     const token = req.headers.authorization;
     let auth = true;
     await admin.auth().verifyIdToken(token, true)
@@ -140,6 +152,9 @@ function app(database) {
 
   // Review Routes:
   exp_app.post("/reviews", async (req, res) => {
+    if (!req.headers.authorization) {
+      return res.status(401).send("Unauthorized");
+    }
     const token = req.headers.authorization;
     let auth = true;
     await admin.auth().verifyIdToken(token, true)
@@ -173,6 +188,9 @@ function app(database) {
   });
 
   exp_app.put("/review/:id", async (req, res) => {
+    if (!req.headers.authorization) {
+      return res.status(401).send("Unauthorized");
+    }
     const token = req.headers.authorization;
     let auth = true;
     await admin.auth().verifyIdToken(token, true)
@@ -196,6 +214,9 @@ function app(database) {
   });
 
   exp_app.delete("/review/:id", async (req, res) => {
+    if (!req.headers.authorization) {
+      return res.status(401).send("Unauthorized");
+    }
     const token = req.headers.authorization;
     let auth = true;
     await admin.auth().verifyIdToken(token, true)
@@ -221,6 +242,9 @@ function app(database) {
   // Ads Routes: 
 
   exp_app.post("/ads", async (req, res) => {
+    if (!req.headers.authorization) {
+      return res.status(401).send("Unauthorized");
+    }
     const token = req.headers.authorization;
     let auth = true;
     await admin.auth().verifyIdToken(token, true)
@@ -254,6 +278,9 @@ function app(database) {
   });
 
   exp_app.put("/ad/:id", async (req, res) => {
+    if (!req.headers.authorization) {
+      return res.status(401).send("Unauthorized");
+    }
     const token = req.headers.authorization;
     let auth = true;
     await admin.auth().verifyIdToken(token, true)
@@ -277,6 +304,9 @@ function app(database) {
   });
 
   exp_app.delete("/ad/:id", async (req, res) => {
+    if (!req.headers.authorization) {
+      return res.status(401).send("Unauthorized");
+    }
     const token = req.headers.authorization;
     let auth = true;
     await admin.auth().verifyIdToken(token, true)
@@ -312,6 +342,9 @@ function app(database) {
   // Chat Routes:
 
   exp_app.get("/conversations/:id", async (req, res) => {
+    if (!req.headers.authorization) {
+      return res.status(401).send("Unauthorized");
+    }
     const token = req.headers.authorization;
     let auth = true;
     await admin.auth().verifyIdToken(token, true)
@@ -335,6 +368,9 @@ function app(database) {
   });
 
   exp_app.get("/messages/:id", async (req, res) => {
+    if (!req.headers.authorization) {
+      return res.status(401).send("Unauthorized");
+    }
     const token = req.headers.authorization;
     let auth = true;
     await admin.auth().verifyIdToken(token, true)
@@ -358,6 +394,9 @@ function app(database) {
   });
 
   exp_app.post("/messages", async (req, res) => {
+    if (!req.headers.authorization) {
+      return res.status(401).send("Unauthorized");
+    }
     const token = req.headers.authorization;
     let auth = true;
     await admin.auth().verifyIdToken(token, true)
