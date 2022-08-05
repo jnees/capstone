@@ -112,8 +112,6 @@ function app(database) {
   // Ads Routes: 
 
   exp_app.post("/ads", async (req, res) => {
-    console.log(req);
-    console.log(req.body);
     await ads.createAd(database, req)
       .then((result) => {
         res.send(result);
