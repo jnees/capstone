@@ -1,3 +1,5 @@
+### NOTE: GET /conversations and /messages routes now require firebase token authentication header.
+
 GET https://jam-scene-app.herokuapp.com/conversations/MqEuBlsfIug8Ozfjl2o8IkIyPr43
 
 

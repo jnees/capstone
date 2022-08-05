@@ -37,8 +37,8 @@ class _MessagesPageState extends State<MessagesPage> {
     if (token == null) return;
     var url = Uri.parse(
         'https://jam-scene-app.herokuapp.com/conversations/$currentUid');
-    var response =
-        await http.get(url, headers: {'content-type': 'application/json'});
+    var response = await http.get(url,
+        headers: {'content-type': 'application/json', 'authorization': token});
 
     if (response.statusCode == 200) {
       var data = json.decode(response.body);

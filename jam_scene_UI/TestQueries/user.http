@@ -1,3 +1,6 @@
+// TODO: API HAS UPDATED TO REQUIRE 'authorization' token from firebase user for PUT, POST, and DELETE
+// If using these for testing you must include.
+
 
 GET https://jam-scene-app.herokuapp.com/user/MqEuBlsfIug8Ozfjl2o8IkIyPr43
 

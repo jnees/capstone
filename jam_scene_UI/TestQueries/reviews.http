@@ -1,3 +1,5 @@
+# NOTE: POST/PUT/DELETE Reviews now require authorization header from firebase.
+
 POST https://jam-scene-app.herokuapp.com/reviews HTTP/1.1
 content-type: application/json
 

@@ -60,9 +60,10 @@ class _ProfilePageState extends State<ProfilePage> {
       'time_sent': DateTime.now().toString(),
     };
 
+    var token = await FirebaseAuth.instance.currentUser!.getIdToken();
     Uri url = Uri.parse('https://jam-scene-app.herokuapp.com/messages/');
     var response = await http.post(url,
-        headers: {'content-type': 'application/json'},
+        headers: {'content-type': 'application/json', 'authorization': token},
         body: json.encode(message));
     if (response.statusCode == 200) {
       messageController.clear();
@@ -82,8 +83,9 @@ class _ProfilePageState extends State<ProfilePage> {
     };
 
     Uri url = Uri.parse('https://jam-scene-app.herokuapp.com/reviews');
+    var token = await FirebaseAuth.instance.currentUser!.getIdToken();
     var response = await http.post(url,
-        headers: {'content-type': 'application/json'},
+        headers: {'content-type': 'application/json', 'authorization': token},
         body: json.encode(review));
     if (response.statusCode == 200) {
       reviewController.clear();
@@ -210,7 +212,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     var uri = Uri.parse(url);
-    var response = await http.get(uri, headers: {'Authorization': token});
+    var response = await http.get(uri, headers: {'authorization': token});
     if (jsonDecode(response.body)['user'].isEmpty) {
       if (!mounted) {
         return;

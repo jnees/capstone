@@ -124,6 +124,8 @@ for user in data['results']:
 
     user_details = json.dumps(user_details, default=str)
     print(user_details)
+    
+    # TODO: This route now requires a token to be passed in as a header 'authorization'.
     r = requests.post('https://jam-scene-app.herokuapp.com/users', data=user_details, headers={'Content-Type': 'application/json',
-        'Accept': 'application/json'},)
+        'Accept': 'application/json', 'authorization': token},)
     time.sleep(random.randint(1, 2))
