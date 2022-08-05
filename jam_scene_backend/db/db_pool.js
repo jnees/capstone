@@ -143,17 +143,18 @@ const getSearchInfo = async function (query_params1, query_params2, query_params
   ON UI.instrumentid = I.id AND I.id = (SELECT id FROM instruments WHERE name = $1));`;
 
   try {
-    let user_results = await pool.query(search_query, query_params1);
-    console.log(user_results.rows);
-    if (user_results.rows.length === 0) {
-      user_results = await pool.query(search_query_no_avail, query_params2);
-      console.log("second");
-      console.log(user_results.rows);
-      if (user_results.rows.length === 0) {
-        user_results = await pool.query(search_query_only_inst, query_params3);
-        console.log("third");
-        console.log(user_results.rows);
-      }
+    const user_results_1 = await pool.query(search_query, query_params1);
+    const user_results_2 = await pool.query(search_query_no_avail, query_params2);
+    const user_results_3 = await pool.query(search_query_only_inst, query_params3);
+    let user_results;
+    if (user_results_1.rows.length !== 0) {
+      user_results = user_results_1;
+    }
+    else if (user_results_2.rows.length !== 0) {
+      user_results = user_results_2;
+    }
+    else {
+      user_results = user_results_3;
     }
     return user_results.rows;
   } catch (error) {

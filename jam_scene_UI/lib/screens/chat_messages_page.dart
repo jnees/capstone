@@ -43,6 +43,7 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
         loadingMessages = false;
       });
     } else {
+      debugPrint(response.statusCode.toString());
       setState(() {
         loadingMessages = false;
       });
@@ -71,6 +72,8 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
 
     var token = await FirebaseAuth.instance.currentUser!.getIdToken();
     Uri url = Uri.parse('https://jam-scene-app.herokuapp.com/messages');
+
+    var token = await FirebaseAuth.instance.currentUser!.getIdToken();
 
     final response = await http.post(url,
         body: body,
