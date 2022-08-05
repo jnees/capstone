@@ -63,7 +63,7 @@ class _AdCreateState extends State<AdCreate> {
     if (token == null) return;
     var url = Uri.parse('https://jam-scene-app.herokuapp.com/ads');
     var response = await http.post(url,
-        headers: {'content-type': 'application/json'},
+        headers: {'content-type': 'application/json', 'authorization': token},
         body: json.encode(formData));
     if (response.statusCode == 200) {
       widget.adsPageStateUpdater({'_currView': 'Results'});

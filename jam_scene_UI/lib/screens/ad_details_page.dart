@@ -53,9 +53,10 @@ class _AdDetailsState extends State<AdDetails> {
       'time_sent': DateTime.now().toString(),
     };
 
+    var token = await FirebaseAuth.instance.currentUser!.getIdToken();
     var url = Uri.parse('https://jam-scene-app.herokuapp.com/messages/');
     var response = await http.post(url,
-        headers: {'content-type': 'application/json'},
+        headers: {'content-type': 'application/json', 'authorization': token},
         body: json.encode(message));
     if (response.statusCode == 200) {
       messageController.clear();

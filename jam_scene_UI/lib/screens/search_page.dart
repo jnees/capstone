@@ -55,7 +55,7 @@ class _SearchPageState extends State<SearchPage> {
     var url = Uri.parse('https://jam-scene-app.herokuapp.com/users/search');
     var response = await http.post(url,
         body: json.encoder.convert(formData),
-        headers: {'content-type': 'application/json'});
+        headers: {'content-type': 'application/json', 'authorization': token});
     if (response.statusCode == 200) {
       var data = response.body;
       setState(() {

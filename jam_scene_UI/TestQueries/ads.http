@@ -1,4 +1,4 @@
-###
+### NOTE: API now requires authoriztion headers for post, put, and delete calls to /ad or /ads
 
 GET https://jam-scene-app.herokuapp.com/ads
 

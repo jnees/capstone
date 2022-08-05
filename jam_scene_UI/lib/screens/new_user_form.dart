@@ -72,6 +72,8 @@ class _NewUserFormState extends State<NewUserForm> {
   Future<int> _sendToDatabase() async {
     loading = true;
 
+    var token = await FirebaseAuth.instance.currentUser!.getIdToken();
+
     String? photoURL = FirebaseAuth.instance.currentUser?.photoURL;
     // Set a default profile image if none is provided by the user's google account.
     photoURL ??= await getDefaultImageURL();
@@ -117,7 +119,7 @@ class _NewUserFormState extends State<NewUserForm> {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        // 'Authorization': token
+        'authorization': token
       },
       body: json.encode(formData),
     );

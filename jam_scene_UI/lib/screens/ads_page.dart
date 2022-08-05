@@ -41,8 +41,8 @@ class _AdsPageState extends State<AdsPage> {
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     if (token == null) return;
     var url = Uri.parse('https://jam-scene-app.herokuapp.com/ads');
-    var response =
-        await http.get(url, headers: {'content-type': 'application/json'});
+    var response = await http.get(url,
+        headers: {'content-type': 'application/json', 'authorization': token});
 
     if (response.statusCode == 200) {
       if (!mounted) {
