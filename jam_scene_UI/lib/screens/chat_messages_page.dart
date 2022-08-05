@@ -31,10 +31,11 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
   }
 
   void _updateMessages() async {
+    var token = await FirebaseAuth.instance.currentUser!.getIdToken();
     var url = Uri.parse(
         'https://jam-scene-app.herokuapp.com/messages/${widget.selectedConversation}');
-    var response =
-        await http.get(url, headers: {'content-type': 'application/json'});
+    var response = await http.get(url,
+        headers: {'content-type': 'application/json', 'authorization': token});
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       setState(() {
@@ -42,6 +43,7 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
         loadingMessages = false;
       });
     } else {
+      debugPrint(response.statusCode.toString());
       setState(() {
         loadingMessages = false;
       });
@@ -70,8 +72,10 @@ class _ChatMessagesPageState extends State<ChatMessagesPage> {
 
     Uri url = Uri.parse('https://jam-scene-app.herokuapp.com/messages');
 
-    final response = await http
-        .post(url, body: body, headers: {'content-type': 'application/json'});
+    var token = await FirebaseAuth.instance.currentUser!.getIdToken();
+    final response = await http.post(url,
+        body: body,
+        headers: {'content-type': 'application/json', 'authorization': token});
 
     if (response.statusCode == 200) {
       _updateMessages();
