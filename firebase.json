@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "jam_scene_UI/build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
