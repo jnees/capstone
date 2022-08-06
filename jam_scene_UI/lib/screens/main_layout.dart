@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jam_scene/styles.dart';
 import '../screens/profile_page.dart';
 import '../screens/search_page.dart';
 import '../screens/ads_page.dart';
@@ -35,14 +36,22 @@ class _MainLayoutState extends State<MainLayout> {
           return Scaffold(
             body: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
               NavigationRail(
+                backgroundColor: Styles.charcoal,
+                selectedIconTheme: const IconThemeData(color: Styles.salmonJam),
+                selectedLabelTextStyle:
+                    const TextStyle(color: Styles.salmonJam),
+                unselectedIconTheme: const IconThemeData(color: Colors.white),
+                unselectedLabelTextStyle: const TextStyle(color: Colors.white),
+                labelType: NavigationRailLabelType.all,
+                elevation: 6,
+                minWidth: MediaQuery.of(context).size.height * 0.15,
                 onDestinationSelected: (index) =>
                     setState(() => currentIndex = index),
                 selectedIndex: currentIndex,
                 destinations: const [
                   NavigationRailDestination(
-                    icon:
-                        Tooltip(message: "Profile", child: Icon(Icons.person)),
-                    label: Text("Profile"),
+                    icon: Icon(Icons.person),
+                    label: Text('Profile'),
                   ),
                   NavigationRailDestination(
                     icon: Tooltip(
@@ -75,6 +84,11 @@ class _MainLayoutState extends State<MainLayout> {
             ),
             body: screens[currentIndex],
             bottomNavigationBar: BottomNavigationBar(
+                elevation: 4,
+                backgroundColor: Styles.charcoal,
+                showUnselectedLabels: true,
+                unselectedItemColor: Colors.white,
+                selectedItemColor: Styles.salmonJam,
                 onTap: (index) => setState(() => currentIndex = index),
                 type: BottomNavigationBarType.fixed,
                 currentIndex: currentIndex,

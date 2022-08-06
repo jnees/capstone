@@ -84,7 +84,6 @@ class _EditProfileFormState extends State<EditProfileForm> {
     satPmAvail = widget.profileData.availSatPm;
     sunAmAvail = widget.profileData.availSunAm;
     sunPmAvail = widget.profileData.availSunPm;
-    debugPrint(widget.profileData.instruments.toString());
     for (int i = 0; i < widget.profileData.instruments.length; i++) {
       instruments[widget.profileData.instruments[i]['id']] = true;
     }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -373,10 +374,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                   child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 3.0),
-                                    child: Text(
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: titlePadding(context)),
+                                    child: const Text(
                                       "Influences",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold),
@@ -399,10 +400,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 3.0),
-                                      child: Text("Recordings",
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: titlePadding(context)),
+                                      child: const Text("Recordings",
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold)),
                                     ),
@@ -415,10 +416,11 @@ class _ProfilePageState extends State<ProfilePage> {
                           const SizedBox(height: 10),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
-                            children: const [
+                            children: [
                               Padding(
-                                padding: EdgeInsets.symmetric(vertical: 3.0),
-                                child: Text("Instruments",
+                                padding: EdgeInsets.symmetric(
+                                    vertical: titlePadding(context)),
+                                child: const Text("Instruments",
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold)),
                               ),
@@ -439,11 +441,11 @@ class _ProfilePageState extends State<ProfilePage> {
                             children: [
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
+                                children: [
                                   Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 3.0),
-                                    child: Text("Availability",
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: titlePadding(context)),
+                                    child: const Text("Availability",
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold)),
                                   ),
@@ -452,31 +454,32 @@ class _ProfilePageState extends State<ProfilePage> {
                             ],
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Expanded(
-                                child: SizedBox(
-                                  child: DecoratedBox(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Styles.charcoal,
-                                        width: 3,
-                                      ),
+                              SizedBox(
+                                width: max(400,
+                                    MediaQuery.of(context).size.width * 0.55),
+                                child: DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Styles.charcoal,
+                                      width: 3,
                                     ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: AvailabilityTable(
-                                          profileData: profileData),
-                                    ),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: AvailabilityTable(
+                                        profileData: profileData),
                                   ),
                                 ),
                               )
                             ],
                           ),
                           const SizedBox(height: 10),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 3.0),
-                            child: Text("Reviews",
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: titlePadding(context)),
+                            child: const Text("Reviews",
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                           ),
                           for (var review in profileData.reviews)
@@ -532,4 +535,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   );
   }
+}
+
+double titlePadding(context) {
+  return MediaQuery.of(context).size.height * 0.01;
 }

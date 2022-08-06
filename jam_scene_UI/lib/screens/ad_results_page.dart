@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:jam_scene/styles.dart';
 import '../models/instrument_lookup.dart';
@@ -75,18 +77,18 @@ class AdResults extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Text(results[index]['username']),
-                      Text('${results[index]['username']} is looking for ${instrumentLookup[results[index]['instruments'][0]
-                          ['id']]!}'),
+                      Text(
+                          '${results[index]['username']} is looking for ${instrumentLookup[results[index]['instruments'][0]['id']]!}'),
                     ],
                   ),
 
                   /// instruments
                   trailing: Column(
                     children: [
-                      Text(results[index]["city"] +
-                          ", " +
-                          results[index]["state"],
-                          style: Styles.headline7Ital,),
+                      Text(
+                        results[index]["city"] + ", " + results[index]["state"],
+                        style: Styles.headline7Ital,
+                      ),
                       FormattedDateFromString(
                           date: results[index]["post_date"]),
                     ],
@@ -97,8 +99,12 @@ class AdResults extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
           child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              minimumSize: Size(double.infinity,
+                  max(50, MediaQuery.of(context).size.width * .08)),
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: const [

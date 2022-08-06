@@ -24,6 +24,10 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="jam_scene">
+
+  <!-- Firebase Auth -->
+  <meta name="google-signin-client_id" content="996660872089-c0jou5oti6okt8qd5e02fc55b57s2mui.apps.googleusercontent.com">
+
   
 
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
@@ -46,6 +50,30 @@
   
 </head>
 <body>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyAL0e6x82vvsxgnHowYuZnGG8ixDswlDeA",
+      authDomain: "jamscene-410d6.firebaseapp.com",
+      projectId: "jamscene-410d6",
+      storageBucket: "jamscene-410d6.appspot.com",
+      messagingSenderId: "996660872089",
+      appId: "1:996660872089:web:7aa74e06ed952f44228908",
+      measurementId: "G-7F9SC6K9XC"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  </script>
   <script>
     window.addEventListener('load', function(ev) {
       // Download main.dart.js
