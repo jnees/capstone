@@ -457,7 +457,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(
-                                width: max(400,
+                                width: max(350,
                                     MediaQuery.of(context).size.width * 0.55),
                                 child: DecoratedBox(
                                   decoration: BoxDecoration(

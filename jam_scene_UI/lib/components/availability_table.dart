@@ -14,9 +14,18 @@ class AvailabilityTable extends StatelessWidget {
     return Table(
       children: [
         const TableRow(children: [
-          Text("", style: TextStyle(fontWeight: FontWeight.bold)),
-          Text("AM", style: TextStyle(fontWeight: FontWeight.bold)),
-          Text("PM", style: TextStyle(fontWeight: FontWeight.bold)),
+          Padding(
+            padding: EdgeInsets.all(3.0),
+            child: Text("", style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+          Padding(
+            padding: EdgeInsets.all(3.0),
+            child: Text("AM", style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+          Padding(
+            padding: EdgeInsets.all(3.0),
+            child: Text("PM", style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
         ]),
         TableRow(children: [
           const DayText(day: "Sunday"),
