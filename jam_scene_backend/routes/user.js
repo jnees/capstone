@@ -104,7 +104,7 @@ const updateUser = async (database, req) => {
     const updated_id = await database.updateUserObj(query_params);
 
     // Get instruments currently recorded for this user and delete them
-    const old_instrument_objs = await database.getInstByUserId(id);
+    const old_instrument_objs = await database.getInstByUserId([id]);
     const old_instruments = [];
     for (let inst_obj in old_instrument_objs) {
       old_instruments.push(old_instrument_objs[inst_obj]["id"]);
