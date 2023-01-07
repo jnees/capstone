@@ -15,8 +15,10 @@ For our Oregon State University CS467 Capstone Project, our team chose to create
 Our app uses Google to manage users, so we encourage you to create an account for testing using either the registration form or the ‘sign-in with google’ button on the login page. 
 
 **Running on iOS (preferred):**
+
+**01/06/2023 - App is currently offline/archived due to Heroku policy change which removed Postgres from the free hosting tier.**
  
-[Join our beta test on TestFlight](https://testflight.apple.com/join/HObxx4Yu): 
+[Join our beta test on TestFlight](https://testflight.apple.com/join/KM8Otdy5): 
  
 **Running on Web:**
 
